@@ -111,8 +111,31 @@ body {
 #main { opacity: 1; }
 
 /* Hero fades in independently, after nav settles */
-#home-hero { opacity: 0; transition: opacity 700ms var(--ease-enter); }
+#home-hero { opacity: 0; transition: opacity 500ms var(--ease-enter); }
 #home-hero.visible { opacity: 1; }
+
+/* Home hero text reveal */
+.hero-label {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 600ms var(--ease-enter), transform 600ms var(--ease-enter);
+}
+#home-hero.visible .hero-label { opacity: 1; transform: translateY(0); transition-delay: 150ms; }
+.hero-heading .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
+.hero-heading .line-inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home-hero.visible .hero-heading .line:nth-child(1) .line-inner { transform: translateY(0); transition-delay: 280ms; }
+#home-hero.visible .hero-heading .line:nth-child(2) .line-inner { transform: translateY(0); transition-delay: 390ms; }
+#home-hero.visible .hero-heading .line:nth-child(3) .line-inner { transform: translateY(0); transition-delay: 500ms; }
+.hero-body {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms var(--ease-enter), transform 700ms var(--ease-enter);
+}
+#home-hero.visible .hero-body { opacity: 1; transform: translateY(0); transition-delay: 650ms; }
 
 /* ════════════════════════════════
    NAV
@@ -961,7 +984,11 @@ body.custom-cursor * { cursor: none !important; }
   color: var(--ink-mid);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 600ms var(--ease-enter), transform 600ms var(--ease-enter);
 }
+#about-hero.revealed .about-hero-label { opacity: 1; transform: translateY(0); transition-delay: 150ms; }
 .about-hero-heading {
   font-family: var(--sans);
   font-weight: 700;
@@ -970,6 +997,15 @@ body.custom-cursor * { cursor: none !important; }
   color: var(--blue);
   letter-spacing: -1.2px;
 }
+.about-hero-heading .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
+.about-hero-heading .line-inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#about-hero.revealed .about-hero-heading .line:nth-child(1) .line-inner { transform: translateY(0); transition-delay: 280ms; }
+#about-hero.revealed .about-hero-heading .line:nth-child(2) .line-inner { transform: translateY(0); transition-delay: 390ms; }
+#about-hero.revealed .about-hero-heading .line:nth-child(3) .line-inner { transform: translateY(0); transition-delay: 500ms; }
 #about-trigger {
   position: relative;
   min-height: 250vh;
@@ -1252,6 +1288,7 @@ body.custom-cursor * { cursor: none !important; }
   color: var(--ink);
   line-height: 24px;
 }
+.proj-bleed-text .proj-serif { margin-top: 40px; }
 .proj-img {
   width: 100%;
   display: block;
@@ -1261,6 +1298,22 @@ body.custom-cursor * { cursor: none !important; }
   width: 100%;
   background: #ECECEE;
   border-radius: 16px;
+}
+.proj-bleed-video { width: 100%; }
+
+@media (min-width: 768px) {
+  .proj-bleed-row {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    column-gap: 48px;
+    align-items: start;
+    margin-right: -120px;
+  }
+  .proj-bleed-video {
+    width: 280px;
+    position: sticky;
+    top: 100px;
+  }
 }
 
 /* ── Hero line reveal ── */
@@ -1575,7 +1628,11 @@ body.custom-cursor * { cursor: none !important; }
     <section id="home-hero">
       <canvas id="hero-dots"></canvas>
       <div class="hero-label">PRODUCT DESIGN · BOGOTÁ · 2026</div>
-      <h1 class="hero-heading">Designing products where strategy, systems, and interfaces meet.</h1>
+      <h1 class="hero-heading">
+        <span class="line"><span class="line-inner">Designing products</span></span>
+        <span class="line"><span class="line-inner">where strategy, systems,</span></span>
+        <span class="line"><span class="line-inner">and interfaces meet.</span></span>
+      </h1>
       <div class="hero-body">
         <p>I help teams turn complex product ideas<br class="br-desk"> into clear, usable systems.</p>
         <p>Connecting business goals, user behavior,<br class="br-desk"> and design execution.</p>
@@ -1592,7 +1649,7 @@ body.custom-cursor * { cursor: none !important; }
       <div class="work-track-outer">
         <div id="work-cards-track">
           <div class="work-card-item">
-            <div class="card-image" style="background:#FFE8F0;background-image:url('BNLP/hero BNPL.jpg');background-size:cover;background-position:center;"></div>
+            <div class="card-image" style="background:#FFE8F0;background-image:url('BNLP/hero BNPL.jpeg');background-size:cover;background-position:center;"></div>
             <div class="card-date">2021 – 2023</div>
             <div class="card-title">Building a BNPL Marketplace</div>
             <div class="card-desc">How a checkout financing tool evolved into a consumer-facing commerce platform.</div>
@@ -1670,7 +1727,11 @@ body.custom-cursor * { cursor: none !important; }
     <section id="about-hero">
       <canvas id="about-dots"></canvas>
       <div class="about-hero-label">+10 YEARS OF EXPERIENCE</div>
-      <h1 class="about-hero-heading">I'm a Product Design Leader. Based in Bogotá, working for the world.</h1>
+      <h1 class="about-hero-heading">
+        <span class="line"><span class="line-inner">I'm a Product Design Leader.</span></span>
+        <span class="line"><span class="line-inner">Based in Bogotá,</span></span>
+        <span class="line"><span class="line-inner">working for the world.</span></span>
+      </h1>
     </section>
     <div id="about-trigger">
       <div id="about-sticky">
@@ -1786,7 +1847,7 @@ body.custom-cursor * { cursor: none !important; }
 
     <!-- Hero -->
     <section class="proj-hero">
-      <img class="proj-hero-bg" src="BNLP/hero BNPL.jpg" alt="BNPL Marketplace" />
+      <img class="proj-hero-bg" src="BNLP/hero BNPL.jpeg" alt="BNPL Marketplace" />
       <div class="proj-hero-gradient"></div>
       <div class="proj-hero-content">
         <h1 class="proj-hero-title">
@@ -2213,12 +2274,16 @@ body.custom-cursor * { cursor: none !important; }
 
         <p class="proj-sub-heading">Cash-Out Patterns</p>
 
-        <p class="proj-use-case-title">Instant Lending Disbursement</p>
-        <div class="proj-serif">
-          <p>In micro-lending products, credit approval could already happen within minutes. But receiving the money often took hours or days, breaking the "instant lending" promise at the last step.</p>
-          <p>By applying our cash-out flow templates, disbursement became immediate. Approval and access to funds both happened in seconds, to any bank account on the network, not just one specific institution.</p>
+        <div class="proj-bleed-row">
+          <div class="proj-bleed-text">
+            <p class="proj-use-case-title">Instant Lending Disbursement</p>
+            <div class="proj-serif">
+              <p>In micro-lending products, credit approval could already happen within minutes. But receiving the money often took hours or days, breaking the "instant lending" promise at the last step.</p>
+              <p>By applying our cash-out flow templates, disbursement became immediate. Approval and access to funds both happened in seconds, to any bank account on the network, not just one specific institution.</p>
+            </div>
+          </div>
+          <video class="proj-img proj-bleed-video" loop muted playsinline><source src="Designing Payments/5. Lending.mp4" type="video/mp4"></video>
         </div>
-        <video class="proj-img" loop muted playsinline><source src="Designing Payments/5. Lending.mp4" type="video/mp4"></video>
 
         <p class="proj-use-case-title">Refunds</p>
         <div class="proj-serif">
@@ -2374,6 +2439,10 @@ function showPage(id) {
       setTimeout(() => window._nextAboutWord && window._nextAboutWord(), 4000);
     }
   }
+  // About hero reveal animation
+  const aboutHero = document.getElementById('about-hero');
+  aboutHero.classList.remove('revealed');
+  if (id === 'about') setTimeout(() => aboutHero.classList.add('revealed'), 80);
   // Clean up reading progress pill on any navigation
   if (window._cleanupReadingProgress) window._cleanupReadingProgress();
   // Hero reveal
@@ -2488,6 +2557,9 @@ function runIntro() {
   const nav       = document.getElementById('nav');
   const main      = document.getElementById('main');
 
+  // Lock scroll until hero is revealed
+  document.body.style.overflow = 'hidden';
+
   // ── 1. Fade in text ──
   setTimeout(() => {
     greeting.style.transition  = `opacity 700ms ${EASE_ENTER}`;
@@ -2500,7 +2572,7 @@ function runIntro() {
   setTimeout(() => {
     greeting.style.transition = `opacity 450ms ${EASE_EXIT}`;
     greeting.style.opacity    = '0';
-  }, 1400);
+  }, 2200);
 
   // ── 3. "Andy." flies to nav brand position ──
   setTimeout(() => {
@@ -2521,9 +2593,9 @@ function runIntro() {
     loader.style.transition      = `background-color 520ms ${EASE_EXIT}`;
     loader.style.backgroundColor = 'transparent';
 
-  }, 1900);
+  }, 2700);
 
-  // ── 4. Pill appears immediately after flight lands (1900+580+20) ──
+  // ── 4. Pill appears immediately after flight lands (2700+580+20) ──
   setTimeout(() => {
     const brandW = navBrand.offsetWidth + 40; /* 20px each side, symmetric */
     navInner.style.transition  = 'none'; /* suppress border-radius transition during intro */
@@ -2535,19 +2607,19 @@ function runIntro() {
     navBrand.style.transition = 'none';
     nav.classList.add('visible');
     navBrand.classList.add('visible');
-  }, 2500);
+  }, 3300);
 
   // ── 5. Pill expands to full width ──
   setTimeout(() => {
     navInner.style.transition = `width 700ms ${EASE_ENTER}`;
     navInner.style.width      = '100%';
-  }, 2700);
+  }, 3500);
 
   // ── 6. Nav items appear one at a time ──
   [
-    ['nav-work-btn',  3080],
-    ['nav-about-btn', 3260],
-    ['nav-cta-btn',   3440],
+    ['nav-work-btn',  3880],
+    ['nav-about-btn', 4060],
+    ['nav-cta-btn',   4240],
   ].forEach(([id, t]) => {
     setTimeout(() => document.getElementById(id).classList.add('in'), t);
   });
@@ -2558,17 +2630,18 @@ function runIntro() {
     navInner.style.borderRadius = '';
     navInner.style.width        = '';
     navInner.style.overflow     = '';
-  }, 3700);
+  }, 4500);
 
   // ── 8. Remove loader + show hero 400ms after last nav item finishes ──
   setTimeout(() => {
     loader.style.display = 'none';
+    document.body.style.overflow = '';
     document.getElementById('home-hero').classList.add('visible');
     document.fonts.ready.then(() => {
       setupCarousel();
       setupPhilosophy();
     });
-  }, 4240);
+  }, 5040);
 }
 
 /* ════════════════════════════════
