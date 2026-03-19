@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp:*)",
+      "mcp__figma__get_design_context",
+      "Bash(cd \"/Users/andy/Library/Mobile Documents/com~apple~CloudDocs/Cursor/my-webpage\" && npx serve .)",
+      "mcp__figma__generate_figma_design",
+      "Bash(open \"http://localhost:3000#figmacapture=e25ef4a6-5380-4116-bd29-956c21aaa263&figmaendpoint=https%3A%2F%2Fmcp.figma.com%2Fmcp%2Fcapture%2Fe25ef4a6-5380-4116-bd29-956c21aaa263%2Fsubmit&figmadelay=8000\")",
+      "mcp__figma__get_screenshot",
+      "Bash(git -C \"/Users/andy/Library/Mobile Documents/com~apple~CloudDocs/Cursor/my-webpage\" status)",
+      "Bash(gh auth:*)",
+      "Bash(git config:*)"
+    ]
+  }
+}

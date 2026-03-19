@@ -1,0 +1,3246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFE3EE">
+<title>Andy Corredor — Product Design</title>
+<meta name="description" content="Product Design Leader based in Bogotá, working for the world. Designing across strategy, systems, and interfaces in fintech and digital products.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://andycorredor.com">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://andycorredor.com">
+<meta property="og:title" content="Andy Corredor — Product Design">
+<meta property="og:description" content="Product Design Leader based in Bogotá, working for the world. Designing across strategy, systems, and interfaces in fintech and digital products.">
+<meta property="og:image" content="https://andycorredor.com/og-image.jpg">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://andycorredor.com">
+<meta name="twitter:title" content="Andy Corredor — Product Design">
+<meta name="twitter:description" content="Product Design Leader based in Bogotá, working for the world. Designing across strategy, systems, and interfaces in fintech and digital products.">
+<meta name="twitter:image" content="https://andycorredor.com/og-image.jpg">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23065FED'/><text x='50' y='72' font-family='system-ui,sans-serif' font-weight='700' font-size='58' fill='white' text-anchor='middle'>A</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23065FED'/><text x='50' y='72' font-family='system-ui,sans-serif' font-weight='700' font-size='58' fill='white' text-anchor='middle'>A</text></svg>">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Andy Corredor",
+  "jobTitle": "Product Design Leader",
+  "url": "https://andycorredor.com",
+  "sameAs": ["https://www.linkedin.com/in/andrescovi/"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bogotá",
+    "addressCountry": "CO"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400&family=Inria+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: #FFE3EE;
+  color: #101010;
+  overflow-x: hidden;
+}
+
+:root {
+  --pink:       #FFE3EE;
+  --blue:       #065FED;
+  --dark:       #1F1F22;
+  --white:      #FFFFFF;
+  --canvas:     #F7F7F7;
+  --ink:        #101010;
+  --ink-mid:    #6D6D6D;
+  --ink-hint:   #ABABAB;
+  --sans:       'DM Sans', system-ui, sans-serif;
+  --mono:       'DM Mono', 'Courier New', monospace;
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit:  cubic-bezier(0.4, 0, 1, 1);
+  --ease-std:   cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ════════════════════════════════
+   INTRO LOADER
+════════════════════════════════ */
+#intro-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.intro-text { display: flex; align-items: flex-start; gap: clamp(10px, 1.2vw, 24px); }
+#intro-greeting {
+  color: white;
+  opacity: 0;
+  display: inline-block;
+  line-height: 0;
+}
+#intro-greeting svg { display: block; width: clamp(110px, 26vw, 520px); height: auto; }
+#intro-name {
+  color: white;
+  opacity: 0;
+  display: inline-block;
+  line-height: 0;
+  transform-origin: left top;
+  will-change: transform, color;
+}
+#intro-name svg { display: block; width: clamp(106px, 25vw, 500px); height: auto; }
+
+/* ════════════════════════════════
+   MAIN APP
+════════════════════════════════ */
+#main { opacity: 1; }
+
+/* Hero fades in independently, after nav settles */
+#home-hero { opacity: 0; transition: opacity 700ms var(--ease-enter); }
+#home-hero.visible { opacity: 1; }
+
+/* ════════════════════════════════
+   NAV
+════════════════════════════════ */
+#nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;           /* above circle-bg and intro text */
+  width: calc(100% - 48px);
+  max-width: 480px;
+  opacity: 0;
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  #nav { max-width: 680px; }
+}
+@media (min-width: 1280px) {
+  #nav { max-width: 780px; }
+}
+#nav.visible { opacity: 1; pointer-events: all; }
+
+.nav-inner {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 100px;
+  box-shadow: 0 0 24px rgba(15,13,10,0.08);
+  overflow: hidden;
+  width: 100%;
+}
+
+#nav-brand {
+  color: var(--ink);
+  text-decoration: none;
+  flex-shrink: 0;
+  cursor: pointer;
+  line-height: 0;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-std);
+}
+#nav-brand svg { display: block; }
+#nav-brand.visible { opacity: 1; }
+
+/* Left nav buttons — Work / About */
+.nav-btn {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink-mid);
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 100px;
+  cursor: pointer;
+  letter-spacing: -0.28px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateY(3px);
+}
+.nav-btn.in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms var(--ease-enter), transform 400ms var(--ease-enter),
+              background 150ms, color 150ms;
+}
+.nav-btn:hover { color: var(--ink); background: #EFEFEF; }
+.nav-btn.active { background: #E8E8E8; color: var(--ink); }
+
+/* Spacer pushes Let's Talk to the right */
+.nav-spacer { flex: 1; }
+
+/* Let's Talk — always right */
+.nav-cta {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  background: var(--blue);
+  border: none;
+  border-radius: 100px;
+  padding: 10px 16px;
+  cursor: pointer;
+  letter-spacing: -0.28px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateY(3px);
+}
+.nav-cta.in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms var(--ease-enter), transform 400ms var(--ease-enter),
+              background 150ms;
+}
+.nav-cta:hover { background: #054FD4; }
+
+/* ════════════════════════════════
+   WORK OVERLAY
+════════════════════════════════ */
+/* Backdrop blur when drawer is open */
+#nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 499;
+  background: rgba(255,227,238,0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-std);
+}
+#nav-backdrop.open { opacity: 1; pointer-events: all; }
+
+/* Nav drawer — pill expands downward on Work tap */
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 20px;
+  width: 100%;
+  flex-shrink: 0;
+}
+.nav-drawer-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 420ms var(--ease-enter);
+  width: 100%;
+}
+.nav-inner.work-open #work-drawer-wrap,
+.nav-inner.contact-open #contact-drawer-wrap {
+  grid-template-rows: 1fr;
+}
+.nav-drawer { overflow: hidden; }
+
+/* Contact icon */
+.contact-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: var(--canvas);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.contact-icon svg { width: 28px; height: 28px; }
+
+.work-projects-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 12px 16px 8px;
+  border-top: 1px solid #F0F0F0;
+}
+.project-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 200ms var(--ease-std);
+}
+.project-row:hover { background: var(--canvas); }
+.project-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.project-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.project-info { flex: 1; min-width: 0; }
+.project-row-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+.project-row-desc {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-mid);
+  letter-spacing: -0.2px;
+  line-height: 1.3;
+}
+.project-row-arrow { color: var(--blue); font-size: 16px; flex-shrink: 0; }
+
+/* ════════════════════════════════
+   PAGES
+════════════════════════════════ */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ════════════════════════════════
+   HOME — HERO
+════════════════════════════════ */
+#home-hero {
+  background: var(--pink);
+  min-height: 100svh;
+  padding: 120px 24px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+#hero-dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hero-label, .hero-heading, .hero-body {
+  position: relative;
+  z-index: 1;
+}
+.hero-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hero-heading {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.1;
+  color: var(--blue);
+  letter-spacing: -1.2px;
+}
+.hero-body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  letter-spacing: -0.32px;
+}
+.hero-body p + p { margin-top: 6px; }
+.br-desk { display: none; }
+@media (min-width: 768px) { .br-desk { display: block; } }
+
+/* ════════════════════════════════
+   WORK — vertical-scroll-driven card carousel
+════════════════════════════════ */
+#work-trigger { position: relative; /* height set by JS */ }
+
+#work-section {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  background: var(--canvas);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.work-sticky-header {
+  padding: 96px 24px 20px;
+  flex-shrink: 0;
+}
+.work-section-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.work-section-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--blue);
+  letter-spacing: -0.9px;
+  line-height: 1.15;
+}
+.work-section-title .title-light { font-weight: 400; display: block; }
+
+.work-track-outer {
+  flex: 1;
+  position: relative;
+}
+#work-cards-track {
+  position: absolute;
+  inset: 0;
+}
+.work-card-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 88vw;
+  height: min(calc(88vw * 1.45), calc(100dvh - 220px));
+  background: var(--white);
+  border-radius: 28px;
+  padding: 20px;
+  box-shadow: 0 2px 32px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  /* Default: off-screen right, tilted */
+  transform: translate(-50%, -50%) translateX(115%) rotate(8deg) scale(0.94);
+  transition: transform 380ms cubic-bezier(0.25, 0, 0.3, 1);
+}
+/* Active card: centered, straight, always on top */
+.work-card-item.active {
+  transform: translate(-50%, -50%) translateX(0) rotate(0deg) scale(1);
+  z-index: 2;
+}
+/* Next card: peeking from right, behind active */
+.work-card-item.peek {
+  transform: translate(-50%, -50%) translateX(88%) rotate(6deg) scale(0.96);
+  z-index: 1;
+}
+/* Previous cards: off-screen left, behind active */
+.work-card-item.prev {
+  transform: translate(-50%, -50%) translateX(-115%) rotate(-4deg) scale(0.94);
+  z-index: 1;
+}
+
+/* ── Work section — two-column (tablet+) ── */
+@media (min-width: 768px) {
+  #work-section { flex-direction: row; }
+  .work-sticky-header {
+    width: 45%;
+    flex-shrink: 0;
+    padding: 80px clamp(40px, 4vw, 80px) 80px clamp(80px, 8vw, 160px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .work-section-label { font-size: 11px; margin-bottom: 12px; }
+  .work-section-title {
+    font-size: clamp(26px, 3.5vw, 52px);
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+  }
+  .work-track-outer { flex: 1; }
+  .work-card-item.prev {
+    transform: translate(-50%, -60%) translateX(-100%) rotate(-2deg) scale(0.7);
+    z-index: 3;
+  }
+  .work-card-item {
+    --card-w: clamp(280px, 42vw, 760px);
+    width: var(--card-w);
+    height: min(calc(var(--card-w) * 1.45), calc(100dvh - 140px));
+  }
+}
+
+/* ── Work section — desktop spacing ── */
+@media (min-width: 1100px) {
+  .work-sticky-header {
+    width: 40%;
+    padding: 80px clamp(40px, 4vw, 80px) 80px clamp(80px, 8vw, 160px);
+  }
+}
+
+/* ════════════════════════════════
+   PHILOSOPHY — sticky blue section
+════════════════════════════════ */
+#phil-trigger {
+  position: relative;
+  min-height: 150vh;
+}
+#phil-sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  background: var(--canvas);
+  transition: background 700ms var(--ease-enter);
+}
+#phil-sticky.blue { background: var(--blue); }
+.card-image {
+  flex: 1;
+  min-height: 0;
+  border-radius: 18px;
+  background: #F5EFF8;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.card-image img { width: 100%; height: 100%; object-fit: cover; }
+.card-date {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  margin-bottom: 6px;
+}
+.card-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: -0.88px;
+  line-height: 1.2;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+.card-desc {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--ink-mid);
+  letter-spacing: -0.32px;
+  line-height: 1.5;
+  flex-shrink: 0;
+  margin-bottom: 16px;
+}
+.card-buttons { display: flex; gap: 10px; flex-shrink: 0; }
+.btn-secondary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--white);
+  border: 1px solid #E8E8E8;
+  border-radius: 100px;
+  padding: 12px 14px;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  letter-spacing: -0.32px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 200ms var(--ease-std);
+}
+.btn-secondary:hover { background: var(--canvas); }
+.btn-primary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--blue);
+  border: none;
+  border-radius: 100px;
+  padding: 12px 14px;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+  letter-spacing: -0.32px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 200ms var(--ease-std);
+}
+.btn-primary:hover { background: #054FD4; }
+
+.card-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 24px 10px;
+  flex-shrink: 0;
+}
+.dot {
+  height: 5px;
+  width: 5px;
+  border-radius: 3px;
+  background: #D0D0D0;
+  transition: width 300ms var(--ease-enter), background 300ms var(--ease-std);
+}
+.dot.active { width: 20px; background: var(--blue); }
+
+/* Philosophy phase */
+#phil-phase {
+  padding: 96px clamp(24px, 5vw, 80px) 80px;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-enter);
+}
+
+.phil-col + .phil-col { margin-top: clamp(24px, 5vw, 40px); }
+
+.phil-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  flex-shrink: 0;
+}
+
+.phil-para {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(40px, 5vw, 56px);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: white;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 580ms var(--ease-enter), transform 580ms var(--ease-enter);
+}
+.phil-para.on {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  #phil-phase { padding: 96px clamp(80px, 8vw, 160px) 80px; }
+}
+
+@media (min-width: 1100px) and (max-width: 1599px) {
+  .phil-para { font-size: clamp(56px, 5vw, 72px); }
+}
+
+@media (min-width: 1600px) {
+  #phil-phase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100svh;
+    padding: 96px 0 80px;
+    align-items: stretch;
+  }
+  .phil-col:first-child {
+    padding-left: clamp(80px, 8vw, 160px);
+    padding-right: clamp(40px, 4vw, 80px);
+  }
+  .phil-col + .phil-col {
+    margin-top: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: clamp(80px, 8vw, 160px);
+    padding-left: clamp(40px, 4vw, 80px);
+    text-align: right;
+  }
+  .phil-para { font-size: clamp(64px, 5vw, 100px); }
+  .phil-label { margin-bottom: 36px; }
+}
+
+/* ════════════════════════════════
+   VIDEO LIGHTBOX
+════════════════════════════════ */
+#video-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+#video-lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+#video-lightbox-player {
+  width: 90vw;
+  max-width: 960px;
+  max-height: 85vh;
+  border-radius: 12px;
+  background: #000;
+  outline: none;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+#video-lightbox-player.ready { opacity: 1; }
+#video-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: white;
+  font-size: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 160ms;
+}
+#video-lightbox-close:hover { background: rgba(255,255,255,0.22); }
+
+/* ════════════════════════════════
+   CUSTOM CURSOR
+════════════════════════════════ */
+#custom-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: none;
+  display: none;
+}
+.cursor-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  background: var(--ink);
+  border-radius: 100px;
+  padding: 5px 10px;
+  transform: scale(0);
+  transform-origin: top left;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+#custom-cursor.visible .cursor-inner {
+  transform: scale(1);
+}
+.cursor-arrow {
+  display: block;
+  width: 10px;
+  height: 13px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+.cursor-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+#custom-cursor.visible .cursor-arrow,
+#custom-cursor.visible .cursor-label {
+  opacity: 1;
+  transition-delay: 160ms;
+}
+.cursor-heart {
+  display: none;
+  font-size: 11px;
+  line-height: 1;
+  color: white;
+  transform: scale(0);
+  opacity: 0;
+}
+#custom-cursor.has-heart .cursor-heart {
+  display: block;
+}
+#custom-cursor.has-heart.visible .cursor-heart {
+  animation: heartPop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) 280ms forwards;
+}
+@keyframes heartPop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+/* Hide all cursors when custom cursor is active */
+body.custom-cursor * { cursor: none !important; }
+
+/* Dot cursor */
+#dot-cursor {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 150ms;
+  display: none;
+}
+#dot-cursor.visible { opacity: 1; }
+
+/* Scroll pill cursor */
+.cursor-none { cursor: none; }
+
+/* ════════════════════════════════
+   CONTACT / FOOTER
+════════════════════════════════ */
+.contact-section {
+  background: var(--dark);
+  padding: 52px 24px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 80svh;
+}
+.contact-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-hint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.contact-heading {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.15;
+  letter-spacing: -1.2px;
+  color: white;
+  margin-bottom: 12px;
+}
+.contact-sub {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: -0.32px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.contact-btns { display: flex; gap: 12px; margin-bottom: 56px; }
+.btn-white {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--white);
+  border: none;
+  border-radius: 100px;
+  padding: 12px 20px;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  letter-spacing: -0.32px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 200ms var(--ease-std);
+}
+.btn-white:hover { opacity: 0.82; }
+.footer-nav { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+.footer-nav a {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  letter-spacing: -0.32px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 200ms var(--ease-std);
+}
+.footer-nav a:hover { color: white; }
+.footer-nav-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 16px; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+.footer-brand {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 24px;
+  color: white;
+  letter-spacing: -0.96px;
+}
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-hint);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Footer — desktop ── */
+@media (min-width: 768px) {
+  .contact-section {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto auto auto auto;
+    column-gap: 80px;
+    padding: 52px clamp(80px, 8vw, 160px) 56px;
+    min-height: auto;
+    align-content: start;
+  }
+  .contact-label   { grid-column: 1; grid-row: 1; }
+  .contact-heading {
+    grid-column: 1; grid-row: 2;
+    font-size: clamp(44px, 4.5vw, 72px);
+    letter-spacing: -2.5px;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+  .contact-sub     { grid-column: 1; grid-row: 3; font-size: 18px; margin-bottom: 32px; }
+  .contact-btns    { grid-column: 1; grid-row: 4; margin-bottom: 0; }
+  .footer-nav {
+    grid-column: 2; grid-row: 1 / 5;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-bottom: 0;
+    gap: 10px;
+    padding-top: 2px;
+  }
+  .footer-nav-label { text-align: right; }
+  .footer-nav a { font-size: 14px; text-align: right; }
+  .footer-nav a:last-child { margin-top: 20px; }
+  .footer-divider  { grid-column: 1 / -1; grid-row: 5; margin-top: 56px; }
+  .footer-bottom   { grid-column: 1 / -1; grid-row: 6; padding-top: 4px; }
+  .footer-brand    { font-size: 28px; }
+}
+
+/* ════════════════════════════════
+   ABOUT PAGE
+════════════════════════════════ */
+#about-hero {
+  background: var(--pink);
+  min-height: 100svh;
+  padding: 120px 24px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+#about-dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.about-hero-label, .about-hero-heading {
+  position: relative;
+  z-index: 1;
+}
+.about-hero-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.about-hero-heading {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.1;
+  color: var(--blue);
+  letter-spacing: -1.2px;
+}
+#about-trigger {
+  position: relative;
+  min-height: 250vh;
+}
+#about-sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100svh;
+  background: var(--canvas);
+}
+#about-phase {
+  padding: 96px 24px 48px;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-enter);
+}
+.about-block {
+  margin-bottom: 44px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 580ms var(--ease-enter), transform 580ms var(--ease-enter);
+}
+.about-block:last-child { margin-bottom: 0; }
+.about-block.on { opacity: 1; transform: translateY(0); }
+
+.about-block-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.about-body {
+  font-family: var(--sans);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+}
+.about-body p + p { margin-top: clamp(20px, 4vw, 36px); }
+
+@media (min-width: 768px) {
+  #about-trigger { min-height: 150vh; }
+  #about-phase {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    column-gap: clamp(48px, 6vw, 96px);
+    padding: 96px clamp(80px, 8vw, 160px) 72px;
+    align-items: start;
+  }
+  .about-block:first-child { grid-column: 1; grid-row: 1 / 3; margin-bottom: 0; }
+  .about-block:nth-child(2) { grid-column: 2; grid-row: 1; }
+  .about-block:nth-child(3) { grid-column: 2; grid-row: 2; }
+  .about-body { font-size: clamp(22px, 2.2vw, 36px); }
+}
+
+@media (min-width: 1600px) {
+  #about-trigger { min-height: 200vh; }
+  .about-body { font-size: clamp(36px, 2.5vw, 56px); }
+}
+
+.exp-list, .edu-list { display: flex; flex-direction: column; }
+.exp-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+.exp-item:first-child { padding-top: 0; }
+.exp-item:last-child { border-bottom: none; padding-bottom: 0; }
+.exp-role { font-family: var(--sans); font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -0.32px; }
+.exp-company { font-family: var(--sans); font-size: 14px; color: var(--ink-mid); letter-spacing: -0.28px; }
+.exp-dates { font-family: var(--mono); font-size: 12px; color: var(--ink-hint); letter-spacing: 0.04em; }
+
+@media (min-width: 768px) {
+  #about-hero { padding: 120px clamp(80px, 8vw, 160px) 72px; }
+  .about-hero-heading { font-size: clamp(52px, 6.5vw, 108px); letter-spacing: clamp(-1.2px, -0.3vw, -4px); line-height: 0.95; max-width: 60%; }
+}
+
+/* ════════════════════════════════
+   PROJECT PAGE
+════════════════════════════════ */
+/* ── PROJECT BNPL PAGE ── */
+.proj-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  background: #FFF5F9;
+  overflow: hidden;
+}
+.proj-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.proj-hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,245,249,0) 55%, rgba(255,245,249,0.92) 77%);
+}
+.proj-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.proj-hero-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  color: var(--blue);
+  letter-spacing: -1px;
+}
+.proj-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.proj-meta-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+.proj-meta-tag {
+  border: 1px solid #ABABAB;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+.proj-hero-subtitle {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--ink);
+  letter-spacing: -0.8px;
+}
+.proj-hero-btns {
+  display: flex;
+  gap: 12px;
+  align-self: flex-start;
+}
+.proj-btn {
+  min-width: 140px;
+  text-align: center;
+  background: white;
+  border-radius: 20px;
+  padding: 12px 16px;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  letter-spacing: -0.32px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+}
+.proj-body {
+  background: white;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.proj-intro {
+  font-family: 'Inria Serif', serif;
+  font-size: 16px;
+  line-height: 28px;
+  color: var(--ink);
+}
+.proj-intro p + p { margin-top: 16px; }
+.proj-callout {
+  background: #DFEEFF;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.proj-callout-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.32px;
+  color: var(--ink);
+}
+.proj-callout-body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 28px;
+  color: var(--ink);
+  letter-spacing: -0.32px;
+}
+.proj-callout-body p + p { margin-top: 16px; }
+.proj-inline-video {
+  width: 100%;
+  border-radius: 16px;
+  background: #000;
+  display: block;
+  outline: none;
+}
+.proj-video-placeholder {
+  background: #ECECEE;
+  border-radius: 32px;
+  height: 256px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.proj-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.proj-section-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.96px;
+  color: var(--ink);
+  line-height: normal;
+}
+.proj-serif {
+  font-family: 'Inria Serif', serif;
+  font-size: 16px;
+  line-height: 28px;
+  color: var(--ink);
+}
+.proj-serif p + p { margin-top: 16px; }
+.proj-serif ul { margin: 8px 0; padding-left: 24px; }
+.proj-serif ul li { line-height: 28px; }
+.proj-blockquote {
+  display: flex;
+  gap: 12px;
+}
+.proj-blockquote-bar {
+  width: 1px;
+  background: #DCDCDF;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.proj-blockquote-text {
+  flex: 1;
+  font-family: var(--sans);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.8px;
+  color: var(--ink);
+}
+.proj-blockquote-text p + p { margin-top: 16px; }
+.proj-sub-heading {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.8px;
+  color: var(--ink);
+}
+.proj-use-case-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.4px;
+  color: var(--ink);
+  line-height: 24px;
+}
+.proj-img {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+}
+.proj-img-placeholder {
+  width: 100%;
+  background: #ECECEE;
+  border-radius: 16px;
+}
+
+/* ── Hero line reveal ── */
+.proj-hero-title {
+  font-size: 48px;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+.proj-hero-title .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.proj-hero-title .line-inner {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.proj-hero.revealed .line:nth-child(1) .line-inner { transform: translateY(0); transition-delay: 0ms; }
+.proj-hero.revealed .line:nth-child(2) .line-inner { transform: translateY(0); transition-delay: 110ms; }
+.proj-hero.revealed .line:nth-child(3) .line-inner { transform: translateY(0); transition-delay: 220ms; }
+
+/* Meta / subtitle / buttons staggered in */
+.proj-hero-meta,
+.proj-hero-subtitle,
+.proj-hero-btns {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+.proj-hero.revealed .proj-hero-meta     { opacity: 1; transform: translateY(0); transition-delay: 280ms; }
+.proj-hero.revealed .proj-hero-subtitle { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
+.proj-hero.revealed .proj-hero-btns     { opacity: 1; transform: translateY(0); transition-delay: 500ms; }
+
+/* Payments page: white title on dark bg */
+#page-project-payments .proj-hero-title { color: white; }
+
+/* ── Context-aware nav project title ── */
+#proj-title-wrap { transition: grid-template-rows 320ms var(--ease-enter); }
+.nav-inner.proj-title-open #proj-title-wrap { grid-template-rows: 1fr; }
+.nav-proj-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 12px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  margin-top: 4px;
+  gap: 12px;
+}
+#nav-proj-title {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+#nav-scroll-top {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  cursor: pointer;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 1;
+}
+#nav-scroll-top:hover { color: var(--ink); }
+
+
+/* ── Home hero — desktop ── */
+@media (min-width: 768px) {
+  #home-hero {
+    padding: 120px clamp(80px, 8vw, 160px) 72px;
+  }
+  .hero-heading {
+    font-size: clamp(52px, 6.5vw, 108px);
+    letter-spacing: clamp(-2px, -0.3vw, -4px);
+    line-height: 0.95;
+  }
+  .hero-body {
+    font-size: 18px;
+  }
+}
+@media (min-width: 1100px) {
+  #home-hero {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr auto auto;
+    row-gap: 0;
+    column-gap: 64px;
+    align-items: end;
+    gap: revert;
+  }
+  .hero-label {
+    grid-column: 1;
+    grid-row: 2;
+    margin-bottom: 16px;
+  }
+  .hero-heading {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .hero-body {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    align-self: end;
+    font-size: clamp(16px, 1.3vw, 20px);
+    line-height: 1.55;
+    text-align: right;
+  }
+}
+
+/* ── Project pages — desktop responsive ── */
+@media (min-width: 768px) {
+  .proj-body {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 80px 32px;
+    gap: 64px;
+  }
+  .proj-intro {
+    font-size: 21px;
+    line-height: 36px;
+  }
+  .proj-serif {
+    font-size: 20px;
+    line-height: 34px;
+  }
+  .proj-section-title {
+    font-size: 30px;
+  }
+  .proj-sub-heading {
+    font-size: 22px;
+  }
+  .proj-blockquote-text {
+    font-size: 24px;
+    line-height: 34px;
+  }
+  .proj-section {
+    gap: 32px;
+  }
+  .proj-hero {
+    padding: 48px;
+    margin: 92px max(80px, calc((100% - 1200px) / 2)) 0;
+    border-radius: 20px;
+    min-height: 75svh;
+    justify-content: flex-end;
+  }
+  .proj-hero-content {
+    max-width: 960px;
+    gap: 32px;
+  }
+  .proj-hero-title {
+    font-size: 88px;
+    letter-spacing: -4px;
+    line-height: 0.93;
+  }
+  .proj-hero-subtitle {
+    font-size: 22px;
+    max-width: 580px;
+  }
+  .proj-hero-meta {
+    order: -1;
+  }
+}
+
+#project-hero {
+  background: var(--pink);
+  min-height: 55svh;
+  padding: 120px 24px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.project-category { font-family: var(--mono); font-size: 12px; color: var(--ink-mid); letter-spacing: 0.06em; text-transform: uppercase; }
+.project-hero-title { font-family: var(--sans); font-weight: 700; font-size: 36px; line-height: 1.15; color: var(--blue); letter-spacing: -1px; }
+.project-hero-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-mid); letter-spacing: 0.04em; }
+#project-content {
+  background: var(--white);
+  padding: 60px 24px;
+  min-height: 40svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.project-coming-soon { font-family: var(--sans); font-size: 16px; color: var(--ink-mid); text-align: center; line-height: 1.6; letter-spacing: -0.32px; }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════
+     INTRO LOADER
+════════════════════════════ -->
+<div id="intro-loader">
+  <div class="intro-text">
+    <span id="intro-greeting"><svg width="110" height="36" viewBox="0 0 104 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M71.0889 28.48V8.64H75.8089L76.2489 11.96H76.4089C77.0222 10.7067 77.8755 9.76 78.9689 9.12C80.0622 8.48 81.3289 8.16 82.7689 8.16C83.7555 8.16 84.6622 8.29333 85.4889 8.56C86.3422 8.82667 87.0889 9.25333 87.7289 9.84C88.3689 10.4 88.9022 11.1467 89.3289 12.08H89.4889C90.2355 10.8533 91.1555 9.89334 92.2489 9.2C93.3689 8.50667 94.7822 8.16 96.4889 8.16C98.0089 8.16 99.3289 8.52 100.449 9.24C101.569 9.93334 102.422 10.96 103.009 12.32C103.622 13.68 103.929 15.36 103.929 17.36V28.48H98.5689V17.84C98.5689 16.1867 98.2489 14.92 97.6089 14.04C96.9689 13.16 95.9689 12.72 94.6089 12.72C93.7022 12.72 92.9289 12.92 92.2889 13.32C91.6489 13.6933 91.1422 14.2667 90.7689 15.04C90.3955 15.7867 90.2089 16.72 90.2089 17.84V28.48H84.8489V17.84C84.8489 16.1867 84.5289 14.92 83.8889 14.04C83.2489 13.16 82.2355 12.72 80.8489 12.72C80.0489 12.72 79.3155 12.9467 78.6489 13.4C77.9822 13.8267 77.4489 14.4533 77.0489 15.28C76.6755 16.08 76.4889 17.0667 76.4889 18.24V28.48H71.0889Z" fill="currentColor"/><path d="M68.4846 0.480011L64.3646 10.44H60.6846L62.8446 0.480011H68.4846Z" fill="currentColor"/><path d="M52.5 28.48V0.480011H57.9V28.48H52.5Z" fill="currentColor"/><path d="M34.6162 33.4L36.8962 23.24H42.0962L38.1362 33.4H34.6162Z" fill="currentColor"/><path d="M26.5726 28.48V8.64H31.9726V28.48H26.5726ZM29.2926 6.12C28.306 6.12 27.4926 5.84 26.8526 5.28C26.2393 4.69333 25.9326 3.96 25.9326 3.08C25.9326 2.2 26.2393 1.46667 26.8526 0.879998C27.4926 0.293333 28.306 0 29.2926 0C30.2793 0 31.0793 0.293333 31.6926 0.879998C32.306 1.46667 32.6126 2.2 32.6126 3.08C32.6126 3.93333 32.306 4.65333 31.6926 5.24C31.0793 5.82667 30.2793 6.12 29.2926 6.12Z" fill="currentColor"/><path d="M17.64 28.48V0.480011H23.04V28.48H17.64ZM0 28.48V0.480011H5.4V28.48H0ZM4.68 16.36V12H18.56V16.36H4.68Z" fill="currentColor"/></svg></span><span id="intro-name"><svg width="106" height="40" viewBox="0 0 61 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M58.7015 17.4C58.0935 17.4 57.6055 17.224 57.2375 16.872C56.8695 16.504 56.6855 16.056 56.6855 15.528C56.6855 15 56.8695 14.56 57.2375 14.208C57.6055 13.84 58.0935 13.656 58.7015 13.656C59.2935 13.656 59.7735 13.84 60.1415 14.208C60.5095 14.56 60.6936 15 60.6936 15.528C60.6936 16.056 60.5095 16.504 60.1415 16.872C59.7735 17.224 59.2935 17.4 58.7015 17.4Z" fill="currentColor"/><path d="M47.1248 22.56L50.1008 15.936H49.3808L44.5088 5.37601H48.0368L51.5168 13.008L54.6368 5.37601H58.0928L50.5568 22.56H47.1248Z" fill="currentColor"/><path d="M36.2945 17.568C35.1905 17.568 34.1905 17.296 33.2945 16.752C32.4145 16.208 31.7185 15.464 31.2065 14.52C30.6945 13.56 30.4385 12.488 30.4385 11.304C30.4385 10.104 30.6945 9.04 31.2065 8.112C31.7185 7.168 32.4145 6.432 33.2945 5.904C34.1905 5.36 35.1905 5.088 36.2945 5.088C37.1745 5.088 37.9425 5.256 38.5985 5.592C39.2705 5.912 39.8065 6.36 40.2065 6.936V0H43.4465V17.28H40.5665L40.2065 15.624C39.9665 15.976 39.6625 16.304 39.2945 16.608C38.9425 16.896 38.5185 17.128 38.0225 17.304C37.5265 17.48 36.9505 17.568 36.2945 17.568ZM37.0145 14.736C37.6545 14.736 38.2225 14.592 38.7185 14.304C39.2145 14 39.5985 13.592 39.8705 13.08C40.1585 12.568 40.3025 11.984 40.3025 11.328C40.3025 10.656 40.1585 10.064 39.8705 9.552C39.5985 9.04 39.2145 8.64 38.7185 8.352C38.2225 8.064 37.6545 7.92 37.0145 7.92C36.3905 7.92 35.8225 8.064 35.3105 8.352C34.8145 8.64 34.4305 9.04 34.1585 9.552C33.8865 10.064 33.7505 10.648 33.7505 11.304C33.7505 11.976 33.8865 12.568 34.1585 13.08C34.4305 13.592 34.8145 14 35.3105 14.304C35.8225 14.592 36.3905 14.736 37.0145 14.736Z" fill="currentColor"/><path d="M17.04 17.28V5.37601H19.896L20.136 7.36801C20.504 6.68001 21.032 6.12801 21.72 5.71201C22.408 5.29601 23.232 5.08801 24.192 5.08801C25.184 5.08801 26.024 5.30401 26.712 5.73601C27.4 6.15201 27.928 6.76801 28.296 7.58401C28.664 8.40001 28.848 9.40801 28.848 10.608V17.28H25.608V10.896C25.608 9.90401 25.408 9.14401 25.008 8.61601C24.608 8.08801 23.976 7.82401 23.112 7.82401C22.568 7.82401 22.08 7.96001 21.648 8.23201C21.216 8.48801 20.88 8.86401 20.64 9.36001C20.4 9.84001 20.28 10.432 20.28 11.136V17.28H17.04Z" fill="currentColor"/><path d="M0 17.28L6.12 0.480011H9.792L15.936 17.28H12.504L7.944 4.17601L3.384 17.28H0ZM2.712 13.464L3.552 10.944H12.12L12.96 13.464H2.712Z" fill="currentColor"/></svg></span>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     MAIN APP
+════════════════════════════ -->
+<div id="main">
+
+  <!-- BACKDROP (blur behind nav drawer) -->
+  <div id="nav-backdrop" onclick="closeWorkOverlay()"></div>
+
+  <!-- VIDEO LIGHTBOX -->
+  <div id="video-lightbox" onclick="closeLightbox()">
+    <button id="video-lightbox-close" onclick="closeLightbox()">✕</button>
+    <video id="video-lightbox-player" controls playsinline></video>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-inner" id="nav-inner">
+      <!-- Top row: pill buttons -->
+      <div class="nav-row">
+        <span id="nav-brand" onclick="showPage('home')"><svg width="53" height="20" viewBox="0 0 61 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M58.7015 17.4C58.0935 17.4 57.6055 17.224 57.2375 16.872C56.8695 16.504 56.6855 16.056 56.6855 15.528C56.6855 15 56.8695 14.56 57.2375 14.208C57.6055 13.84 58.0935 13.656 58.7015 13.656C59.2935 13.656 59.7735 13.84 60.1415 14.208C60.5095 14.56 60.6936 15 60.6936 15.528C60.6936 16.056 60.5095 16.504 60.1415 16.872C59.7735 17.224 59.2935 17.4 58.7015 17.4Z" fill="currentColor"/><path d="M47.1248 22.56L50.1008 15.936H49.3808L44.5088 5.37601H48.0368L51.5168 13.008L54.6368 5.37601H58.0928L50.5568 22.56H47.1248Z" fill="currentColor"/><path d="M36.2945 17.568C35.1905 17.568 34.1905 17.296 33.2945 16.752C32.4145 16.208 31.7185 15.464 31.2065 14.52C30.6945 13.56 30.4385 12.488 30.4385 11.304C30.4385 10.104 30.6945 9.04 31.2065 8.112C31.7185 7.168 32.4145 6.432 33.2945 5.904C34.1905 5.36 35.1905 5.088 36.2945 5.088C37.1745 5.088 37.9425 5.256 38.5985 5.592C39.2705 5.912 39.8065 6.36 40.2065 6.936V0H43.4465V17.28H40.5665L40.2065 15.624C39.9665 15.976 39.6625 16.304 39.2945 16.608C38.9425 16.896 38.5185 17.128 38.0225 17.304C37.5265 17.48 36.9505 17.568 36.2945 17.568ZM37.0145 14.736C37.6545 14.736 38.2225 14.592 38.7185 14.304C39.2145 14 39.5985 13.592 39.8705 13.08C40.1585 12.568 40.3025 11.984 40.3025 11.328C40.3025 10.656 40.1585 10.064 39.8705 9.552C39.5985 9.04 39.2145 8.64 38.7185 8.352C38.2225 8.064 37.6545 7.92 37.0145 7.92C36.3905 7.92 35.8225 8.064 35.3105 8.352C34.8145 8.64 34.4305 9.04 34.1585 9.552C33.8865 10.064 33.7505 10.648 33.7505 11.304C33.7505 11.976 33.8865 12.568 34.1585 13.08C34.4305 13.592 34.8145 14 35.3105 14.304C35.8225 14.592 36.3905 14.736 37.0145 14.736Z" fill="currentColor"/><path d="M17.04 17.28V5.37601H19.896L20.136 7.36801C20.504 6.68001 21.032 6.12801 21.72 5.71201C22.408 5.29601 23.232 5.08801 24.192 5.08801C25.184 5.08801 26.024 5.30401 26.712 5.73601C27.4 6.15201 27.928 6.76801 28.296 7.58401C28.664 8.40001 28.848 9.40801 28.848 10.608V17.28H25.608V10.896C25.608 9.90401 25.408 9.14401 25.008 8.61601C24.608 8.08801 23.976 7.82401 23.112 7.82401C22.568 7.82401 22.08 7.96001 21.648 8.23201C21.216 8.48801 20.88 8.86401 20.64 9.36001C20.4 9.84001 20.28 10.432 20.28 11.136V17.28H17.04Z" fill="currentColor"/><path d="M0 17.28L6.12 0.480011H9.792L15.936 17.28H12.504L7.944 4.17601L3.384 17.28H0ZM2.712 13.464L3.552 10.944H12.12L12.96 13.464H2.712Z" fill="currentColor"/></svg></span>
+        <button class="nav-btn" id="nav-work-btn"  onclick="openWorkOverlay()">Work</button>
+        <button class="nav-btn" id="nav-about-btn" onclick="showPage('about')">About</button>
+        <span class="nav-spacer"></span>
+        <button class="nav-cta" id="nav-cta-btn" onclick="openLetsTalk()">Let's Talk</button>
+      </div>
+      <!-- Drawer: expands downward when Work is tapped -->
+      <div class="nav-drawer-wrap" id="work-drawer-wrap">
+        <div class="nav-drawer">
+          <div class="work-projects-label">SELECTED PROJECTS</div>
+          <a class="project-row" onclick="openProject('bnpl');closeWorkOverlay();return false;" href="#">
+            <div class="project-thumb" style="background:#FFE8F0;"></div>
+            <div class="project-info">
+              <div class="project-row-title">Building a BNPL Marketplace</div>
+              <div class="project-row-desc">From checkout financing to commerce channel</div>
+            </div>
+            <span class="project-row-arrow">→</span>
+          </a>
+          <a class="project-row" onclick="openProject('payments');closeWorkOverlay();return false;" href="#">
+            <div class="project-thumb" style="background:#EAF0FF;"></div>
+            <div class="project-info">
+              <div class="project-row-title">Designing Payments on Real-Time Rails</div>
+              <div class="project-row-desc">Translated infrastructure into usable business flows.</div>
+            </div>
+            <span class="project-row-arrow">→</span>
+          </a>
+          <!-- 3RD PROJECT — hidden until ready
+          <a class="project-row" onclick="openProject('patterns');closeWorkOverlay();return false;" href="#">
+            <div class="project-thumb" style="background:#F0F0F0;"></div>
+            <div class="project-info">
+              <div class="project-row-title">Exploring Patterns for New Ideas Discovery</div>
+              <div class="project-row-desc">Interface experiments for exploring new topics.</div>
+            </div>
+            <span class="project-row-arrow">→</span>
+          </a>
+          -->
+        </div>
+      </div>
+      <!-- Drawer: expands downward when Let's Talk is tapped -->
+      <div class="nav-drawer-wrap" id="contact-drawer-wrap">
+        <div class="nav-drawer">
+          <div class="work-projects-label">GET IN TOUCH</div>
+          <a class="project-row" href="https://wa.me/573125786189" target="_blank" onclick="closeLetsTalk()">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#25D366" d="M12 2C6.477 2 2 6.477 2 12c0 1.89.527 3.66 1.438 5.168L2 22l4.98-1.303A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+                <path fill="white" d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.14-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.63-.93-2.23-.24-.58-.49-.5-.68-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.87 1.21 3.07c.15.2 2.09 3.19 5.07 4.47.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.19-.57-.34z"/>
+              </svg>
+            </div>
+            <div class="project-info">
+              <div class="project-row-title">Send a message</div>
+              <div class="project-row-desc">WhatsApp</div>
+            </div>
+            <span class="project-row-arrow">→</span>
+          </a>
+          <a class="project-row" href="https://www.linkedin.com/in/andrescovi/" target="_blank" onclick="closeLetsTalk()">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="4" fill="#0A66C2"/>
+                <path fill="white" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/>
+              </svg>
+            </div>
+            <div class="project-info">
+              <div class="project-row-title">Connect professionally</div>
+              <div class="project-row-desc">LinkedIn</div>
+            </div>
+            <span class="project-row-arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <!-- Project title row — expands when scrolled past hero -->
+      <div class="nav-drawer-wrap" id="proj-title-wrap">
+        <div class="nav-drawer">
+          <div class="nav-proj-title-row">
+            <span id="nav-proj-title"></span>
+            <button id="nav-scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page active">
+
+    <section id="home-hero">
+      <canvas id="hero-dots"></canvas>
+      <div class="hero-label">PRODUCT DESIGN · BOGOTÁ · 2026</div>
+      <h1 class="hero-heading">Designing products where strategy, systems, and interfaces meet.</h1>
+      <div class="hero-body">
+        <p>I help teams turn complex product ideas<br class="br-desk"> into clear, usable systems.</p>
+        <p>Connecting business goals, user behavior,<br class="br-desk"> and design execution.</p>
+      </div>
+    </section>
+
+    <!-- Work carousel: vertical scroll drives card index -->
+    <div id="work-trigger">
+    <section id="work-section">
+      <div class="work-sticky-header" id="work-header">
+        <div class="work-section-label">A COUPLE OF PROJECTS</div>
+        <div class="work-section-title">Real problems.<span class="title-light">Explored and built.</span></div>
+      </div>
+      <div class="work-track-outer">
+        <div id="work-cards-track">
+          <div class="work-card-item">
+            <div class="card-image" style="background:#FFE8F0;background-image:url('BNLP/hero BNPL.jpg');background-size:cover;background-position:center;"></div>
+            <div class="card-date">2021 – 2023</div>
+            <div class="card-title">Building a BNPL Marketplace</div>
+            <div class="card-desc">How a checkout financing tool evolved into a consumer-facing commerce platform.</div>
+            <div class="card-buttons">
+              <a href="#" class="btn-secondary" onclick="openLightbox('BNLP/Case Video.mp4');return false;">Case video ▶</a>
+              <a href="#" class="btn-primary" onclick="openProject('bnpl');return false;">Full story ↗</a>
+            </div>
+          </div>
+          <div class="work-card-item">
+            <div class="card-image" style="background:#EAF0FF;"></div>
+            <div class="card-date">2024 – 2026</div>
+            <div class="card-title">Designing Payments on Real-Time Rails</div>
+            <div class="card-desc">Exploring and designing business use cases on top of real-time payment infrastructure.</div>
+            <div class="card-buttons">
+              <a href="#" class="btn-primary" onclick="openProject('payments');return false;">Full story ↗</a>
+            </div>
+          </div>
+          <!-- 3RD PROJECT CARD — hidden until ready
+          <div class="work-card-item">
+            <div class="card-image" style="background:#F0F0F0;"></div>
+            <div class="card-date">2020 & 2026</div>
+            <div class="card-title">Exploring UI Patterns for New Ideas Discovery</div>
+            <div class="card-desc">A design exploration of how new interface patterns help people approach unfamiliar topics.</div>
+            <div class="card-buttons">
+              <a href="#" class="btn-secondary" onclick="return false;">Case video ▶</a>
+              <a href="#" class="btn-primary" onclick="openProject('patterns');return false;">Full story ↗</a>
+            </div>
+          </div>
+          -->
+        </div>
+      </div>
+    </section>
+    </div><!-- /work-trigger -->
+
+    <!-- Philosophy sticky section -->
+    <div id="phil-trigger">
+      <div id="phil-sticky">
+        <div id="phil-phase">
+          <div class="phil-col">
+            <div class="phil-label">DESIGN AS PRODUCT PRACTICE</div>
+            <div class="phil-para">My work begins by expanding the context around a product challenge, understanding user behavior, business value, and technical ambition.</div>
+          </div>
+          <div class="phil-col">
+            <div class="phil-para">From there, design turns that clarity into products people can understand, value and use.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="contact-section">
+      <div class="contact-label">GET IN TOUCH</div>
+      <h2 class="contact-heading">Let's build<br>something together.</h2>
+      <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
+      <div class="contact-btns">
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+      </div>
+      <nav class="footer-nav">
+        <span class="footer-nav-label">Work</span>
+        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="showPage('about')">About</a>
+      </nav>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <span class="footer-brand">Andy.</span>
+        <span class="footer-meta">2026 — BOG — PRODUCT DESIGN</span>
+      </div>
+    </section>
+
+  </div><!-- /page-home -->
+
+  <!-- ABOUT PAGE -->
+  <div id="page-about" class="page">
+    <section id="about-hero">
+      <canvas id="about-dots"></canvas>
+      <div class="about-hero-label">+10 YEARS OF EXPERIENCE</div>
+      <h1 class="about-hero-heading">I'm a Product Design Leader. Based in Bogotá, working for the world.</h1>
+    </section>
+    <div id="about-trigger">
+      <div id="about-sticky">
+        <div id="about-phase">
+          <div class="about-block">
+            <div class="about-block-label">About me</div>
+            <div class="about-body">
+              <p>I've worked across fintech, payments infrastructure, and digital platforms, helping teams turn product ideas into solutions people can understand and use.</p>
+              <p>Strategy, systems, and interfaces. Making complex things simple and ambiguous things clear.</p>
+            </div>
+          </div>
+          <div class="about-block">
+            <div class="about-block-label">Experience</div>
+            <div class="exp-list">
+              <div class="exp-item">
+                <div class="exp-role">Product Design & Strategy</div>
+                <div class="exp-company">Nelo · Fintech Real-Time Payments</div>
+                <div class="exp-dates">2023 – 2026</div>
+              </div>
+              <div class="exp-item">
+                <div class="exp-role">Product Design</div>
+                <div class="exp-company">Addi · Fintech Lending</div>
+                <div class="exp-dates">2021 – 2023</div>
+              </div>
+              <div class="exp-item">
+                <div class="exp-role">UI/UX Design</div>
+                <div class="exp-company">Zemoga · Digital Agency</div>
+                <div class="exp-dates">2018 – 2021</div>
+              </div>
+              <div class="exp-item">
+                <div class="exp-role">Product Designer & Project Manager</div>
+                <div class="exp-company">UI/UX Delivery · Early-stage Startup</div>
+                <div class="exp-dates">2016 – 2019</div>
+              </div>
+            </div>
+          </div>
+          <div class="about-block">
+            <div class="about-block-label">Education</div>
+            <div class="edu-list">
+              <div class="exp-item">
+                <div class="exp-role">Master's Degree in App Design</div>
+                <div class="exp-company">IED Design</div>
+                <div class="exp-dates">2019</div>
+              </div>
+              <div class="exp-item">
+                <div class="exp-role">Bachelor's Degree in Design</div>
+                <div class="exp-company">Universidad de los Andes</div>
+                <div class="exp-dates">2016</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="contact-section">
+      <div class="contact-label">GET IN TOUCH</div>
+      <h2 class="contact-heading">Let's build<br>something together.</h2>
+      <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
+      <div class="contact-btns">
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+      </div>
+      <nav class="footer-nav">
+        <span class="footer-nav-label">Work</span>
+        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="showPage('about')">About</a>
+      </nav>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <span class="footer-brand">Andy.</span>
+        <span class="footer-meta">2026 — BOG — PRODUCT DESIGN</span>
+      </div>
+    </section>
+  </div><!-- /page-about -->
+
+  <!-- PROJECT PAGE -->
+  <div id="page-project" class="page">
+    <section id="project-hero">
+      <div class="project-category" id="project-category">CASE STUDY</div>
+      <h1 class="project-hero-title" id="project-title">Project Title</h1>
+      <div class="project-hero-meta" id="project-meta">Year</div>
+    </section>
+    <section id="project-content">
+      <div class="project-coming-soon">Case study in progress.<br>Check back soon.</div>
+    </section>
+    <section class="contact-section">
+      <div class="contact-label">GET IN TOUCH</div>
+      <h2 class="contact-heading">Let's build<br>something together.</h2>
+      <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
+      <div class="contact-btns">
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+      </div>
+      <nav class="footer-nav">
+        <span class="footer-nav-label">Work</span>
+        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="showPage('about')">About</a>
+      </nav>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <span class="footer-brand">Andy.</span>
+        <span class="footer-meta">2026 — BOG — PRODUCT DESIGN</span>
+      </div>
+    </section>
+  </div><!-- /page-project -->
+
+  <!-- ══════════════════════════════════════════
+       BNPL PROJECT PAGE
+  ══════════════════════════════════════════ -->
+  <div id="page-project-bnpl" class="page">
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <img class="proj-hero-bg" src="BNLP/hero BNPL.jpg" alt="BNPL Marketplace" />
+      <div class="proj-hero-gradient"></div>
+      <div class="proj-hero-content">
+        <h1 class="proj-hero-title">
+          <span class="line"><span class="line-inner">Building a</span></span>
+          <span class="line"><span class="line-inner">BNPL</span></span>
+          <span class="line"><span class="line-inner">Marketplace</span></span>
+        </h1>
+        <div class="proj-hero-meta">
+          <span class="proj-meta-text">Latam · 2021–2023</span>
+          <span class="proj-meta-tag">10 MIN READ</span>
+        </div>
+        <p class="proj-hero-subtitle">How a checkout financing tool evolved into a consumer-facing commerce platform</p>
+        <div class="proj-hero-btns">
+          <a href="#" class="proj-btn" onclick="openLightbox('BNLP/Case Video.mp4');return false;">Case Video ▷</a>
+          <!-- One pager — hidden until ready
+          <a href="#" class="proj-btn">One pager ↗</a>
+          -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Body -->
+    <div class="proj-body">
+
+      <!-- Intro -->
+      <div class="proj-intro">
+        <p>In 2021 I joined a BNPL platform in Latam, it was widely used at checkout, but users had little understanding of the product beyond the purchase moment.</p>
+        <p>By introducing a mobile app focused on clarity, credit understanding, and payments, we turned the product into a direct relationship channel with users.</p>
+        <p>Over time, the app evolved into a commerce discovery surface for merchants.</p>
+        <p>This article explores how user contact, product strategy, and interface design helped transform a checkout feature into a platform experience.</p>
+      </div>
+
+      <!-- Callout -->
+      <div class="proj-callout">
+        <p class="proj-callout-title">A note on the designs shown here</p>
+        <div class="proj-callout-body">
+          <p>To respect confidentiality agreements, the interface designs shown in this article have been recreated and slightly refined.</p>
+          <p>The visual language has been updated, while the product decisions, flows, and experience principles reflect the work developed during the original project.</p>
+        </div>
+      </div>
+
+      <video class="proj-inline-video" src="BNLP/Case Video.mp4" controls playsinline preload="metadata"></video>
+
+      <!-- Section 1 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Building a BNPL Marketplace</h2>
+        <div class="proj-serif">
+          <p>At the time of this project, the BNPL platform operated primarily inside partner stores.</p>
+          <p>Customers could purchase a product and split the payment into three installments with zero interest, receiving approval in just a few minutes. After completion of payment of first purchase, users were assigned a dynamic credit line that could grow over time based on good payment behavior.</p>
+          <p>The model worked great on e-commerce and in physical retail checkouts.</p>
+          <p>However, it had a structural limitation: the platform had almost no relationship with users outside the purchase moment.</p>
+          <p>Customers remembered the store where they bought their product, but rarely the financing service enabling the purchase.</p>
+          <p>The question we started exploring was:</p>
+        </div>
+        <div class="proj-blockquote">
+          <div class="proj-blockquote-bar"></div>
+          <p class="proj-blockquote-text">How can we increase the relationship with our users beyond checkout?</p>
+        </div>
+        <div class="proj-serif">
+          <p>This question led to the idea of launching the platform's first mobile app.</p>
+          <p>But before designing the app, we needed to understand something more fundamental: how did users actually perceive and experience the product?</p>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Understanding the User Relationship</h2>
+        <div class="proj-serif">
+          <p>Instead of starting with internal assumptions, I conducted a simple research exercise.</p>
+          <p>For two weeks, I personally called users every day. More than 200 conversations took place during this period.</p>
+          <p>Each call revolved around three simple questions:</p>
+          <ul>
+            <li>What do you dislike about the service?</li>
+            <li>What do other services do better?</li>
+            <li>What do you think about your available credit?</li>
+          </ul>
+          <p>The goal was to understand how people actually related to the product.</p>
+          <p>Very quickly, clear patterns emerged.</p>
+          <p>Many users did not recognize the financing provider behind their purchase. When I introduced myself, it often took a moment before they connected the call to the transaction they had made in a store.</p>
+          <p>Another recurring problem was payments.</p>
+          <p>Users were not failing to pay because they lacked money. They simply did not know how, where, or when to pay their installments.</p>
+          <p>Trust was also fragile.</p>
+          <p>Customers tended to trust the store brand, not the financing service enabling the purchase.</p>
+          <p>Finally, many users did not realize they had a dynamic credit line that allowed them to continue purchasing as they paid their installments.</p>
+          <p>These insights pointed toward a clear opportunity. The product lacked clarity and relationship.</p>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Designing the First Version of the App</h2>
+        <div class="proj-serif">
+          <p>The first version of the mobile app was intentionally simple.</p>
+          <p>The goal was to explain the product beyond the checkout moment and help users manage their relationship with the platform.</p>
+          <p>The initial experience focused on three essential needs.</p>
+          <p>First, the app needed to explain how the credit product worked. Users needed to clearly understand:</p>
+          <ul>
+            <li>How much they owed</li>
+            <li>How much they could still spend</li>
+            <li>When their next payment was due</li>
+          </ul>
+          <p>Second, the experience needed to clarify the relationship between these concepts. Paying an installment increased the available credit line. Understanding this relationship was key to helping users confidently reuse the product.</p>
+          <p>Third, users needed an easy way to complete their payments directly in the app, while also enabling digital payment channels outside the app.</p>
+          <p>Together, these elements created the foundation of the mobile experience.</p>
+        </div>
+      </div>
+
+      <video class="proj-img" loop muted playsinline><source src="BNLP/Product card.mp4" type="video/mp4"></video>
+
+      <!-- Section 4 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">The Key Interface Decision</h2>
+        <div class="proj-serif">
+          <p>To make these concepts understandable, I proposed a central interface component that connected the most important elements of the product.</p>
+          <p>This component displayed three pieces of information together:</p>
+          <ul>
+            <li>The available credit line</li>
+            <li>The next payment due</li>
+            <li>The total outstanding balance</li>
+          </ul>
+          <p>This design was developed in collaboration with the product team and became the central card of the app's home screen.</p>
+          <p>The intention was simple.</p>
+          <p>Users should immediately understand what they owe, what they can spend, and how their payments affect both.</p>
+          <p>Because the product functions as a dynamic credit line, these concepts are inseparable.</p>
+          <p>If users did not understand their relationship, they could not fully understand the product.</p>
+          <p>Bringing them together into a single interface element helped clarify the logic of the service and gave users confidence in using it repeatedly.</p>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Early Signals After Launch</h2>
+        <div class="proj-serif">
+          <p>About two months after launching the MVP, the team began observing important signals.</p>
+          <p>The app quickly gained traction among users.</p>
+        </div>
+        <div class="proj-blockquote">
+          <div class="proj-blockquote-bar"></div>
+          <div class="proj-blockquote-text">
+            <p>Within a short period, around 30% of users logged into the app at least once.</p>
+            <p>Users who made their payments through the app showed significantly higher payment punctuality, with roughly 85% paying their installments on time.</p>
+          </div>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/pay flow.mp4" type="video/mp4"></video>
+        <div class="proj-serif">
+          <p>This was a powerful signal.</p>
+          <p>The app was not only improving the user experience. It was also improving financial behavior and credit performance.</p>
+          <p>This insight strengthened the case for making the app a central part of the product experience.</p>
+        </div>
+        <img class="proj-img" src="https://www.figma.com/api/mcp/asset/a41d5e6d-d44a-430e-9a73-1b01ceb44b88" alt="App MVP home screen" />
+      </div>
+
+      <!-- Section 6 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Learning from Real Usage</h2>
+        <div class="proj-serif">
+          <p>As adoption grew, product data began revealing new patterns in how people interacted with the app.</p>
+          <p>Several signals began shaping the next iteration of the product.</p>
+        </div>
+
+        <p class="proj-sub-heading">Debt clarity</p>
+        <div class="proj-serif">
+          <p>As users accumulated multiple purchases, the debt overview became harder to interpret.</p>
+          <p>Users struggled to understand how individual purchases related to their upcoming payments and overall debt.</p>
+          <p>To address this, a dedicated payments and purchases section was introduced, allowing users to review each transaction and clearly understand how their debt was structured.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/payments.mp4" type="video/mp4"></video>
+
+        <p class="proj-sub-heading">Credit line behavior</p>
+        <div class="proj-serif">
+          <p>Another recurring question from users was how their credit limit changed over time.</p>
+          <p>The credit model was dynamic. As users made purchases and paid on time, their available limit increased. If payments were delayed for too long, the credit line could temporarily freeze.</p>
+          <p>Although users had a general sense of this relationship, the mechanics behind it were not always clear.</p>
+          <p>To improve transparency, the interface was adjusted to better surface the relationship between payments, debt, and available credit, reinforcing how responsible usage directly affected purchasing power.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/credit behavior.mp4" type="video/mp4"></video>
+
+        <p class="proj-sub-heading">Category Browsing</p>
+        <div class="proj-serif">
+          <p>The categories section received a large number of taps but converted poorly.</p>
+          <p>This suggested that users were attempting to browse, but the structure did not match how they explored products.</p>
+          <p>The browsing experience was redesigned with a deeper category structure, allowing users to navigate merchants through more specific product groupings.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/categorias.mp4" type="video/mp4"></video>
+
+        <p class="proj-sub-heading">Repeat purchases</p>
+        <div class="proj-serif">
+          <p>Users who purchased from more than two different stores repeated their purchases about 27% more often.</p>
+          <p>This suggested that encouraging exploration across merchants could increase retention.</p>
+          <p>To support this behavior, a favorites section was introduced where users could save stores they were interested in. Merchants that users had purchased from multiple times were also surfaced automatically, making it easier to return to familiar stores.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/favs.mp4" type="video/mp4"></video>
+
+        <p class="proj-sub-heading">Search behavior</p>
+        <div class="proj-serif">
+          <p>Search interactions revealed that users were not primarily searching for stores.</p>
+          <p>They were searching for products.</p>
+          <p>To respond to this pattern, product tags were added to stores, highlighting the most searched items each merchant offered and helping users discover relevant merchants more quickly.</p>
+          <p>Together, these changes gradually shifted the app from a credit management tool into a place where users could also explore and shop.</p>
+        </div>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">When the App Became a Growth Channel</h2>
+        <div class="proj-serif">
+          <p>As the product evolved, the scale of the platform continued to grow.</p>
+          <p>The app reached roughly 600,000 active users, measured as users who interacted with the app at least once within a six-week window.</p>
+          <p>At the same time, the platform had expanded to more than 2,000 partner merchants.</p>
+          <p>Another interesting signal began to appear.</p>
+          <p>A growing share of online purchases financed through the platform were starting inside the app itself.</p>
+          <p>This meant the app was not just helping users manage their credit. It was also sending customers to merchants.</p>
+          <p>This opened a new strategic opportunity.</p>
+          <p>If the app was influencing where users shopped, it could become a customer acquisition channel for partner stores.</p>
+          <p>This idea introduced the possibility of an attribution model, where purchases originating from the app could generate additional revenue from merchants.</p>
+          <p>The product was beginning to move beyond financing. It was becoming part of the commerce discovery experience.</p>
+        </div>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Exploring the Future Marketplace</h2>
+        <div class="proj-serif">
+          <p>With this new direction in mind, we began exploring how the product experience could evolve.</p>
+          <p>One insight kept appearing in both user research and product data.</p>
+          <p>People do not shop for stores. They shop for products.</p>
+          <p>This led to several exploration concepts.</p>
+          <p>One direction explored a product-based marketplace, allowing users to discover products and compare offers across multiple merchants.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/1. prod.mp4" type="video/mp4"></video>
+        <div class="proj-serif">
+          <p>Another concept focused on deal-based discovery, inspired by travel platforms where users can track prices and receive alerts when deals appear.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/2. price.mp4" type="video/mp4"></video>
+        <div class="proj-serif">
+          <p>A third direction experimented with community-driven deals, where groups of users could collectively unlock discounts by showing interest in specific products.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="BNLP/3. Deals.mp4" type="video/mp4"></video>
+        <div class="proj-serif">
+          <p>These explorations were not intended to immediately replace the existing experience. Instead, they were designed to test mechanisms that could increase exploration, engagement, and repeat purchases.</p>
+          <p>Prototypes were tested with users to gather feedback on these interaction patterns.</p>
+          <p>Some of these ideas later influenced product directions after my time with the company.</p>
+        </div>
+      </div>
+
+      <!-- Section 9 -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Reflection</h2>
+        <div class="proj-serif">
+          <p>What started as an attempt to clarify a financing product gradually transformed into something larger.</p>
+          <p>The mobile app helped shift the platform from being an invisible checkout feature into a product users could understand, manage, and interact with directly.</p>
+          <p>Design played a central role in this transformation.</p>
+          <p>Not only through interface decisions, but through the ability to translate user behavior, product strategy, and business goals into a coherent experience.</p>
+          <p>In the process, the product moved closer to becoming a commerce platform, rather than simply a financing tool.</p>
+        </div>
+      </div>
+
+    </div><!-- /proj-body -->
+
+    <!-- Footer -->
+    <section class="contact-section">
+      <div class="contact-label">GET IN TOUCH</div>
+      <h2 class="contact-heading">Let's build<br>something together.</h2>
+      <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
+      <div class="contact-btns">
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+      </div>
+      <nav class="footer-nav">
+        <span class="footer-nav-label">Work</span>
+        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="showPage('about')">About</a>
+      </nav>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <span class="footer-brand">Andy.</span>
+        <span class="footer-meta">2026 — BOG — PRODUCT DESIGN</span>
+      </div>
+    </section>
+
+  </div><!-- /page-project-bnpl -->
+
+  <!-- ═══════════════════════════════════════════════
+       PROJECT PAGE: PAYMENTS ON REAL-TIME RAILS
+  ══════════════════════════════════════════════════ -->
+  <div id="page-project-payments" class="page">
+
+    <!-- Hero -->
+    <section class="proj-hero" style="background:#0D1B3E;">
+      <div class="proj-hero-gradient"></div>
+      <div class="proj-hero-content">
+        <h1 class="proj-hero-title">
+          <span class="line"><span class="line-inner">Designing</span></span>
+          <span class="line"><span class="line-inner">Payments on</span></span>
+          <span class="line"><span class="line-inner">Real-Time Rails</span></span>
+        </h1>
+        <div class="proj-hero-meta">
+          <span class="proj-meta-text">Latam · 2022–2024</span>
+          <span class="proj-meta-tag">8 MIN READ</span>
+        </div>
+        <p class="proj-hero-subtitle">Turning real-time infrastructure into understandable and adoptable money flows</p>
+        <!-- Buttons — hidden until ready
+        <div class="proj-hero-btns">
+          <a href="#" class="proj-btn">Case Video ▷</a>
+          <a href="#" class="proj-btn">One pager ↗</a>
+        </div>
+        -->
+      </div>
+    </section>
+
+    <!-- Body -->
+    <div class="proj-body">
+
+      <!-- TLDR / Intro -->
+      <div class="proj-intro">
+        <p>We operated the infrastructure connecting banks to real-time payment networks across Latin America. From the inside, the gap was visible: peer-to-peer transactions were running at over 10 million per month in the first country where we had API access. Business-initiated transactions barely reached 30,000.</p>
+        <p>Our hub was the connection point between financial institutions, but businesses had no way to use it. We opened the APIs. As Lead Designer, I focused on making those APIs usable as actual products, not just as technical documentation.</p>
+      </div>
+
+      <!-- Callout -->
+      <div class="proj-callout">
+        <p class="proj-callout-title">A note on the work shown here</p>
+        <div class="proj-callout-body">
+          <p>To respect confidentiality agreements, specific implementations, clients, and interfaces have been generalized.</p>
+          <p>The flows shown reflect the product and design work developed during the project, adapted to explain how the system works.</p>
+        </div>
+      </div>
+
+      <!-- Section: Context -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Context</h2>
+        <div class="proj-serif">
+          <p>Real-time payment systems had already reached strong adoption in peer-to-peer transactions across Latin America. Sending money instantly between aliases and accounts, across any bank, regardless of financial institution, was already part of everyday user behavior.</p>
+          <p>That interoperability is what made RTP powerful: money could move from any account to any account, same bank or different, in seconds.</p>
+          <p>But that adoption did not translate into business usage.</p>
+          <p>For financial institutions, this created a gap. Transactions existed, but not a clear way to build products or generate revenue from them. Businesses still relied on slower systems for payouts, collections, and operational money movement.</p>
+          <p>The infrastructure was there. What was missing was not capability, but clarity.</p>
+          <p>Our company operated a connection hub that allowed banks to integrate once with the real-time network. This hub was originally built to power P2P flows, but its position as the central link between financial institutions created an opportunity we hadn't fully explored: exposing APIs so external businesses could also initiate transactions on top of the network.</p>
+          <p>We opened those APIs. And that's where things got interesting.</p>
+        </div>
+      </div>
+
+      <!-- Video: Connection -->
+      <video class="proj-img" loop muted playsinline><source src="Designing Payments/1. Connection.mp4" type="video/mp4"></video>
+
+      <!-- Section: The Problem -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">The Problem</h2>
+        <div class="proj-serif">
+          <p>Even with our APIs available, adoption among businesses was surprisingly low.</p>
+          <p>More than 50 fintechs had integrated with our hub. But when we looked at actual usage, only 4 or 5 were generating any significant volume. The rest had connected and stopped. Business transactions were stuck at around 30,000 per month, a fraction of what the infrastructure could handle.</p>
+          <p>The issue was not technical. The connections worked. The problem was that teams didn't know what to do with them once they had access.</p>
+          <p>A simple question like:</p>
+        </div>
+        <div class="proj-blockquote">
+          <div class="proj-blockquote-bar"></div>
+          <p class="proj-blockquote-text">"How do I implement a real-time cash-out for my users?"</p>
+        </div>
+        <div class="proj-serif">
+          <p>did not have a clear answer.</p>
+          <p>Each team had to figure out their own approach: what the flow should look like, how to identify users, how to handle errors, how to communicate status back to their product. This led to inconsistent implementations, long integration cycles, and in many cases, teams simply not moving forward at all.</p>
+          <p>The system worked. But product teams were left interpreting it entirely on their own.</p>
+        </div>
+      </div>
+
+      <!-- Section: My Role -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">My Role</h2>
+        <div class="proj-serif">
+          <p>My focus was on closing the gap between what our APIs could do and what product teams could actually build.</p>
+          <p>I started with desk research, mapping the most common use cases, the regulatory context in each country, and where real-time payments added the most value. From that, I designed transaction flows as templates. Not UI kits. Actual screen-by-screen flows that showed how a specific use case should behave from start to finish. Together with the team, we documented each use case from three angles: technical, product, and UX, so any fintech could pick it up and implement it without needing to interpret the infrastructure themselves.</p>
+        </div>
+      </div>
+
+      <!-- Section: How Money Moves -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">How Money Moves</h2>
+        <div class="proj-serif">
+          <p>Before designing anything, we made the system explicit.</p>
+          <p>Every transaction follows the same structure. A business triggers a payment through a bank API. The bank routes the request through our connection hub. The request reaches the real-time network and is processed by the receiving bank, which could be any bank on the network, regardless of institution. Funds are credited, and a confirmation is returned.</p>
+        </div>
+      </div>
+
+      <video class="proj-img" loop muted playsinline><source src="Designing Payments/2. Money movement.mp4" type="video/mp4"></video>
+
+      <div class="proj-section">
+        <div class="proj-serif">
+          <p>Our hub standardizes this flow so each participant only handles their part. Interoperability is built in. The sender and receiver don't need to be at the same bank.</p>
+          <p>Once that structure was clear, we could start defining what it meant for specific use cases.</p>
+        </div>
+      </div>
+
+      <!-- Section: Core Flows -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Core Flows</h2>
+        <div class="proj-serif">
+          <p>Two flows became the foundation for nearly every business use case we encountered. The idea was not to create something new but to define how to use what was already there, in a way that any team could pick up and build on.</p>
+        </div>
+
+        <p class="proj-sub-heading">Cash-in</p>
+        <div class="proj-serif">
+          <p>A user moves money into a wallet or platform, whether as a service payment, subscription, top-up, or transfer to a third party.</p>
+          <p>The flow defines how the user is identified, how the source account is selected, and how the transaction is confirmed. Because RTP is interoperable, the source can be any account on the network, not just accounts at a specific bank.</p>
+          <p>The value becomes visible immediately. The action is instant, and the result is certain.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="Designing Payments/3. Cash-in flow with request.mp4" type="video/mp4"></video>
+
+        <p class="proj-sub-heading">Cash-out</p>
+        <div class="proj-serif">
+          <p>A user moves money out of a platform into a bank account: payroll, royalty payments, refunds, withdrawals, and more.</p>
+          <p>The flow focuses on destination selection, validation, and instant confirmation. The destination can be any account on the network, across any financial institution.</p>
+          <p>The experience is not only about speed. It is about removing uncertainty. Users know the money arrived, immediately.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="Designing Payments/4. Cash-out flow.mp4" type="video/mp4"></video>
+      </div>
+
+      <!-- Section: Enabling Real Use Cases -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Enabling Real Use Cases</h2>
+        <div class="proj-serif">
+          <p>Once the core patterns were defined, teams could focus on applying them rather than inventing them. Here are some of the most impactful use cases we helped unlock.</p>
+        </div>
+
+        <p class="proj-sub-heading">Cash-Out Patterns</p>
+
+        <p class="proj-use-case-title">Instant Lending Disbursement</p>
+        <div class="proj-serif">
+          <p>In micro-lending products, credit approval could already happen within minutes. But receiving the money often took hours or days, breaking the "instant lending" promise at the last step.</p>
+          <p>By applying our cash-out flow templates, disbursement became immediate. Approval and access to funds both happened in seconds, to any bank account on the network, not just one specific institution.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="Designing Payments/5. Lending.mp4" type="video/mp4"></video>
+
+        <p class="proj-use-case-title">Refunds</p>
+        <div class="proj-serif">
+          <p>Refunds are typically a friction point in digital commerce. Users face long waits or receive store credits instead of real money back.</p>
+          <p>With real-time cash-out flows, refunds could be processed instantly to any account. Depending on the implementation, users could provide destination details or trigger the refund themselves. Trust improved, and post-purchase friction dropped significantly.</p>
+        </div>
+
+        <p class="proj-use-case-title">Batch and Payroll Disbursements</p>
+        <div class="proj-serif">
+          <p>In many Latin American markets, payroll was constrained by bank relationships. Employees needed accounts at a specific institution to receive pay quickly. With interoperable RTP, that constraint disappeared. Payments could reach any bank instantly, using simple identifiers like an employee ID or alias.</p>
+          <p>Companies integrated these flows directly into HR and ERP systems, simplifying operations while removing bank dependency for employees.</p>
+        </div>
+        <video class="proj-img" loop muted playsinline><source src="Designing Payments/6. Mass payments.mp4" type="video/mp4"></video>
+
+        <p class="proj-sub-heading">Cash-In Patterns</p>
+
+        <p class="proj-use-case-title">Service Payments (Request-to-Pay)</p>
+        <div class="proj-serif">
+          <p>Utility and subscription payments were enhanced using request-to-pay flows. A payment request could be initiated by the service provider and received by the user directly in their banking app, no card needed, no manual transfer required.</p>
+          <p>For service providers, payment, clearing, and settlement happened simultaneously. This also enabled recurring payments for services without relying on card infrastructure.</p>
+        </div>
+        <!-- placeholder — hidden until ready
+        <div class="proj-video-placeholder">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 12L38 24L16 36V12Z" fill="#ABABAB"/>
+          </svg>
+        </div>
+        -->
+
+        <p class="proj-use-case-title">Wallet and Platform Top-Ups</p>
+        <div class="proj-serif">
+          <p>For platforms handling crypto, stablecoins, foreign currencies, or any balance-based experience, real-time top-ups changed the economics significantly. Funds arrived instantly, reducing exposure to currency fluctuations and improving reconciliation. Balances updated in real time for both users and internal systems.</p>
+        </div>
+        <!-- placeholder — hidden until ready
+        <div class="proj-video-placeholder">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 12L38 24L16 36V12Z" fill="#ABABAB"/>
+          </svg>
+        </div>
+        -->
+
+        <p class="proj-use-case-title">E-commerce Payments</p>
+        <div class="proj-serif">
+          <p>For e-commerce, real-time payments provided a clean alternative to card infrastructure. Transactions processed instantly, reconciliation improved, and users got a reliable payment experience without the friction of card entry or redirects.</p>
+        </div>
+
+        <p class="proj-sub-heading">Cash as a Network Edge</p>
+        <div class="proj-serif">
+          <p>One of the most impactful applications came from small neighborhood stores, ones that already acted as informal financial access points in underserved areas.</p>
+          <p>By combining real-time payments with simple POS tools, these stores became interoperable cash-in and cash-out agents. A user could deposit or withdraw money for any participating bank at any of these locations.</p>
+          <p>A typical flow: a user brings cash to the store. The owner initiates a transfer to the user's account on the network. The user pays a small fee. For withdrawals, the process reverses through a request-to-pay interaction.</p>
+          <p>This created a new economic model. Users got financial access, store owners generated income, and fintechs captured volume. More importantly, it extended real financial services to areas where traditional bank infrastructure simply didn't exist.</p>
+        </div>
+      </div>
+
+      <!-- Section: A Wrong Turn -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">A Wrong Turn</h2>
+        <div class="proj-serif">
+          <p>Our early assumption was that payment service providers would be the fastest path to scale. They already distributed transactional flows, had the infrastructure, and several were genuinely interested.</p>
+          <p>What we learned is that PSPs don't create new payment behaviors. They distribute existing ones. Their model depends on flows that are already fully adopted, already proven on traditional rails. Cards, online transfers, established methods. Asking them to build something new meant asking them to take on market risk they weren't set up for.</p>
+          <p>They preferred to wait for the market to figure it out first, then adopt once it was safe. That was a reasonable call on their part. It just wasn't the shortcut we thought it would be.</p>
+          <p>The real traction came from fintechs building new products, not from distributors of existing ones.</p>
+        </div>
+      </div>
+
+      <!-- Section: Outcome -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Outcome</h2>
+        <div class="proj-serif">
+          <p>Business transaction volume grew from around 30,000 per month to a peak of 2 million monthly transactions, a 65x increase. At that point, P2P transactions on the same network had reached 40 million per month. Business usage was growing, and the gap with P2P showed how much headroom remained.</p>
+          <p>Most of the volume was still coming from a small group of early adopters who had figured out how to use the system well. The broader base of integrated fintechs had barely started. The potential was clearly much larger.</p>
+          <p>The infrastructure hadn't changed. What changed was the ability to understand how to use it. By giving product teams clear flows, documented patterns, and concrete references, they could move from API access to working product significantly faster, with far fewer false starts.</p>
+        </div>
+      </div>
+
+      <!-- Section: Reflection -->
+      <div class="proj-section">
+        <h2 class="proj-section-title">Reflection</h2>
+        <div class="proj-serif">
+          <p>This work was less about designing interfaces and more about designing understanding.</p>
+          <p>The infrastructure was already powerful. The challenge was making it legible, turning technical capability into something product teams could see themselves using.</p>
+          <p>What I found is that design at this layer is mostly about translation: between what a system can do and what a team can confidently build. When that translation exists, adoption follows.</p>
+          <p>By defining flows instead of features, we created a shared language for how real-time transactions work. That clarity was the real product.</p>
+        </div>
+      </div>
+
+    </div><!-- /proj-body -->
+
+    <!-- Footer -->
+    <section class="contact-section">
+      <div class="contact-label">GET IN TOUCH</div>
+      <h2 class="contact-heading">Let's build<br>something together.</h2>
+      <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
+      <div class="contact-btns">
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+      </div>
+      <nav class="footer-nav">
+        <span class="footer-nav-label">Work</span>
+        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="showPage('about')">About</a>
+      </nav>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <span class="footer-brand">Andy.</span>
+        <span class="footer-meta">2026 — BOG — PRODUCT DESIGN</span>
+      </div>
+    </section>
+
+  </div><!-- /page-project-payments -->
+
+</div><!-- /main -->
+
+<script>
+'use strict';
+
+const EASE_ENTER = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const EASE_EXIT  = 'cubic-bezier(0.4, 0, 1, 1)';
+const EASE_STD   = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+/* ════════════════════════════════
+   PROJECT DATA
+════════════════════════════════ */
+const PROJECTS = {
+  bnpl:     { title: 'Building a BNPL Marketplace',                   meta: '2021 – 2023  ·  Addi',  category: 'FINTECH · CASE STUDY' },
+  payments: { title: 'Designing Payments on Real-Time Rails',         meta: '2024 – 2026  ·  Nelo',  category: 'PAYMENTS · CASE STUDY' },
+  patterns: { title: 'Exploring UI Patterns for New Ideas Discovery', meta: '2020 & 2026',            category: 'PRODUCT EXPLORATION' },
+};
+
+/* ════════════════════════════════
+   NAVIGATION
+════════════════════════════════ */
+function showPage(id) {
+  closeWorkOverlay();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const t = document.getElementById('page-' + id);
+  if (t) { t.classList.add('active'); window.scrollTo({ top: 0, behavior: 'instant' }); }
+  document.getElementById('nav-about-btn').classList.toggle('active', id === 'about');
+  document.getElementById('nav-work-btn').classList.remove('active');
+  const isProject = id.startsWith('project-');
+  const themeColor = isProject ? '#ffffff' : '#FFE3EE';
+  document.body.style.background = isProject
+    ? 'linear-gradient(to bottom, #FFE3EE 0px, #ffffff 340px)'
+    : themeColor;
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+  if (id === 'home' && window._resizeHeroDots) window._resizeHeroDots();
+  if (id === 'about' && window._resizeAboutDots) {
+    window._resizeAboutDots();
+    if (!window._aboutWordsStarted) {
+      window._aboutWordsStarted = true;
+      setTimeout(() => window._nextAboutWord && window._nextAboutWord(), 4000);
+    }
+  }
+  // Clean up reading progress pill on any navigation
+  if (window._cleanupReadingProgress) window._cleanupReadingProgress();
+  // Hero reveal
+  document.querySelectorAll('.proj-hero').forEach(h => h.classList.remove('revealed'));
+  _teardownProjNavTitle();
+  if (isProject && t) {
+    const hero = t.querySelector('.proj-hero');
+    if (hero) setTimeout(() => hero.classList.add('revealed'), 80);
+    const rawTitle = t.querySelector('.proj-hero-title');
+    const titleText = rawTitle ? rawTitle.textContent.trim().replace(/\s+/g, ' ') : '';
+    if (titleText) _setupProjNavTitle(titleText);
+  }
+}
+
+let _projNavScrollFn = null;
+function _setupProjNavTitle(title) {
+  const el = document.getElementById('nav-proj-title');
+  const navInner = document.getElementById('nav-inner');
+  el.textContent = title;
+  function onScroll() {
+    const hero = document.querySelector('.page.active .proj-hero');
+    if (!hero) return;
+    const past = hero.getBoundingClientRect().bottom < 60;
+    navInner.classList.toggle('proj-title-open', past);
+    if (past) {
+      const pillRadius = document.querySelector('.nav-row').offsetHeight / 2;
+      navInner.style.borderRadius = pillRadius + 'px';
+    } else {
+      navInner.style.borderRadius = '';
+    }
+  }
+  _projNavScrollFn = onScroll;
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+function _teardownProjNavTitle() {
+  const el = document.getElementById('nav-proj-title');
+  const navInner = document.getElementById('nav-inner');
+  if (el) el.textContent = '';
+  if (navInner) { navInner.classList.remove('proj-title-open'); navInner.style.borderRadius = ''; }
+  if (_projNavScrollFn) {
+    window.removeEventListener('scroll', _projNavScrollFn);
+    _projNavScrollFn = null;
+  }
+}
+function openProject(key) {
+  const p = PROJECTS[key]; if (!p) return;
+  if (key === 'bnpl')     { showPage('project-bnpl');     return; }
+  if (key === 'payments') { showPage('project-payments'); return; }
+  document.getElementById('project-title').textContent    = p.title;
+  document.getElementById('project-meta').textContent     = p.meta;
+  document.getElementById('project-category').textContent = p.category;
+  showPage('project');
+}
+function scrollToContact() {
+  const page = document.querySelector('.page.active');
+  const c = page && page.querySelector('.contact-section');
+  if (c) c.scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ════════════════════════════════
+   WORK DRAWER
+════════════════════════════════ */
+function _openDrawer(openClass, activeBtn) {
+  const navInner = document.getElementById('nav-inner');
+  navInner.classList.remove('work-open', 'contact-open', 'proj-title-open');
+  const pillRadius = document.querySelector('.nav-row').offsetHeight / 2;
+  navInner.style.borderRadius = pillRadius + 'px';
+  navInner.classList.add(openClass);
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(activeBtn).classList.add('active');
+  document.getElementById('nav-backdrop').classList.add('open');
+}
+function _closeDrawer() {
+  const navInner = document.getElementById('nav-inner');
+  navInner.classList.remove('work-open', 'contact-open');
+  document.getElementById('nav-backdrop').classList.remove('open');
+  setTimeout(() => {
+    if (navInner.classList.contains('proj-title-open')) {
+      const pillRadius = document.querySelector('.nav-row').offsetHeight / 2;
+      navInner.style.borderRadius = pillRadius + 'px';
+    } else {
+      navInner.style.borderRadius = '';
+    }
+  }, 420);
+  // Restore current page active state
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const activePage = document.querySelector('.page.active');
+  if (activePage) {
+    const id = activePage.id.replace('page-', '');
+    document.getElementById('nav-' + id + '-btn')?.classList.add('active');
+  }
+  // Re-open proj title row if we're still scrolled past the hero
+  if (_projNavScrollFn) _projNavScrollFn();
+}
+function openWorkOverlay() { _openDrawer('work-open', 'nav-work-btn'); }
+function closeWorkOverlay() { _closeDrawer(); }
+function openLetsTalk()    { _openDrawer('contact-open', 'nav-cta-btn'); }
+function closeLetsTalk()   { _closeDrawer(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') _closeDrawer(); });
+
+
+
+/* ════════════════════════════════
+   INTRO ANIMATION
+════════════════════════════════ */
+function runIntro() {
+  const loader    = document.getElementById('intro-loader');
+  const greeting  = document.getElementById('intro-greeting');
+  const introName = document.getElementById('intro-name');
+  const navBrand  = document.getElementById('nav-brand');
+  const navInner  = document.getElementById('nav-inner');
+  const nav       = document.getElementById('nav');
+  const main      = document.getElementById('main');
+
+  // ── 1. Fade in text ──
+  setTimeout(() => {
+    greeting.style.transition  = `opacity 700ms ${EASE_ENTER}`;
+    introName.style.transition = `opacity 700ms ${EASE_ENTER}`;
+    greeting.style.opacity  = '1';
+    introName.style.opacity = '1';
+  }, 200);
+
+  // ── 2. Fade out "Hi, I'm" ──
+  setTimeout(() => {
+    greeting.style.transition = `opacity 450ms ${EASE_EXIT}`;
+    greeting.style.opacity    = '0';
+  }, 1400);
+
+  // ── 3. "Andy." flies to nav brand position ──
+  setTimeout(() => {
+    const from = introName.getBoundingClientRect();
+    const to   = navBrand.getBoundingClientRect();
+    const dx   = to.left - from.left;
+    const dy   = to.top  - from.top;
+    const sc   = to.height / from.height;
+
+    // Set color dark instantly — blue bg is fully opaque right now so the
+    // user never sees it. By the time the bg fades away, color is already dark.
+    introName.style.color           = '#101010';
+    introName.style.transition      = `transform 580ms ${EASE_ENTER}`;
+    introName.style.transformOrigin = 'left top';
+    introName.style.transform       = `translate(${dx}px, ${dy}px) scale(${sc})`;
+
+    // Blue bg fades out during flight
+    loader.style.transition      = `background-color 520ms ${EASE_EXIT}`;
+    loader.style.backgroundColor = 'transparent';
+
+  }, 1900);
+
+  // ── 4. Pill appears immediately after flight lands (1900+580+20) ──
+  setTimeout(() => {
+    const brandW = navBrand.offsetWidth + 40; /* 20px each side, symmetric */
+    navInner.style.transition  = 'none'; /* suppress border-radius transition during intro */
+    navInner.style.borderRadius = '100px';
+    navInner.style.width        = brandW + 'px';
+
+    // Show nav-brand. Don't hide intro-name — it stays under the pill
+    // (loader z-index 200 < nav z-index 500) until loader.display=none at step 8.
+    navBrand.style.transition = 'none';
+    nav.classList.add('visible');
+    navBrand.classList.add('visible');
+  }, 2500);
+
+  // ── 5. Pill expands to full width ──
+  setTimeout(() => {
+    navInner.style.transition = `width 700ms ${EASE_ENTER}`;
+    navInner.style.width      = '100%';
+  }, 2700);
+
+  // ── 6. Nav items appear one at a time ──
+  [
+    ['nav-work-btn',  3080],
+    ['nav-about-btn', 3260],
+    ['nav-cta-btn',   3440],
+  ].forEach(([id, t]) => {
+    setTimeout(() => document.getElementById(id).classList.add('in'), t);
+  });
+
+  // ── 7. Clean up pill sizing, restore drawer transition ──
+  setTimeout(() => {
+    navInner.style.transition   = '';
+    navInner.style.borderRadius = '';
+    navInner.style.width        = '';
+    navInner.style.overflow     = '';
+  }, 3700);
+
+  // ── 8. Remove loader + show hero 400ms after last nav item finishes ──
+  setTimeout(() => {
+    loader.style.display = 'none';
+    document.getElementById('home-hero').classList.add('visible');
+    document.fonts.ready.then(() => {
+      setupCarousel();
+      setupPhilosophy();
+    });
+  }, 4240);
+}
+
+/* ════════════════════════════════
+   CAROUSEL — vertical scroll drives card index
+════════════════════════════════ */
+function setupCarousel() {
+  const trigger = document.getElementById('work-trigger');
+  const cards   = document.querySelectorAll('.work-card-item');
+  const CARDS   = cards.length;
+  const CARD_VH    = 80;        // scroll budget per card (vh)
+  const SNAP_AT    = 0.15;      // fraction of first card's budget where snap fires
+  const LAST_EXTRA = 80;        // extra vh to keep last card on screen longer
+
+  trigger.style.height = (CARDS * CARD_VH + LAST_EXTRA) + 'vh';
+
+  let activeIdx      = -1;
+  let card0Snapped   = false;
+
+  function setCard(idx) {
+    if (idx === activeIdx) return;
+    activeIdx = idx;
+    cards.forEach((card, i) => {
+      card.classList.remove('active', 'peek', 'prev');
+      if (i === idx)          card.classList.add('active');
+      else if (i === idx + 1) card.classList.add('peek');
+      else if (i < idx)       card.classList.add('prev');
+    });
+  }
+
+  function onScroll() {
+    const VH       = window.innerHeight;
+    const scrolled = window.scrollY - trigger.offsetTop;
+    const cardH    = CARD_VH / 100 * VH;
+    const PRE_START = -0.25 * VH;
+    const snapPoint = cardH * SNAP_AT;
+
+    // Fully out of view — reset silently so entry animates fresh next time
+    if (scrolled < PRE_START) {
+      if (card0Snapped || activeIdx >= 0) {
+        card0Snapped = false;
+        activeIdx    = -1;
+        cards.forEach(c => {
+          c.classList.remove('active', 'peek', 'prev');
+          c.style.transition = '';
+          c.style.zIndex     = '';
+          c.style.transform  = '';
+        });
+      }
+      return;
+    }
+
+    const cardIdx = scrolled < 0 ? 0 : Math.floor(scrolled / cardH);
+
+    // ── First card: scroll-linked entry then snap ──
+    if (cardIdx === 0) {
+      const t = Math.min((scrolled - PRE_START) / (snapPoint - PRE_START), 1);
+
+      if (!card0Snapped && t < 1) {
+        // Track scroll directly — no CSS transition
+        const tx  = 115 * (1 - t);
+        const rot = 8   * (1 - t);
+        const sc  = 0.94 + 0.06 * t;
+        cards[0].style.transition = 'none';
+        cards[0].style.zIndex     = '2';
+        cards[0].style.transform  = `translate(-50%,-50%) translateX(${tx}%) rotate(${rot}deg) scale(${sc})`;
+        if (cards[1]) cards[1].classList.add('peek');
+
+      } else if (!card0Snapped) {
+        // Snap fires on the way down
+        card0Snapped = true;
+        cards[0].style.transition = '';
+        cards[0].style.zIndex     = '';
+        cards[0].style.transform  = '';
+        setCard(0);
+
+      } else {
+        // Scrolled back up to card 0 — keep it active
+        cards[0].style.transition = '';
+        cards[0].style.zIndex     = '';
+        cards[0].style.transform  = '';
+        setCard(0);
+      }
+
+    } else {
+      // Cards 1+ snap instantly
+      if (!card0Snapped) {
+        card0Snapped = true;
+        cards[0].style.transition = '';
+        cards[0].style.zIndex     = '';
+        cards[0].style.transform  = '';
+      }
+      setCard(Math.min(CARDS - 1, cardIdx));
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+/* ════════════════════════════════
+   PHILOSOPHY — scroll + blue bg
+════════════════════════════════ */
+function setupPhilosophy() {
+  const trigger = document.getElementById('phil-trigger');
+  const sticky  = document.getElementById('phil-sticky');
+  const paras   = () => document.querySelectorAll('.phil-para');
+  let philTriggered = false;
+
+  const bgObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sticky.classList.add('blue');
+        document.getElementById('phil-phase').style.opacity = '1';
+        document.getElementById('phil-phase').style.pointerEvents = 'all';
+      } else {
+        sticky.classList.remove('blue');
+        document.getElementById('phil-phase').style.opacity = '0';
+        paras().forEach(p => p.classList.remove('on'));
+        philTriggered = false;
+      }
+    });
+  }, { threshold: 0.1 });
+  bgObserver.observe(trigger);
+
+  window.addEventListener('scroll', () => {
+    const rect     = trigger.getBoundingClientRect();
+    if (rect.top > window.innerHeight || rect.bottom < 0) return;
+    const progress = Math.max(0, Math.min(1, -rect.top / (trigger.offsetHeight - window.innerHeight)));
+
+    if (progress > 0.05 && !philTriggered) {
+      philTriggered = true;
+      paras().forEach((p, i) => {
+        p.style.transitionDelay = (i * 400) + 'ms';
+        p.classList.add('on');
+      });
+    }
+  }, { passive: true });
+}
+
+
+/* ════════════════════════════════
+   CUSTOM CURSOR
+════════════════════════════════ */
+function setupCustomCursor() {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const pill = document.getElementById('custom-cursor');
+  const dot  = document.getElementById('dot-cursor');
+  pill.style.display = 'block';
+  dot.style.display  = 'block';
+  document.body.classList.add('custom-cursor');
+
+  // 1:1 follow — pill offset below-right like FigJam label
+  document.addEventListener('mousemove', e => {
+    const x = e.clientX, y = e.clientY;
+    pill.style.left = (x + 2) + 'px'; pill.style.top = (y + 2) + 'px';
+    dot.style.left  = x + 'px'; dot.style.top  = y + 'px';
+    dot.classList.add('visible');
+  });
+
+  // Dot is always visible — pill shows/hides independently
+  const showPill = () => { pill.classList.add('visible'); };
+  const hidePill = () => { pill.classList.remove('visible'); };
+
+  const label = document.querySelector('.cursor-label');
+  const arrow = document.querySelector('.cursor-arrow');
+
+  function setPill(text, showArrow) {
+    label.textContent = text;
+    arrow.style.display = showArrow ? '' : 'none';
+  }
+  function resetPill() { setPill('Scroll', true); }
+
+  // Hero: pill activates 3s after intro ends
+  const hero = document.getElementById('home-hero');
+  if (hero) {
+    let heroCursorReady = false;
+    setTimeout(() => {
+      heroCursorReady = true;
+      if (hero.matches(':hover')) showPill();
+    }, 4240 + 3000);
+    hero.addEventListener('mouseenter', () => { if (heroCursorReady) showPill(); });
+    hero.addEventListener('mouseleave', hidePill);
+  }
+
+  // Work cards: show label on hover
+  document.querySelectorAll('.work-card-item').forEach(card => {
+    let cardTimer = null;
+    card.addEventListener('mouseenter', () => {
+      setPill('Scroll', true);
+      cardTimer = setTimeout(showPill, 8000);
+    });
+    card.addEventListener('mouseleave', () => {
+      clearTimeout(cardTimer);
+      hidePill();
+    });
+    card.querySelectorAll('a, button').forEach(btn => {
+      btn.addEventListener('mouseenter', e => { e.stopPropagation(); clearTimeout(cardTimer); hidePill(); });
+      btn.addEventListener('mouseleave', e => { e.stopPropagation(); setPill('View case', false); cardTimer = setTimeout(showPill, 1000); });
+    });
+  });
+
+  // Contact section: personal message
+  const contact = document.querySelector('#page-home .contact-section');
+  if (contact) {
+    contact.addEventListener('mouseenter', () => {
+      setPill('Hey, glad you made it', false);
+      pill.classList.remove('has-heart');
+      void pill.offsetWidth; /* force reflow so animation re-triggers */
+      pill.classList.add('has-heart');
+      showPill();
+    });
+    contact.addEventListener('mouseleave', () => {
+      pill.classList.remove('has-heart');
+      hidePill();
+    });
+  }
+
+  // Project page: reading progress %
+  function updateReadingProgress() {
+    const proj = document.querySelector('.page.active');
+    if (!proj || !proj.id.startsWith('page-project')) return;
+    const projHero = proj.querySelector('.proj-hero');
+    const footer   = proj.querySelector('.contact-section');
+    const start    = projHero ? projHero.offsetTop + projHero.offsetHeight : 0;
+    const end      = footer ? footer.offsetTop : document.body.scrollHeight;
+    const scrolled = Math.max(0, window.scrollY - start);
+    const total    = Math.max(1, end - start - window.innerHeight);
+    const pct      = Math.min(100, Math.round((scrolled / total) * 100));
+    if (pct < 5) {
+      pill.classList.remove('has-heart');
+      hidePill(); return;
+    } else if (pct >= 100) {
+      setPill('Hey, glad you made it', false);
+      pill.classList.remove('has-heart');
+      void pill.offsetWidth;
+      pill.classList.add('has-heart');
+    } else if (pct >= 95) {
+      pill.classList.remove('has-heart');
+      setPill(pct + '% Almost there', false);
+    } else {
+      pill.classList.remove('has-heart');
+      setPill(pct + '% read', false);
+    }
+    showPill();
+  }
+
+  // Expose cleanup so showPage can call it on navigation
+  window._cleanupReadingProgress = () => {
+    window.removeEventListener('scroll', updateReadingProgress);
+    pill.classList.remove('has-heart');
+    hidePill();
+  };
+
+  ['page-project-bnpl','page-project-payments'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('mouseenter', () => {
+      updateReadingProgress();
+      window.addEventListener('scroll', updateReadingProgress);
+    });
+    el.addEventListener('mouseleave', () => {
+      window._cleanupReadingProgress();
+    });
+  });
+}
+
+/* ════════════════════════════════
+   VIDEO LIGHTBOX
+════════════════════════════════ */
+function openLightbox(src) {
+  const lb     = document.getElementById('video-lightbox');
+  const player = document.getElementById('video-lightbox-player');
+  player.src = src;
+  player.classList.add('ready');
+  lb.classList.add('open');
+  document.addEventListener('keydown', _lbKeyHandler);
+}
+
+function closeLightbox() {
+  const lb     = document.getElementById('video-lightbox');
+  const player = document.getElementById('video-lightbox-player');
+  lb.classList.remove('open');
+  player.pause();
+  player.src = '';
+  player.classList.remove('ready');
+  document.removeEventListener('keydown', _lbKeyHandler);
+}
+
+function _lbKeyHandler(e) { if (e.key === 'Escape') closeLightbox(); }
+
+// Prevent click on video from closing the lightbox
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('video-lightbox-player')
+    .addEventListener('click', e => e.stopPropagation());
+});
+
+/* ════════════════════════════════
+   BOOT
+════════════════════════════════ */
+function setupVideoAutoplay() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const v = entry.target;
+      if (entry.isIntersecting) { v.play(); }
+      else { v.pause(); }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('video[loop]').forEach(v => observer.observe(v));
+}
+
+/* ════════════════════════════════
+   HERO DOT GRID
+════════════════════════════════ */
+function setupHeroDots() {
+  const canvas = document.getElementById('hero-dots');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let SPACING = 10;
+  const BASE_R  = 1.0;
+  const COLOR   = '255, 255, 255';
+  const BASE_OP = 1.0;
+  const BOOST_R  = 2.0;
+  const BOOST_OP = 0.35;
+  const DECAY    = 0.028; /* how fast dots fade back — lower = longer tail */
+  let cols, rows, dots = [], mouse = { x: -999, y: -999 }, rafId;
+
+  function resize() {
+    SPACING = window.innerWidth < 768 ? 8 : 10;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width  = rect.width  * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    canvas.style.width  = rect.width  + 'px';
+    canvas.style.height = rect.height + 'px';
+    cols = Math.ceil(rect.width  / SPACING) + 2;
+    rows = Math.ceil(rect.height / (SPACING / 2)) + 2;
+    dots = [];
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++) {
+        const offset = (r % 2 === 0) ? 0 : SPACING / 2;
+        dots.push({ x: c * SPACING + offset, y: r * (SPACING / 2), energy: 0 });
+      }
+  }
+
+  function tick() {
+    const dpr = devicePixelRatio;
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    let needsRedraw = false;
+    for (const d of dots) {
+      const dx = d.x - mouse.x;
+      const dy = d.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const target = Math.max(0, 1 - dist / 90);
+      if (target > d.energy) {
+        d.energy = target;             /* instant boost */
+      } else {
+        d.energy += (0 - d.energy) * DECAY; /* slow decay */
+        if (d.energy < 0.002) d.energy = 0;
+      }
+      if (d.energy > 0) needsRedraw = true;
+
+      const radius  = BASE_R  + d.energy * BOOST_R;
+      const opacity = BASE_OP + d.energy * BOOST_OP;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${COLOR}, ${opacity})`;
+      ctx.fill();
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function onMouseMove(e) {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  }
+  function onMouseLeave() {
+    mouse = { x: -999, y: -999 };
+  }
+
+  const isTouch = !window.matchMedia('(pointer: fine)').matches;
+
+  /* ── Image brightness map ── */
+  let brightnessMap = null;
+  let imgW = 0, imgH = 0;
+
+  function loadImageMap(callback) {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = 'ichiban.jpeg';
+    img.onload = () => {
+      const offscreen = document.createElement('canvas');
+      offscreen.width  = img.naturalWidth;
+      offscreen.height = img.naturalHeight;
+      const octx = offscreen.getContext('2d');
+      octx.drawImage(img, 0, 0);
+      const data = octx.getImageData(0, 0, offscreen.width, offscreen.height).data;
+      imgW = offscreen.width;
+      imgH = offscreen.height;
+      brightnessMap = new Float32Array(imgW * imgH);
+      for (let i = 0; i < imgW * imgH; i++) {
+        const r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2];
+        brightnessMap[i] = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      }
+      callback();
+    };
+  }
+
+  function getBrightness(dotX, dotY, canvasW, canvasH) {
+    if (!brightnessMap) return 0.5;
+    const scale = Math.max(canvasW / imgW, canvasH / imgH);
+    const offsetX = (canvasW - imgW * scale) / 2;
+    const offsetY = (canvasH - imgH * scale) / 2;
+    const px = Math.floor((dotX - offsetX) / scale);
+    const py = Math.floor((dotY - offsetY) / scale);
+    if (px < 0 || px >= imgW || py < 0 || py >= imgH) return 0.5;
+    return brightnessMap[py * imgW + px];
+  }
+
+  /* ── Touch: wave + image map ── */
+  function tickTouch(t) {
+    const dpr = devicePixelRatio;
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    const s = t * 0.0006;
+    for (const d of dots) {
+      const bright   = getBrightness(d.x, d.y, w, h);
+      const wave     = (Math.sin(d.x * 0.04 + s) * Math.cos(d.y * 0.03 + s * 0.7) + 1) / 2;
+      const energy   = bright * 0.85 + wave * 0.15;
+      const radius   = BASE_R + energy * BOOST_R * 0.85;
+      const opacity  = 1.0;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${COLOR}, ${opacity})`;
+      ctx.fill();
+    }
+    rafId = requestAnimationFrame(tickTouch);
+  }
+
+  /* ── Desktop: mouse trail + image map ── */
+  function tick() {
+    const dpr = devicePixelRatio;
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    for (const d of dots) {
+      const bright  = getBrightness(d.x, d.y, w, h);
+      const dx = d.x - mouse.x;
+      const dy = d.y - mouse.y;
+      const dist   = Math.sqrt(dx * dx + dy * dy);
+      const target = Math.max(0, 1 - dist / 90);
+      if (target > d.energy) {
+        d.energy = target;
+      } else {
+        d.energy += (0 - d.energy) * DECAY;
+        if (d.energy < 0.002) d.energy = 0;
+      }
+      const radius  = BASE_R  + bright * 2.0 + d.energy * BOOST_R;
+      const opacity = 1.0;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${COLOR}, ${opacity})`;
+      ctx.fill();
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  window._resizeHeroDots = resize;
+  resize();
+
+  loadImageMap(() => {
+    if (isTouch) {
+      rafId = requestAnimationFrame(tickTouch);
+    } else {
+      const hero = document.getElementById('home-hero');
+      hero.addEventListener('mousemove', onMouseMove);
+      hero.addEventListener('mouseleave', onMouseLeave);
+      rafId = requestAnimationFrame(tick);
+    }
+  });
+}
+
+/* ════════════════════════════════
+   ABOUT DOT WORDS
+════════════════════════════════ */
+function setupAboutDots() {
+  const canvas = document.getElementById('about-dots');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const SPACING  = 10;
+  const WORDS    = ['1993', 'BOG', 'COL', 'UX', 'BVB', 'ANDES'];
+  const HOLD     = 4000;
+  const LERP     = 0.06;
+  const DECAY    = 0.028;
+  const HOVER_R  = 90;
+  let dots = [], current = [], targets = [], wordIndex = 0, rafId;
+  let mouse = { x: -999, y: -999 };
+
+  function buildWordMap(word, w, h) {
+    const off  = document.createElement('canvas');
+    off.width  = w;
+    off.height = h;
+    const octx = off.getContext('2d');
+    const fontSize = Math.min(w * 0.52, h * 0.45);
+    octx.fillStyle    = '#fff';
+    octx.font         = `700 ${fontSize}px 'DM Sans', sans-serif`;
+    octx.textAlign    = 'center';
+    octx.textBaseline = 'middle';
+    octx.fillText(word, w / 2, h / 2);
+    const data = octx.getImageData(0, 0, w, h).data;
+    const R = 18; /* sampling radius in px — controls edge falloff width */
+    const step = 2;
+    for (let i = 0; i < dots.length; i++) {
+      const cx = Math.floor(dots[i].x);
+      const cy = Math.floor(dots[i].y);
+      let sum = 0, count = 0;
+      for (let dy = -R; dy <= R; dy += step) {
+        for (let dx = -R; dx <= R; dx += step) {
+          if (dx*dx + dy*dy > R*R) continue; /* circular sample area */
+          const sx = Math.min(Math.max(cx + dx, 0), w - 1);
+          const sy = Math.min(Math.max(cy + dy, 0), h - 1);
+          sum += data[(sy * w + sx) * 4];
+          count++;
+        }
+      }
+      targets[i] = (sum / count) / 255;
+    }
+  }
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const w = Math.floor(rect.width);
+    const h = Math.floor(rect.height);
+    canvas.width  = w * devicePixelRatio;
+    canvas.height = h * devicePixelRatio;
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
+    const cols = Math.ceil(w / SPACING) + 2;
+    const rows = Math.ceil(h / (SPACING / 2)) + 2;
+    dots = []; current = []; targets = [];
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++) {
+        const offset = (r % 2 === 0) ? 0 : SPACING / 2;
+        dots.push({ x: c * SPACING + offset, y: r * (SPACING / 2), energy: 0 });
+        current.push(0);
+        targets.push(0);
+      }
+    buildWordMap(WORDS[wordIndex], w, h);
+  }
+
+  function tick() {
+    const dpr = devicePixelRatio;
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < dots.length; i++) {
+      current[i] += (targets[i] - current[i]) * LERP;
+      const d   = dots[i];
+      const dx  = d.x - mouse.x;
+      const dy  = d.y - mouse.y;
+      const dist   = Math.sqrt(dx * dx + dy * dy);
+      const hover  = Math.max(0, 1 - dist / HOVER_R);
+      if (hover > d.energy) d.energy = hover;
+      else { d.energy += (0 - d.energy) * DECAY; if (d.energy < 0.002) d.energy = 0; }
+      const radius = 1.1 + current[i] * 2.0 + d.energy * 2.0;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.fill();
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function nextWord() {
+    wordIndex = (wordIndex + 1) % WORDS.length;
+    const w = Math.floor(canvas.width  / devicePixelRatio);
+    const h = Math.floor(canvas.height / devicePixelRatio);
+    buildWordMap(WORDS[wordIndex], w, h);
+    setTimeout(nextWord, HOLD);
+  }
+
+  window.addEventListener('resize', resize);
+  const hero = document.getElementById('about-hero');
+  hero.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  hero.addEventListener('mouseleave', () => { mouse = { x: -999, y: -999 }; });
+  window._resizeAboutDots = () => {
+    resize();
+    if (!rafId) tick();
+  };
+  window._nextAboutWord = function loop() {
+    wordIndex = (wordIndex + 1) % WORDS.length;
+    const w = Math.floor(canvas.width  / devicePixelRatio);
+    const h = Math.floor(canvas.height / devicePixelRatio);
+    buildWordMap(WORDS[wordIndex], w, h);
+    setTimeout(loop, HOLD);
+  };
+}
+
+function setupAboutContent() {
+  const trigger = document.getElementById('about-trigger');
+  const sticky  = document.getElementById('about-sticky');
+  const blocks  = () => document.querySelectorAll('#about-phase .about-block');
+  let triggered = false;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.getElementById('about-phase').style.opacity = '1';
+        document.getElementById('about-phase').style.pointerEvents = 'all';
+      } else {
+        document.getElementById('about-phase').style.opacity = '0';
+        blocks().forEach(b => b.classList.remove('on'));
+        triggered = false;
+      }
+    });
+  }, { threshold: 0.1 });
+  observer.observe(trigger);
+
+  window.addEventListener('scroll', () => {
+    const rect = trigger.getBoundingClientRect();
+    if (rect.top > window.innerHeight || rect.bottom < 0) return;
+    const progress = Math.max(0, Math.min(1, -rect.top / (trigger.offsetHeight - window.innerHeight)));
+
+    if (progress > 0.05 && !triggered) {
+      triggered = true;
+      blocks().forEach((b, i) => {
+        b.style.transitionDelay = (i * 200) + 'ms';
+        b.classList.add('on');
+      });
+    }
+  }, { passive: true });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  runIntro();
+  setupCustomCursor();
+  setupVideoAutoplay();
+  setupHeroDots();
+  setupAboutDots();
+  setupAboutContent();
+});
+</script>
+
+<!-- Cursors (desktop only) -->
+<div id="dot-cursor"></div>
+<div id="custom-cursor">
+  <div class="cursor-inner">
+    <svg class="cursor-arrow" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="5" y1="0" x2="5" y2="10.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M1.5 7L5 11L8.5 7" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="cursor-label">Scroll</span>
+    <span class="cursor-heart">♥</span>
+  </div>
+</div>
+
+</body>
+</html>
