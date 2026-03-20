@@ -1444,8 +1444,16 @@ body.custom-cursor * { cursor: none !important; }
 .proj-hero.revealed .proj-hero-subtitle { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
 .proj-hero.revealed .proj-hero-btns     { opacity: 1; transform: translateY(0); transition-delay: 500ms; }
 
-/* Payments page: white title on dark bg */
-#page-project-payments .proj-hero-title { color: white; }
+/* Payments page: blue title, frosted meta tag */
+#page-project-payments .proj-hero-title { color: var(--blue); }
+#page-project-payments .proj-meta-tag {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--ink);
+}
+#page-project-payments .proj-meta-text { color: var(--ink); }
 
 /* ── Context-aware nav project title ── */
 #proj-title-wrap { transition: grid-template-rows 320ms var(--ease-enter); }
@@ -1647,7 +1655,7 @@ body.custom-cursor * { cursor: none !important; }
         <div class="nav-drawer">
           <div class="work-projects-label">SELECTED PROJECTS</div>
           <a class="project-row" onclick="openProject('bnpl');closeWorkOverlay();return false;" href="#">
-            <div class="project-thumb" style="background:#FFE8F0;"></div>
+            <div class="project-thumb" style="background:#FFE8F0;background-image:url('BNLP/hero BNPL.jpeg');background-size:cover;background-position:top center;"></div>
             <div class="project-info">
               <div class="project-row-title">Building a BNPL Marketplace</div>
               <div class="project-row-desc">From checkout financing to commerce channel</div>
@@ -1655,7 +1663,7 @@ body.custom-cursor * { cursor: none !important; }
             <span class="project-row-arrow">→</span>
           </a>
           <a class="project-row" onclick="openProject('payments');closeWorkOverlay();return false;" href="#">
-            <div class="project-thumb" style="background:#EAF0FF;"></div>
+            <div class="project-thumb" style="background:#EAF0FF;background-image:url('Designing Payments/Payments hero.jpg');background-size:cover;background-position:center;"></div>
             <div class="project-info">
               <div class="project-row-title">Designing Payments on Real-Time Rails</div>
               <div class="project-row-desc">Translated infrastructure into usable business flows.</div>
@@ -1755,7 +1763,7 @@ body.custom-cursor * { cursor: none !important; }
             </div>
           </div>
           <div class="work-card-item">
-            <div class="card-image" style="background:#EAF0FF;"></div>
+            <div class="card-image" style="background:#EAF0FF;background-image:url('Designing Payments/Payments hero.jpg');background-size:cover;background-position:top center;"></div>
             <div class="card-date">2024 – 2026</div>
             <div class="card-title">Designing Payments on Real-Time Rails</div>
             <div class="card-desc">Exploring and designing business use cases on top of real-time payment infrastructure.</div>
@@ -2234,6 +2242,7 @@ body.custom-cursor * { cursor: none !important; }
 
     <!-- Hero -->
     <section class="proj-hero" style="background:#0D1B3E;">
+      <img class="proj-hero-bg" src="Designing Payments/Payments hero.jpg" alt="Designing Payments on Real-Time Rails" />
       <div class="proj-hero-gradient"></div>
       <div class="proj-hero-content">
         <h1 class="proj-hero-title">
