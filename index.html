@@ -369,6 +369,7 @@ body {
   grid-template-rows: 1fr;
 }
 .nav-drawer { overflow: hidden; }
+.nav-drawer .project-row:last-child { margin-bottom: 8px; }
 
 /* Contact icon */
 .contact-icon {
@@ -376,6 +377,7 @@ body {
   height: 54px;
   border-radius: 12px;
   background: var(--canvas);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -396,7 +398,9 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 12px 16px;
+  padding: 10px 12px 10px 8px;
+  margin: 2px 8px;
+  border-radius: 20px;
   cursor: pointer;
   text-decoration: none;
   transition: background 200ms var(--ease-std);
@@ -408,6 +412,7 @@ body {
   border-radius: 12px;
   flex-shrink: 0;
   overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
 }
 .project-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .project-info { flex: 1; min-width: 0; }
@@ -1289,28 +1294,50 @@ body.custom-cursor * { cursor: none !important; }
   color: var(--ink);
 }
 .proj-intro p + p { margin-top: 16px; }
-.proj-callout {
-  background: #DFEEFF;
-  padding: 16px;
+.proj-callout-banner {
+  background: #F7F7F7;
+  border-radius: 16px;
+  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 4px;
+  margin: 4px 0 0;
+}
+.proj-callout-banner .proj-callout-title { color: var(--blue); }
+@media (min-width: 768px) {
+  .proj-callout-banner {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+    margin: 4px max(80px, calc((100% - 1200px) / 2)) 0;
+    padding: 14px 24px;
+    border-radius: 16px;
+  }
+  .proj-callout-banner .proj-callout-title { white-space: nowrap; line-height: 1.6; }
+}
+.proj-callout {
+  background: #F7F7F7;
+  border-radius: 16px;
+  padding: 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 .proj-callout-title {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: -0.32px;
-  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
 }
 .proj-callout-body {
   font-family: var(--sans);
-  font-size: 16px;
-  line-height: 28px;
-  color: var(--ink);
-  letter-spacing: -0.32px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-mid);
+  letter-spacing: -0.1px;
 }
-.proj-callout-body p + p { margin-top: 16px; }
+.proj-callout-body p + p { margin-top: 8px; }
 .proj-inline-video {
   width: 100%;
   border-radius: 16px;
@@ -1326,6 +1353,189 @@ body.custom-cursor * { cursor: none !important; }
   align-items: center;
   justify-content: center;
 }
+/* ── Project Tabs ── */
+.proj-tabs {
+  display: flex;
+  gap: 0;
+  background: #ECECEE;
+  border-radius: 32px;
+  padding: 4px;
+  margin-bottom: 8px;
+}
+.proj-tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.28px;
+  color: var(--ink-mid);
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+}
+.proj-tab-btn.active {
+  background: white;
+  color: var(--ink);
+  font-weight: 700;
+}
+.proj-tab-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--ink-mid);
+}
+.proj-tab-panel { display: none; }
+.proj-tab-panel.active {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+@media (min-width: 768px) {
+  .proj-tab-panel.active { gap: 64px; }
+}
+
+/* Short story specific */
+.proj-short-body {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+.proj-short-accomplishments {
+  background: #F7F7F7;
+  border-radius: 20px;
+  padding: 28px 28px 24px;
+}
+.proj-short-accomplishments-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  margin-bottom: 16px;
+}
+.proj-short-accomplishments ul {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.proj-short-accomplishments li {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  padding-left: 24px;
+  position: relative;
+}
+.proj-short-accomplishments li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+}
+.proj-short-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.proj-short-stage-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.proj-short-stage-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.proj-short-challenge {
+  font-family: 'Inria Serif', serif;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.proj-short-decisions {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.proj-short-decision {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.proj-short-decision-copy {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.proj-short-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.proj-short-metrics-context {
+  font-family: 'Inria Serif', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.proj-short-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.proj-short-metric {
+  background: #F7F7F7;
+  border-radius: 16px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.proj-short-metric-number {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 36px;
+  letter-spacing: -1.5px;
+  color: var(--blue);
+  line-height: 1;
+}
+.proj-short-metric-label {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.4;
+}
+.proj-short-reflection {
+  font-family: 'Inria Serif', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+@media (min-width: 768px) {
+  .proj-short-accomplishments li { font-size: 17px; }
+  .proj-short-challenge { font-size: 20px; line-height: 34px; }
+  .proj-short-decision-copy { font-size: 17px; line-height: 1.6; }
+  .proj-short-metrics-context { font-size: 20px; line-height: 34px; }
+  .proj-short-metric-number { font-size: 48px; }
+  .proj-short-metric-label { font-size: 14px; }
+  .proj-short-reflection { font-size: 20px; line-height: 34px; }
+}
+
 .proj-section {
   display: flex;
   flex-direction: column;
@@ -1462,7 +1672,7 @@ body.custom-cursor * { cursor: none !important; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px 12px;
+  padding: 14px 16px 16px;
   border-top: 1px solid rgba(0,0,0,0.06);
   margin-top: 4px;
   gap: 12px;
@@ -1961,7 +2171,6 @@ body.custom-cursor * { cursor: none !important; }
         </h1>
         <div class="proj-hero-meta">
           <span class="proj-meta-text">Latam · 2021–2023</span>
-          <span class="proj-meta-tag">10 MIN READ</span>
         </div>
         <p class="proj-hero-subtitle">How a checkout financing tool evolved into a consumer-facing commerce platform</p>
         <div class="proj-hero-btns">
@@ -1973,8 +2182,159 @@ body.custom-cursor * { cursor: none !important; }
       </div>
     </section>
 
+    <!-- NDA note -->
+    <div class="proj-callout-banner">
+      <p class="proj-callout-title" style="display:flex;align-items:center;gap:6px;">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;color:var(--blue);"><circle cx="6.5" cy="6.5" r="6" stroke="var(--blue)" stroke-width="1.2"/><rect x="6" y="5.5" width="1" height="4" rx="0.5" fill="var(--blue)"/><rect x="6" y="3.5" width="1" height="1" rx="0.5" fill="var(--blue)"/></svg>A note on the designs shown here
+      </p>
+      <p class="proj-callout-body">To respect confidentiality agreements, the interface designs shown here have been recreated and slightly refined. The visual language has been updated, while the product decisions, flows, and experience principles reflect the work developed during the original project.</p>
+    </div>
+
     <!-- Body -->
     <div class="proj-body">
+
+      <!-- Tabs -->
+      <div class="proj-tabs">
+        <button class="proj-tab-btn active" data-tab="bnpl-short">Long Story Short<span class="proj-tab-time">5 MIN</span></button>
+        <button class="proj-tab-btn" data-tab="bnpl-full">The Complete Story<span class="proj-tab-time">12 MIN</span></button>
+      </div>
+
+      <!-- ── TAB: Long Story Short ── -->
+      <div class="proj-tab-panel active" id="bnpl-short">
+        <div class="proj-short-body">
+
+          <!-- Context -->
+          <div class="proj-intro">
+            <p>Our BNPL platform in Latam was widely used at checkout but had almost no relationship with users beyond the purchase moment. Most users didn't recognize our brand, couldn't find where to pay their installments, and didn't know they had a reusable credit line.</p>
+          </div>
+
+          <!-- Accomplishments -->
+          <div class="proj-short-accomplishments">
+            <p class="proj-short-accomplishments-title">What was accomplished</p>
+            <ul>
+              <li>Materialized a direct channel between brand and users, with 30% logging in within weeks of launch</li>
+              <li>Improved payment behavior, with an 85% on-time rate among app users</li>
+              <li>Grew to 600K active users across our platform</li>
+              <li>Our app became a commerce channel, opening an attribution revenue model with partner merchants</li>
+            </ul>
+          </div>
+
+          <!-- Stage 1 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 1</span>
+              <h2 class="proj-section-title">Building the app MVP</h2>
+              <p class="proj-short-challenge">Our product existed at checkout and disappeared after. Users didn't recognize our brand and had no way to manage their relationship with us.</p>
+            </div>
+            <div class="proj-short-decisions">
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">A central card made our credit logic visible at a glance: available credit, next payment, and total balance together.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/Product card.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">A payments flow was built directly into the app to remove the most critical friction. Users simply didn't know how or where to pay.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/pay flow.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">A store browsing section let users discover partner merchants and see what they could buy with their credit.</p>
+              </div>
+            </div>
+            <img class="proj-img" src="BNLP/Final MVP.jpeg" alt="Final MVP home screen" />
+            <div class="proj-short-metrics">
+              <p class="proj-short-metrics-context">After 2 months of the MVP live</p>
+              <div class="proj-short-metrics-grid">
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">30%</span>
+                  <span class="proj-short-metric-label">of total users logged in at least once</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">85%</span>
+                  <span class="proj-short-metric-label">on-time payment rate among app users</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 2</span>
+              <h2 class="proj-section-title">Learning from real usage</h2>
+              <p class="proj-short-challenge">As adoption grew, we started seeing new friction in real usage. Multi-purchase debt was confusing, credit mechanics were opaque, and browsing had high taps but poor conversion.</p>
+            </div>
+            <div class="proj-short-decisions">
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">A purchase-by-purchase breakdown was introduced so users could see exactly how each transaction related to their balance and how payments were split across them.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/payments.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Our payments flow was expanded to show users how their payment behavior directly affected their available credit, making the dynamic credit model visible.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/credit behavior.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Categories was the most tapped section in our app but had less than 1% conversion. We redesigned it with a deeper structure matching how users actually searched, not how merchants were organized. Conversion grew to around 6% as content was refined.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/categorias.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Users who shopped at more than two stores bought 27% more often. We introduced a favorites section and surfaced stores they had visited before.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/favs.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+            <div class="proj-short-metrics">
+              <p class="proj-short-metrics-context">As the app matured and the platform grew</p>
+              <div class="proj-short-metrics-grid">
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">27%</span>
+                  <span class="proj-short-metric-label">more repeat purchases among multi-store users</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">+5%</span>
+                  <span class="proj-short-metric-label">category conversion, up from less than 1%</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">600K</span>
+                  <span class="proj-short-metric-label">active users on the platform</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">+2K</span>
+                  <span class="proj-short-metric-label">partner merchants in our network</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 3</span>
+              <h2 class="proj-section-title">Exploring new directions for the app</h2>
+              <p class="proj-short-challenge">With 600K active users and purchases already starting inside the app, we launched an attribution model as a B2B effort. That opened a bigger question: what else could our app become?</p>
+            </div>
+            <div class="proj-short-decisions">
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">A product-based marketplace, letting users discover and compare products across multiple merchants.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/1. prod.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Deal tracking inspired by travel platforms, where users could follow products and get notified when prices dropped.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/2. price.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Community-driven discounts, where groups of users could collectively unlock deals by showing interest in specific products.</p>
+                <video class="proj-img" loop muted playsinline><source src="BNLP/3. Deals.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+            <div class="proj-serif"><p>I departed from the project after this phase. The product-based marketplace direction was later implemented by the team.</p></div>
+          </div>
+
+          <!-- Reflection -->
+          <p class="proj-short-reflection">Clarity came first, commerce followed. When users understood their credit, they paid better and bought more. Our interface decisions had a direct line to financial behavior, and eventually to business model expansion.</p>
+
+        </div>
+      </div>
+
+      <!-- ── TAB: The Complete Story ── -->
+      <div class="proj-tab-panel" id="bnpl-full">
 
       <!-- Intro -->
       <div class="proj-intro">
@@ -1982,15 +2342,6 @@ body.custom-cursor * { cursor: none !important; }
         <p>By introducing a mobile app focused on clarity, credit understanding, and payments, we turned the product into a direct relationship channel with users.</p>
         <p>Over time, the app evolved into a commerce discovery surface for merchants.</p>
         <p>This article explores how user contact, product strategy, and interface design helped transform a checkout feature into a platform experience.</p>
-      </div>
-
-      <!-- Callout -->
-      <div class="proj-callout">
-        <p class="proj-callout-title">A note on the designs shown here</p>
-        <div class="proj-callout-body">
-          <p>To respect confidentiality agreements, the interface designs shown in this article have been recreated and slightly refined.</p>
-          <p>The visual language has been updated, while the product decisions, flows, and experience principles reflect the work developed during the original project.</p>
-        </div>
       </div>
 
       <video class="proj-inline-video" src="BNLP/Case Video.mp4" controls playsinline preload="metadata"></video>
@@ -2209,6 +2560,8 @@ body.custom-cursor * { cursor: none !important; }
         </div>
       </div>
 
+      </div><!-- /bnpl-full panel -->
+
     </div><!-- /proj-body -->
 
     <!-- Footer -->
@@ -2252,7 +2605,6 @@ body.custom-cursor * { cursor: none !important; }
         </h1>
         <div class="proj-hero-meta">
           <span class="proj-meta-text">Latam · 2022–2024</span>
-          <span class="proj-meta-tag">8 MIN READ</span>
         </div>
         <p class="proj-hero-subtitle">Turning real-time infrastructure into understandable and adoptable money flows</p>
         <!-- Buttons — hidden until ready
@@ -2601,6 +2953,18 @@ function openProject(key) {
   document.getElementById('project-category').textContent = p.category;
   showPage('project');
 }
+/* ── Project tab switching ── */
+document.querySelectorAll('.proj-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tabId = btn.dataset.tab;
+    const container = btn.closest('.proj-body');
+    container.querySelectorAll('.proj-tab-btn').forEach(b => b.classList.remove('active'));
+    container.querySelectorAll('.proj-tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  });
+});
+
 function scrollToContact() {
   const page = document.querySelector('.page.active');
   const c = page && page.querySelector('.contact-section');
@@ -2667,17 +3031,17 @@ function runIntro() {
 
   // ── 1. Fade in text ──
   setTimeout(() => {
-    greeting.style.transition  = `opacity 700ms ${EASE_ENTER}`;
-    introName.style.transition = `opacity 700ms ${EASE_ENTER}`;
+    greeting.style.transition  = `opacity 600ms ${EASE_ENTER}`;
+    introName.style.transition = `opacity 600ms ${EASE_ENTER}`;
     greeting.style.opacity  = '1';
     introName.style.opacity = '1';
   }, 200);
 
   // ── 2. Fade out "Hi, I'm" ──
   setTimeout(() => {
-    greeting.style.transition = `opacity 450ms ${EASE_EXIT}`;
+    greeting.style.transition = `opacity 400ms ${EASE_EXIT}`;
     greeting.style.opacity    = '0';
-  }, 2200);
+  }, 1400);
 
   // ── 3. "Andy." flies to nav brand position ──
   setTimeout(() => {
@@ -2690,17 +3054,17 @@ function runIntro() {
     // Set color dark instantly — blue bg is fully opaque right now so the
     // user never sees it. By the time the bg fades away, color is already dark.
     introName.style.color           = '#101010';
-    introName.style.transition      = `transform 580ms ${EASE_ENTER}`;
+    introName.style.transition      = `transform 520ms ${EASE_ENTER}`;
     introName.style.transformOrigin = 'left top';
     introName.style.transform       = `translate(${dx}px, ${dy}px) scale(${sc})`;
 
     // Blue bg fades out during flight
-    loader.style.transition      = `background-color 520ms ${EASE_EXIT}`;
+    loader.style.transition      = `background-color 480ms ${EASE_EXIT}`;
     loader.style.backgroundColor = 'transparent';
 
-  }, 2700);
+  }, 1800);
 
-  // ── 4. Pill appears immediately after flight lands (2700+580+20) ──
+  // ── 4. Pill appears immediately after flight lands (1800+520+20) ──
   setTimeout(() => {
     const brandW = navBrand.offsetWidth + 40; /* 20px each side, symmetric */
     navInner.style.transition  = 'none'; /* suppress border-radius transition during intro */
@@ -2712,19 +3076,19 @@ function runIntro() {
     navBrand.style.transition = 'none';
     nav.classList.add('visible');
     navBrand.classList.add('visible');
-  }, 3300);
+  }, 2380);
 
   // ── 5. Pill expands to full width ──
   setTimeout(() => {
-    navInner.style.transition = `width 700ms ${EASE_ENTER}`;
+    navInner.style.transition = `width 600ms ${EASE_ENTER}`;
     navInner.style.width      = '100%';
-  }, 3500);
+  }, 2560);
 
   // ── 6. Nav items appear one at a time ──
   [
-    ['nav-work-btn',  3880],
-    ['nav-about-btn', 4060],
-    ['nav-cta-btn',   4240],
+    ['nav-work-btn',  2900],
+    ['nav-about-btn', 3060],
+    ['nav-cta-btn',   3220],
   ].forEach(([id, t]) => {
     setTimeout(() => document.getElementById(id).classList.add('in'), t);
   });
@@ -2735,7 +3099,7 @@ function runIntro() {
     navInner.style.borderRadius = '';
     navInner.style.width        = '';
     navInner.style.overflow     = '';
-  }, 4500);
+  }, 3500);
 
   // ── 8. Remove loader + show hero 400ms after last nav item finishes ──
   setTimeout(() => {
@@ -2746,7 +3110,7 @@ function runIntro() {
       setupCarousel();
       setupPhilosophy();
     });
-  }, 5040);
+  }, 3980);
 }
 
 /* ════════════════════════════════
