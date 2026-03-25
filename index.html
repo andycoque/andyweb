@@ -371,6 +371,40 @@ body {
 .nav-drawer { overflow: hidden; }
 .nav-drawer .project-row:last-child { margin-bottom: 8px; }
 
+/* ── Project image strip ── */
+.proj-image-strip {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 0 calc((100vw - 80vw) / 2);
+  margin-top: 4px;
+}
+.proj-image-strip::-webkit-scrollbar { display: none; }
+.proj-image-strip img {
+  flex-shrink: 0;
+  width: 80vw;
+  height: auto;
+  scroll-snap-align: center;
+  border-radius: 16px;
+  display: block;
+  object-fit: cover;
+}
+@media (min-width: 768px) {
+  .proj-image-strip {
+    overflow-x: visible;
+    scroll-snap-type: none;
+    padding: 0;
+    margin: 4px max(80px, calc((100% - 1200px) / 2)) 0;
+  }
+  .proj-image-strip img {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+  }
+}
+
 /* Contact icon */
 .contact-icon {
   width: 54px;
@@ -1357,7 +1391,7 @@ body.custom-cursor * { cursor: none !important; }
 .proj-tabs {
   display: flex;
   gap: 0;
-  background: #ECECEE;
+  background: #F7F7F7;
   border-radius: 32px;
   padding: 4px;
   margin-bottom: 8px;
@@ -1406,7 +1440,7 @@ body.custom-cursor * { cursor: none !important; }
 .proj-short-body {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 92px;
 }
 .proj-short-accomplishments {
   background: #F7F7F7;
@@ -1445,7 +1479,7 @@ body.custom-cursor * { cursor: none !important; }
 .proj-short-stage {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
 }
 .proj-short-stage-header {
   display: flex;
@@ -1469,7 +1503,7 @@ body.custom-cursor * { cursor: none !important; }
 .proj-short-decisions {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
 }
 .proj-short-decision {
   display: flex;
@@ -1823,6 +1857,7 @@ body.custom-cursor * { cursor: none !important; }
 .project-coming-soon { font-family: var(--sans); font-size: 16px; color: var(--ink-mid); text-align: center; line-height: 1.6; letter-spacing: -0.32px; }
 
 </style>
+<script>window.history.scrollRestoration = 'manual';</script>
 </head>
 <body>
 
@@ -2062,7 +2097,7 @@ body.custom-cursor * { cursor: none !important; }
             <div class="exp-list">
               <div class="exp-item">
                 <div class="exp-role">Product Design & Strategy</div>
-                <div class="exp-company">Nelo · Fintech Real-Time Payments</div>
+                <div class="exp-company">Minka · Fintech Real-Time Payments</div>
                 <div class="exp-dates">2023 – 2026</div>
               </div>
               <div class="exp-item">
@@ -2087,7 +2122,7 @@ body.custom-cursor * { cursor: none !important; }
             <div class="edu-list">
               <div class="exp-item">
                 <div class="exp-role">Master's Degree in App Design</div>
-                <div class="exp-company">IED Design</div>
+                <div class="exp-company">ESDi Design</div>
                 <div class="exp-dates">2019</div>
               </div>
               <div class="exp-item">
@@ -2182,12 +2217,16 @@ body.custom-cursor * { cursor: none !important; }
       </div>
     </section>
 
+    <!-- Image strip -->
+    <div class="proj-image-strip">
+      <img src="BNLP/Carrousel 1.jpg" alt="" />
+      <img src="BNLP/Carrousel 2.jpg" alt="" />
+      <img src="BNLP/Carrousel 3.jpg" alt="" />
+    </div>
+
     <!-- NDA note -->
     <div class="proj-callout-banner">
-      <p class="proj-callout-title" style="display:flex;align-items:center;gap:6px;">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;color:var(--blue);"><circle cx="6.5" cy="6.5" r="6" stroke="var(--blue)" stroke-width="1.2"/><rect x="6" y="5.5" width="1" height="4" rx="0.5" fill="var(--blue)"/><rect x="6" y="3.5" width="1" height="1" rx="0.5" fill="var(--blue)"/></svg>A note on the designs shown here
-      </p>
-      <p class="proj-callout-body">To respect confidentiality agreements, the interface designs shown here have been recreated and slightly refined. The visual language has been updated, while the product decisions, flows, and experience principles reflect the work developed during the original project.</p>
+      <p class="proj-callout-body"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;margin-bottom:1px;"><circle cx="6.5" cy="6.5" r="6" stroke="var(--blue)" stroke-width="1.2"/><rect x="6" y="5.5" width="1" height="4" rx="0.5" fill="var(--blue)"/><rect x="6" y="3.5" width="1" height="1" rx="0.5" fill="var(--blue)"/></svg>Designs have been recreated to respect confidentiality. Product decisions, flows, and principles reflect the original work.</p>
     </div>
 
     <!-- Body -->
@@ -2237,9 +2276,9 @@ body.custom-cursor * { cursor: none !important; }
               </div>
               <div class="proj-short-decision">
                 <p class="proj-short-decision-copy">A store browsing section let users discover partner merchants and see what they could buy with their credit.</p>
+                <img class="proj-img" src="BNLP/Final MVP.jpeg?v=2" alt="Final MVP home screen" />
               </div>
             </div>
-            <img class="proj-img" src="BNLP/Final MVP.jpeg" alt="Final MVP home screen" />
             <div class="proj-short-metrics">
               <p class="proj-short-metrics-context">After 2 months of the MVP live</p>
               <div class="proj-short-metrics-grid">
@@ -2616,6 +2655,11 @@ body.custom-cursor * { cursor: none !important; }
       </div>
     </section>
 
+    <!-- NDA note -->
+    <div class="proj-callout-banner">
+      <p class="proj-callout-body"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;margin-bottom:1px;"><circle cx="6.5" cy="6.5" r="6" stroke="var(--blue)" stroke-width="1.2"/><rect x="6" y="5.5" width="1" height="4" rx="0.5" fill="var(--blue)"/><rect x="6" y="3.5" width="1" height="1" rx="0.5" fill="var(--blue)"/></svg>Designs have been recreated to respect confidentiality. Product decisions, flows, and principles reflect the original work.</p>
+    </div>
+
     <!-- Body -->
     <div class="proj-body">
 
@@ -2623,15 +2667,6 @@ body.custom-cursor * { cursor: none !important; }
       <div class="proj-intro">
         <p>We operated the infrastructure connecting banks to real-time payment networks across Latin America. From the inside, the gap was visible: peer-to-peer transactions were running at over 10 million per month in the first country where we had API access. Business-initiated transactions barely reached 30,000.</p>
         <p>Our hub was the connection point between financial institutions, but businesses had no way to use it. We opened the APIs. As Lead Designer, I focused on making those APIs usable as actual products, not just as technical documentation.</p>
-      </div>
-
-      <!-- Callout -->
-      <div class="proj-callout">
-        <p class="proj-callout-title">A note on the work shown here</p>
-        <div class="proj-callout-body">
-          <p>To respect confidentiality agreements, specific implementations, clients, and interfaces have been generalized.</p>
-          <p>The flows shown reflect the product and design work developed during the project, adapted to explain how the system works.</p>
-        </div>
       </div>
 
       <!-- Section: Context -->
@@ -2867,8 +2902,8 @@ const EASE_STD   = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
    PROJECT DATA
 ════════════════════════════════ */
 const PROJECTS = {
-  bnpl:     { title: 'Building a BNPL Marketplace',                   meta: '2021 – 2023  ·  Addi',  category: 'FINTECH · CASE STUDY' },
-  payments: { title: 'Designing Payments on Real-Time Rails',         meta: '2024 – 2026  ·  Nelo',  category: 'PAYMENTS · CASE STUDY' },
+  bnpl:     { title: 'Building a BNPL Marketplace',                   meta: '2021 – 2023',  category: 'FINTECH · CASE STUDY' },
+  payments: { title: 'Designing Payments on Real-Time Rails',         meta: '2024 – 2026',  category: 'PAYMENTS · CASE STUDY' },
   patterns: { title: 'Exploring UI Patterns for New Ideas Discovery', meta: '2020 & 2026',            category: 'PRODUCT EXPLORATION' },
 };
 
@@ -3362,6 +3397,7 @@ function setupCustomCursor() {
   window._cleanupReadingProgress = () => {
     window.removeEventListener('scroll', updateReadingProgress);
     pill.classList.remove('has-heart');
+    resetPill();
     hidePill();
   };
 
@@ -3421,6 +3457,46 @@ function setupVideoAutoplay() {
   }, { threshold: 0.3 });
 
   document.querySelectorAll('video[loop]').forEach(v => observer.observe(v));
+}
+
+/* ════════════════════════════════
+   IMAGE STRIP INFINITE LOOP
+════════════════════════════════ */
+function setupImageStrip() {
+  if (window.matchMedia('(min-width: 768px)').matches) return;
+  const strip = document.querySelector('.proj-image-strip');
+  if (!strip) return;
+
+  // Clone first and last for infinite illusion
+  const imgs = Array.from(strip.querySelectorAll('img'));
+  const first = imgs[0].cloneNode();
+  const last  = imgs[imgs.length - 1].cloneNode();
+  strip.appendChild(first);
+  strip.insertBefore(last, imgs[0]);
+
+  // Start on first real image (index 1 after prepend)
+  const imgWidth = () => strip.querySelector('img').offsetWidth + 4;
+  strip.scrollLeft = imgWidth();
+
+  let jumping = false;
+  strip.addEventListener('scroll', () => {
+    if (jumping) return;
+    const w = imgWidth();
+    const allImgs = strip.querySelectorAll('img');
+    const total = allImgs.length;
+    // Jumped past last clone → reset to first real
+    if (strip.scrollLeft >= w * (total - 1)) {
+      jumping = true;
+      strip.scrollLeft = w;
+      jumping = false;
+    }
+    // Jumped before first clone → reset to last real
+    if (strip.scrollLeft <= 0) {
+      jumping = true;
+      strip.scrollLeft = w * (total - 2);
+      jumping = false;
+    }
+  }, { passive: true });
 }
 
 /* ════════════════════════════════
@@ -3762,9 +3838,11 @@ function setupAboutContent() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  window.scrollTo({ top: 0, behavior: 'instant' });
   runIntro();
   setupCustomCursor();
   setupVideoAutoplay();
+  setupImageStrip();
   setupHeroDots();
   setupAboutDots();
   setupAboutContent();
