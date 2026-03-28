@@ -382,6 +382,18 @@ body {
   margin-top: 4px;
 }
 .proj-image-strip::-webkit-scrollbar { display: none; }
+@media (max-width: 767px) {
+  .proj-media-row {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+  .proj-media-row > * {
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover;
+  }
+}
 .proj-image-strip img {
   flex-shrink: 0;
   width: 80vw;
@@ -1688,8 +1700,9 @@ body.custom-cursor * { cursor: none !important; }
 .proj-hero.revealed .proj-hero-subtitle { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
 .proj-hero.revealed .proj-hero-btns     { opacity: 1; transform: translateY(0); transition-delay: 500ms; }
 
-/* Payments page: blue title, frosted meta tag */
+/* Payments page: blue title, frosted meta tag, black gradient */
 #page-project-payments .proj-hero-title { color: var(--blue); }
+#page-project-payments .proj-hero-gradient { background: linear-gradient(to bottom, rgba(26,62,219,0.35) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.85) 100%); }
 #page-project-payments .proj-meta-tag {
   background: rgba(255,255,255,0.75);
   backdrop-filter: blur(8px);
@@ -1697,7 +1710,8 @@ body.custom-cursor * { cursor: none !important; }
   border: 1px solid rgba(255,255,255,0.4);
   color: var(--ink);
 }
-#page-project-payments .proj-meta-text { color: var(--ink); }
+#page-project-payments .proj-meta-text { color: #fff; }
+#page-project-payments .proj-hero-subtitle { color: #fff; }
 
 /* ── Context-aware nav project title ── */
 #proj-title-wrap { transition: grid-template-rows 320ms var(--ease-enter); }
@@ -1908,7 +1922,7 @@ body.custom-cursor * { cursor: none !important; }
             <span class="project-row-arrow">→</span>
           </a>
           <a class="project-row" onclick="openProject('payments');closeWorkOverlay();return false;" href="#">
-            <div class="project-thumb" style="background:#EAF0FF;background-image:url('Designing Payments/Payments hero.jpg');background-size:cover;background-position:center;"></div>
+            <div class="project-thumb" style="background:#EAF0FF;background-image:url('Designing Payments/Payments hero (Home+Thumb).jpg');background-size:cover;background-position:center;"></div>
             <div class="project-info">
               <div class="project-row-title">Designing Payments on Real-Time Rails</div>
               <div class="project-row-desc">Translated infrastructure into usable business flows.</div>
@@ -2008,7 +2022,7 @@ body.custom-cursor * { cursor: none !important; }
             </div>
           </div>
           <div class="work-card-item">
-            <div class="card-image" style="background:#EAF0FF;background-image:url('Designing Payments/Payments hero.jpg');background-size:cover;background-position:top center;"></div>
+            <div class="card-image" style="background:#EAF0FF;background-image:url('Designing Payments/Payments hero (Home+Thumb).jpg');background-size:cover;background-position:top center;"></div>
             <div class="card-date">2024 – 2026</div>
             <div class="card-title">Designing Payments on Real-Time Rails</div>
             <div class="card-desc">Exploring and designing business use cases on top of real-time payment infrastructure.</div>
@@ -2655,6 +2669,13 @@ body.custom-cursor * { cursor: none !important; }
       </div>
     </section>
 
+    <!-- Image strip -->
+    <div class="proj-image-strip">
+      <img src="Designing Payments/Payments Carrousel 1.png" alt="" />
+      <img src="Designing Payments/Payments Carrousel 2.png" alt="" />
+      <img src="Designing Payments/Payments Carrousel 3.png" alt="" />
+    </div>
+
     <!-- NDA note -->
     <div class="proj-callout-banner">
       <p class="proj-callout-body"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;margin-bottom:1px;"><circle cx="6.5" cy="6.5" r="6" stroke="var(--blue)" stroke-width="1.2"/><rect x="6" y="5.5" width="1" height="4" rx="0.5" fill="var(--blue)"/><rect x="6" y="3.5" width="1" height="1" rx="0.5" fill="var(--blue)"/></svg>Designs have been recreated to respect confidentiality. Product decisions, flows, and principles reflect the original work.</p>
@@ -2662,6 +2683,319 @@ body.custom-cursor * { cursor: none !important; }
 
     <!-- Body -->
     <div class="proj-body">
+
+      <!-- Tabs -->
+      <div class="proj-tabs">
+        <button class="proj-tab-btn active" data-tab="payments-short">Long Story Short<span class="proj-tab-time">5 MIN</span></button>
+        <button class="proj-tab-btn" data-tab="payments-new">The Full Picture<span class="proj-tab-time">10 MIN</span></button>
+        <!-- <button class="proj-tab-btn" data-tab="payments-full">The Complete Story<span class="proj-tab-time">15 MIN</span></button> -->
+      </div>
+
+      <!-- ── TAB: The Full Picture ── -->
+      <div class="proj-tab-panel" id="payments-new">
+        <div class="proj-short-body">
+
+          <!-- Context -->
+          <div class="proj-intro">
+            <p>Real-time payment infrastructure had already changed how people sent money in the region. On the network we operated, P2P transactions were running at over 10 million per month. But business-initiated transactions, payroll, disbursements, and collections, barely reached 30,000. The infrastructure was there. Businesses simply didn't know how to use it. We opened our APIs to change that.</p>
+          </div>
+
+          <!-- Accomplishments -->
+          <div class="proj-short-accomplishments">
+            <p class="proj-short-accomplishments-title">What was accomplished</p>
+            <ul>
+              <li>Business transactions grew from 30K to 2M per month, a 65x increase</li>
+              <li>Product teams went from blank-page integrations to working flows in significantly less time</li>
+              <li>Use cases like instant cash-in and cash-out became standard parts of fintech products</li>
+              <!-- <li>Interoperable cash agents extended financial access to areas without traditional bank infrastructure</li> -->
+            </ul>
+          </div>
+
+          <!-- How the Network Worked -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">How the network worked</h2>
+            </div>
+            <div class="proj-serif">
+              <p>The real-time network connected banks so money could move between any two accounts instantly, regardless of institution. Banks could connect to the network directly, through our hub, or through another third party. We operated the hub and managed connections for several of the banks on the network.</p>
+            </div>
+            <p class="proj-sub-heading">Aliases</p>
+            <div class="proj-serif">
+              <p>To send or receive money, users didn't need full account numbers. The network used phone numbers as aliases. A single number could be linked to multiple accounts across different banks, added automatically when sending or receiving a transaction, or manually through each bank's app.</p>
+            </div>
+            <div class="proj-media-row" style="display:flex;gap:8px;height:420px">
+              <img class="proj-img" src="Designing Payments/alias diagram.png" alt="Alias diagram" style="flex:60;min-width:0;width:0;height:100%;object-fit:cover"/>
+              <video class="proj-img" style="flex:40;min-width:0;width:100%;height:100%;object-fit:cover" loop muted playsinline>
+                <source src="Designing Payments/Send Money.mp4" type="video/mp4">
+              </video>
+            </div>
+            <p class="proj-sub-heading">Receiving money</p>
+            <div class="proj-serif">
+              <p>When receiving a transaction, if a user had one account linked to their number, it arrived automatically. If they had multiple accounts, they needed to complete an acceptance flow in whichever app they wanted to receive the money. Users could also set a default account to skip this step entirely.</p>
+            </div>
+            <p class="proj-sub-heading">Request-to-Pay</p>
+            <div class="proj-serif">
+              <p>Request-to-Pay was originally launched for P2P transactions. Instead of a sender initiating a transfer, the receiver could request money directly to the sender's phone number. The experience was clean, but adoption was low. Users weren't yet in the habit of requesting payments from each other.</p>
+              <p>The real value surfaced on the business side. A merchant or service provider sending a payment request to a customer's phone number, with one-tap approval, no card, no redirect. We focused on extracting that value through business transaction flows.</p>
+            </div>
+            <video class="proj-img" loop muted playsinline><source src="Designing Payments/Request Creation.mp4" type="video/mp4"></video>
+          </div>
+
+          <!-- Stage 1 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 1</span>
+              <h2 class="proj-section-title">Building the core flows</h2>
+              <p class="proj-short-challenge">More than 50 fintechs integrated. But only 4 or 5 were generating meaningful volume. The APIs worked, the problem was that teams didn't know what to build with them. Each fintech was inventing their own flows from scratch, leading to inconsistent experiences, long cycles, and many simply stalling.</p>
+            </div>
+            <div class="proj-serif">
+              <p>Our hub connected banks to the real-time network. The connection itself was straightforward, but we saw an opportunity beyond it. By opening APIs on top of that connection, businesses could initiate real-time transactions directly, without relying on the bank's traditional channels.</p>
+              <p>This created a new model: banks gained a new revenue stream by offering RTP capabilities to their clients, and those clients gained the independence to build their own payment flows. For us, it meant more transactions running on our platform and entirely new use cases beyond standard bank-initiated flows.</p>
+            </div>
+            <video class="proj-img" loop muted playsinline><source src="Designing Payments/1. Connection.mp4" type="video/mp4"></video>
+            <p class="proj-sub-heading">Cash-in</p>
+            <div class="proj-serif">
+              <p>A user moves money into a wallet or platform from any bank on the network. We defined how the user is identified by phone number, how they select the source account, and how the transaction is confirmed. Because the network is interoperable, the source can be any linked account, not just one specific bank.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <video class="proj-img" loop muted playsinline><source src="Designing Payments/3. Cash-in flow with request.mp4" type="video/mp4"></video>
+              <div class="proj-media-row" style="display:flex;gap:8px">
+                <img class="proj-img" src="Designing Payments/Cash-in +1.png" alt="Cash-in flow detail" style="flex:1;min-width:0;width:0"/>
+                <img class="proj-img" src="Designing Payments/Cash-in +2.png" alt="Cash-in flow detail" style="flex:1;min-width:0;width:0"/>
+              </div>
+            </div>
+            <p class="proj-sub-heading">Cash-out</p>
+            <div class="proj-serif">
+              <p>A user moves money out of a platform to any bank account on the network. The flow focuses on destination selection, validation, and instant confirmation. The experience removes uncertainty, users know the money arrived, immediately.</p>
+            </div>
+            <video class="proj-img" loop muted playsinline><source src="Designing Payments/4. Cash-out flow.mp4" type="video/mp4"></video>
+            <div class="proj-serif">
+              <p>By defining these two flows as templates, fintechs could move from API access to working product significantly faster, with far fewer false starts. These became the foundation every other use case was built on.</p>
+            </div>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 2</span>
+              <h2 class="proj-section-title">Expanding to specific use cases</h2>
+              <p class="proj-short-challenge">With cash-in and cash-out as a foundation, the next step was applying them to specific business contexts. Each use case had its own constraints, recurring timing and scale, that required adapting the core flows rather than reinventing them.</p>
+            </div>
+            <p class="proj-sub-heading">Service payments</p>
+            <div class="proj-serif">
+              <p>Utility bills, streaming services, and recurring collections in the region relied on physical cards or manual transfers. Both created friction for users and uncertainty for businesses.</p>
+              <p>Real-time Request-to-Pay changed this. A service provider schedules a payment request tied directly to service delivery. No payment, no service. The user receives a notification, reviews the amount, and approves. No card, no manual transfer, no forgotten payments.</p>
+              <p>For businesses, collection became predictable and instant. For users, every payment was visible and intentional. A simpler model for both sides.</p>
+            </div>
+            <video class="proj-img" loop muted playsinline><source src="Designing Payments/Accept a request.mp4" type="video/mp4"></video>
+            <p class="proj-sub-heading">File-based payments and requests</p>
+            <div class="proj-serif">
+              <p>Some use cases required sending or requesting payments to hundreds or thousands of people at once, payroll, loan disbursements, mass collections. Doing this transaction by transaction wasn't viable.</p>
+              <p>We designed a file-based flow where businesses could upload a CSV with recipient details and amounts. The system validated the file, processed each transaction individually against the network, and returned a confirmation report. The same approach worked for mass payment requests, a single file could trigger individual RtP requests to each recipient's phone number.</p>
+              <p>What previously required bank infrastructure and days of processing could now be initiated by any business with API access, with funds arriving instantly across any bank on the network.</p>
+            </div>
+            <video class="proj-img" loop muted playsinline><source src="Designing Payments/6. Mass payments.mp4" type="video/mp4"></video>
+            <div class="proj-serif">
+              <p>Small neighborhood stores were already informal financial access points. By combining real-time payments with simple POS tools, they became interoperable cash agents, letting anyone deposit or withdraw money for any bank at any of those locations.</p>
+            </div>
+            <!-- placeholder hidden until asset is ready -->
+            <div class="proj-serif">
+              <p>Each of these flows was documented as a product template, covering the full screen-by-screen experience, edge cases, and error states. Banks shared these directly with their business clients, giving them a clear reference to build on top of the APIs without having to interpret the infrastructure themselves.</p>
+              <p>The goal was the same as Stage 1: reduce the gap between API access and working product. But here the complexity was higher, timing, scale, and service logic, so the templates did more of the heavy lifting.</p>
+            </div>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 3</span>
+              <h2 class="proj-section-title">Adapting to regulation</h2>
+              <p class="proj-short-challenge">The central bank introduced new regulations that restructured how aliases worked. The flexible multi-account model was replaced. Each alias now linked to one specific account. For users with a single linked account, migration was automatic. For everyone else, re-registration was required.</p>
+            </div>
+            <div class="proj-serif">
+              <p>Every flow we had defined assumed the old model. But beyond the redesign work, the regulation itself was the first obstacle. A dense written document that banks and businesses had to interpret on their own, leading to confusion, inconsistent implementations, and slow adoption.</p>
+            </div>
+            <p class="proj-sub-heading">Translating regulation into UX</p>
+            <div class="proj-serif">
+              <p>We treated the regulation as a design brief. Our response was to fully translate it into UX templates, covering every scenario the new rules introduced, so banks and their business clients didn't have to interpret the document themselves. Clear flows, edge cases documented, ready to implement.</p>
+            </div>
+            <img class="proj-img" src="Designing Payments/New regulation.png" alt="New regulation"/>
+            <p class="proj-sub-heading">New alias types</p>
+            <div class="proj-serif">
+              <p>The new model also expanded what an alias could be. Beyond phone numbers, users and businesses could now register email addresses, national IDs, or autogenerated alphanumeric codes, each linked to one specific account. More flexibility in how you were identified, with stricter control over where money landed.</p>
+            </div>
+            <img class="proj-img" src="Designing Payments/New alias types.png" alt="New alias types"/>
+            <p class="proj-sub-heading">Single-use aliases</p>
+            <div class="proj-serif">
+              <p>This also opened an unexpected capability. By generating an alias tied to a specific payment and deprecating it once the transaction completed, we had a reliable way to verify payment. A unique alias, one transaction, one confirmation. Clean and auditable.</p>
+            </div>
+            <div style="display:flex;gap:8px;height:360px">
+              <img class="proj-img" src="Designing Payments/Singel use 1.png" alt="Single-use alias" style="flex:35;min-width:0;width:0;height:100%;object-fit:cover"/>
+              <img class="proj-img" src="Designing Payments/Singel use 2.png" alt="Single-use alias" style="flex:65;min-width:0;width:0;height:100%;object-fit:cover"/>
+            </div>
+            <div class="proj-serif">
+              <p>What started as a forced redesign became a design opportunity. The regulation brought clarity the old system never had, and the new alias types added flexibility and verification capabilities that hadn't existed before.</p>
+            </div>
+          </div>
+
+          <!-- Wrong Turn -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">A wrong turn</h2>
+            </div>
+            <div class="proj-serif">
+              <p>We bet early on payment service providers as the fastest path to scale. They already distributed transactional flows, had the infrastructure, and several were genuinely interested.</p>
+              <p>What we learned is that PSPs don't create new payment behaviors. They distribute existing ones. Their model depends on flows that are already fully adopted, already proven on traditional rails. Asking them to build something new meant asking them to take on market risk they weren't set up for.</p>
+              <p>They preferred to wait for the market to figure it out first, then adopt once it was safe. That was a reasonable call on their part. It just wasn't the shortcut we thought it would be.</p>
+              <p>The real traction came from fintechs building new products, not from distributors of existing ones.</p>
+            </div>
+          </div>
+
+          <!-- Outcome -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Outcome</h2>
+            </div>
+            <div class="proj-short-metrics">
+              <p class="proj-short-metrics-context">At peak business transaction volume</p>
+              <div class="proj-short-metrics-grid">
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">65x</span>
+                  <span class="proj-short-metric-label">growth in business transactions, from 30K to 2M per month</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">40M</span>
+                  <span class="proj-short-metric-label">P2P transactions per month on the same network, showing remaining headroom</span>
+                </div>
+              </div>
+            </div>
+            <div class="proj-serif">
+              <p>Most of the volume was still coming from a small group of early adopters who had figured out how to use the system well. The broader base of integrated fintechs had barely started. The potential was clearly much larger.</p>
+            </div>
+          </div>
+
+          <!-- Reflection -->
+          <p class="proj-short-reflection">This work was less about designing interfaces and more about designing understanding. The infrastructure was already powerful. The challenge was making it legible, turning technical capability into something product teams could see themselves using. By defining flows instead of features, we created a shared language for how real-time transactions work. That clarity was the real product.</p>
+
+        </div>
+      </div>
+
+      <!-- ── TAB: Long Story Short ── -->
+      <div class="proj-tab-panel active" id="payments-short">
+        <div class="proj-short-body">
+
+          <!-- Context -->
+          <div class="proj-intro">
+            <p>Business transactions on a real-time payment network were running at 30K per month while P2P hit 10M on the same infrastructure. The connection worked. The problem was that businesses didn't know what to build on top of it. We opened APIs and defined the flows.</p>
+          </div>
+
+          <!-- Accomplishments -->
+          <div class="proj-short-accomplishments">
+            <p class="proj-short-accomplishments-title">What was accomplished</p>
+            <ul>
+              <li>Business transactions grew from 30K to 2M per month, a 65x increase</li>
+              <li>Product teams went from blank-page integrations to working flows in significantly less time</li>
+              <li>Use cases like instant cash-in and cash-out became standard parts of fintech products</li>
+              <!-- <li>Interoperable cash agents extended financial access to areas without traditional bank infrastructure</li> -->
+            </ul>
+          </div>
+
+          <!-- Stage 1 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 1</span>
+              <h2 class="proj-section-title">Building the core flows</h2>
+              <p class="proj-short-challenge">50+ fintechs had API access. Only 4 or 5 were generating meaningful volume. The connection worked, but there was no reference for what to build on top of it.</p>
+            </div>
+            <div class="proj-short-decisions">
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Our hub connected banks to the real-time network. By opening APIs on top of that connection, businesses could initiate transactions directly, without relying on the bank's traditional channels.</p>
+                <video class="proj-img" loop muted playsinline><source src="Designing Payments/1. Connection.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Cash-in: user identified by phone number, source account selected, transaction confirmed. One clear pattern any fintech could start from.</p>
+                <video class="proj-img" loop muted playsinline><source src="Designing Payments/3. Cash-in flow with request.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Cash-out: destination selection, validation, instant confirmation. Users knew the money arrived. No ambiguity in either direction.</p>
+                <video class="proj-img" loop muted playsinline><source src="Designing Payments/4. Cash-out flow.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 2</span>
+              <h2 class="proj-section-title">Expanding to specific use cases</h2>
+              <p class="proj-short-challenge">Core flows needed to adapt to recurring timing, scale, and service logic specific to each use case.</p>
+            </div>
+            <div class="proj-short-decisions">
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Service payments: provider sends a Request-to-Pay tied to service delivery, user approves with one tap. No card, no redirect, no forgotten payments.</p>
+                <video class="proj-img" loop muted playsinline><source src="Designing Payments/Accept a request.mp4" type="video/mp4"></video>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Mass payments: upload a CSV, each transaction runs individually on the network, confirmation report returned. Payroll and disbursements without bank infrastructure.</p>
+                <video class="proj-img" loop muted playsinline><source src="Designing Payments/6. Mass payments.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 3</span>
+              <h2 class="proj-section-title">Adapting to regulation</h2>
+              <p class="proj-short-challenge">The central bank required each alias to link to one specific account. Every flow needed to be redesigned and re-documented from scratch.</p>
+            </div>
+            <div class="proj-short-decisions">
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">We treated the regulation as a design brief. Every scenario was translated into UX templates so banks and their clients didn't have to interpret the document themselves.</p>
+                <img class="proj-img" src="Designing Payments/New regulation.png" alt="New regulation"/>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">New alias types: beyond phone numbers, users could register email addresses, national IDs, or alphanumeric codes, each linked to one specific account.</p>
+                <img class="proj-img" src="Designing Payments/New alias types.png" alt="New alias types"/>
+              </div>
+              <div class="proj-short-decision">
+                <p class="proj-short-decision-copy">Single-use aliases: one unique alias per transaction, deprecated after completion. A clean payment verification method that came out of the regulatory redesign.</p>
+                <div class="proj-media-row" style="display:flex;gap:8px;height:360px">
+                  <img class="proj-img" src="Designing Payments/Singel use 1.png" alt="Single-use alias" style="flex:35;min-width:0;width:0;height:100%;object-fit:cover"/>
+                  <img class="proj-img" src="Designing Payments/Singel use 2.png" alt="Single-use alias" style="flex:65;min-width:0;width:0;height:100%;object-fit:cover"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Outcome -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Outcome</h2>
+            </div>
+            <div class="proj-short-metrics">
+              <p class="proj-short-metrics-context">At peak business transaction volume</p>
+              <div class="proj-short-metrics-grid">
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">65x</span>
+                  <span class="proj-short-metric-label">growth in business transactions, from 30K to 2M per month</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">40M</span>
+                  <span class="proj-short-metric-label">P2P transactions per month on the same network, showing remaining headroom</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reflection -->
+          <p class="proj-short-reflection">This work was less about designing interfaces and more about designing understanding. The infrastructure was already powerful. The challenge was making it legible, turning technical capability into something product teams could see themselves using. By defining flows instead of features, we created a shared language for how real-time transactions work. That clarity was the real product.</p>
+
+        </div>
+      </div><!-- /payments-short tab panel -->
+
+      <!-- ── TAB: The Complete Story ── -->
+      <div class="proj-tab-panel" id="payments-full">
 
       <!-- TLDR / Intro -->
       <div class="proj-intro">
@@ -2863,6 +3197,8 @@ body.custom-cursor * { cursor: none !important; }
         </div>
       </div>
 
+      </div><!-- /payments-full tab panel -->
+
     </div><!-- /proj-body -->
 
     <!-- Footer -->
@@ -2919,9 +3255,10 @@ function showPage(id) {
   document.getElementById('nav-work-btn').classList.remove('active');
   const isProject = id.startsWith('project-');
   const themeColor = isProject ? '#ffffff' : '#FFE3EE';
-  document.body.style.background = isProject
-    ? 'linear-gradient(to bottom, #FFE3EE 0px, #ffffff 340px)'
-    : themeColor;
+  const topGradient = id === 'project-payments'
+    ? 'linear-gradient(to bottom, #D6E4FF 0px, #ffffff 340px)'
+    : 'linear-gradient(to bottom, #FFE3EE 0px, #ffffff 340px)';
+  document.body.style.background = isProject ? topGradient : themeColor;
   document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
   if (id === 'home' && window._resizeHeroDots) window._resizeHeroDots();
   if (id === 'about' && window._resizeAboutDots) {
@@ -3464,39 +3801,38 @@ function setupVideoAutoplay() {
 ════════════════════════════════ */
 function setupImageStrip() {
   if (window.matchMedia('(min-width: 768px)').matches) return;
-  const strip = document.querySelector('.proj-image-strip');
-  if (!strip) return;
+  document.querySelectorAll('.proj-image-strip').forEach(strip => {
+    // Clone first and last for infinite illusion
+    const imgs = Array.from(strip.querySelectorAll('img'));
+    const first = imgs[0].cloneNode();
+    const last  = imgs[imgs.length - 1].cloneNode();
+    strip.appendChild(first);
+    strip.insertBefore(last, imgs[0]);
 
-  // Clone first and last for infinite illusion
-  const imgs = Array.from(strip.querySelectorAll('img'));
-  const first = imgs[0].cloneNode();
-  const last  = imgs[imgs.length - 1].cloneNode();
-  strip.appendChild(first);
-  strip.insertBefore(last, imgs[0]);
+    // Start on first real image (index 1 after prepend)
+    const imgWidth = () => strip.querySelector('img').offsetWidth + 4;
+    strip.scrollLeft = imgWidth();
 
-  // Start on first real image (index 1 after prepend)
-  const imgWidth = () => strip.querySelector('img').offsetWidth + 4;
-  strip.scrollLeft = imgWidth();
-
-  let jumping = false;
-  strip.addEventListener('scroll', () => {
-    if (jumping) return;
-    const w = imgWidth();
-    const allImgs = strip.querySelectorAll('img');
-    const total = allImgs.length;
-    // Jumped past last clone → reset to first real
-    if (strip.scrollLeft >= w * (total - 1)) {
-      jumping = true;
-      strip.scrollLeft = w;
-      jumping = false;
-    }
-    // Jumped before first clone → reset to last real
-    if (strip.scrollLeft <= 0) {
-      jumping = true;
-      strip.scrollLeft = w * (total - 2);
-      jumping = false;
-    }
-  }, { passive: true });
+    let jumping = false;
+    strip.addEventListener('scroll', () => {
+      if (jumping) return;
+      const w = imgWidth();
+      const allImgs = strip.querySelectorAll('img');
+      const total = allImgs.length;
+      // Jumped past last clone → reset to first real
+      if (strip.scrollLeft >= w * (total - 1)) {
+        jumping = true;
+        strip.scrollLeft = w;
+        jumping = false;
+      }
+      // Jumped before first clone → reset to last real
+      if (strip.scrollLeft <= 0) {
+        jumping = true;
+        strip.scrollLeft = w * (total - 2);
+        jumping = false;
+      }
+    }, { passive: true });
+  });
 }
 
 /* ════════════════════════════════
