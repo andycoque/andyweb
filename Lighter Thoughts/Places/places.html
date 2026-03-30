@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Places</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0D0D0D;
+    }
+
+    /* ── Env backgrounds: fill the full viewport ── */
+    .env-bg {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      pointer-events: none;
+    }
+    .env-bg.active { opacity: 1; }
+
+    #bg-salt   { background: linear-gradient(180deg, #1E2E38 0%, #3B5A6A 50%, #8FAAB7 100%); }
+    #bg-aurora { background: #1C1F2E; }
+    #bg-valley { background: radial-gradient(ellipse 55% 45% at 47% 48%, #282828 0%, #161616 45%, #0D0D0D 100%); }
+
+    /* ── World coordinate space: fixed 1920×1080, centered ── */
+    /* Avatar sits at (960, 540) = viewport center */
+    .world-coords {
+      position: fixed;
+      left: calc(50vw - 960px);
+      top:  calc(50vh - 540px);
+      width: 1920px;
+      height: 1080px;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    /* ── Env layers: stacked inside world-coords ── */
+    .env-layer {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      overflow: visible;
+    }
+    .env-layer.active { opacity: 1; }
+
+    /* ════ SALT FLAT ════ */
+    .water-layer {
+      position: absolute;
+      width: 4838px;
+      left: 50%;
+      top: 864px;
+      transform: translate(-50%, -50%);
+      opacity: 0; /* hidden until entry animation */
+    }
+
+    @keyframes water-enter {
+      0%   { opacity: 0; transform: translate(-50%, calc(-50% + 10px)); }
+      100% { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    @keyframes water-exit {
+      0%   { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes reflection-enter {
+      0%   { opacity: 0; }
+      100% { opacity: 0.5; }
+    }
+
+
+    /* ════ AURORA ════ */
+    /* ── Stars ── */
+    .star {
+      position: absolute;
+      background: white;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      animation: star-twinkle ease-in-out infinite;
+    }
+    @keyframes star-twinkle {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50%       { opacity: 0.2; transform: scale(0.6); }
+    }
+
+    /* ── Flying star ── */
+    .flying-star {
+      position: absolute;
+      pointer-events: none;
+    }
+    @keyframes tail-grow {
+      0%   { stroke-dashoffset: var(--tail-len, 120); }
+      100% { stroke-dashoffset: 0; }
+    }
+
+    @keyframes fly-across {
+      0%   { transform: translate(0, 0); opacity: 0; }
+      5%   { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translate(200px, -280px); opacity: 0; }
+    }
+
+    /* ── Aurora canvas ── */
+    #aurora-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 50%;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .islands-layer {
+      position: absolute;
+      width: 1920px;
+      left: 0;
+      top: 406px;
+      opacity: 0;
+    }
+    @keyframes islands-enter {
+      0%   { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ════ VALLEY OF THOUGHTS ════ */
+    .totem {
+      position: absolute;
+      pointer-events: none;
+      transform-origin: bottom center;
+      opacity: 0; /* hidden until entry animation */
+    }
+
+    @keyframes totem-enter {
+      0%   { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes totem-exit {
+      0%   { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-14px); }
+    }
+
+    /* ── Birds ── */
+    @keyframes bird-fly {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-2200px); }
+    }
+    @keyframes wing-flap {
+      0%, 100% { transform: scaleY(1); }
+      50%       { transform: scaleY(0.3); }
+    }
+
+    .farol { position: absolute; width: 37px; }
+
+    @keyframes shoot {
+      0%   { opacity: 0; transform: translate(0,0); }
+      10%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(-180px, 120px); }
+    }
+    .shooting-star {
+      position: absolute;
+      pointer-events: none;
+      animation: shoot linear infinite;
+    }
+
+    /* ════ AVATAR ════ */
+    .avatar-stack {
+      position: absolute;
+      left: 960px;
+      top: 540px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .avatar-img {
+      position: absolute;
+      width: 80px;
+      transform: translate(-50%, -50%);
+    }
+
+    .avatar-aqua {
+      position: absolute;
+      width: 80px;
+      top: 42px;
+      transform: translate(-50%, -50%);
+      overflow: visible;
+    }
+
+    @keyframes aqua-pulse {
+      0%   { transform: scale(0.6); opacity: 0; }
+      30%  { opacity: 1; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .aqua-ring { transform-origin: 30px 9.5px; animation: aqua-pulse 3s ease-out infinite; }
+    .aqua-ring-1 { animation-delay: 0s; }
+    .aqua-ring-2 { animation-delay: 0.6s; }
+    .aqua-ring-3 { animation-delay: 1.2s; }
+
+    .avatar-reflection {
+      position: absolute;
+      width: 44px;
+      top: 42px;
+      transform: translateX(-50%);
+      opacity: 0.5;
+    }
+
+    @keyframes ripple-out {
+      from { transform: scale(0.2); opacity: 0.8; }
+      to   { transform: scale(2.4); opacity: 0; }
+    }
+
+    /* ── Fullscreen button ── */
+    .fullscreen-toggle {
+      position: fixed;
+      right: 40px;
+      bottom: 25px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.68);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset, 0 8px 24px rgba(0,0,0,0.22);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      z-index: 9999;
+      transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+    .fullscreen-toggle:hover {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9);
+      transform: translateY(-1px);
+    }
+    .fullscreen-toggle:active { transform: translateY(0); }
+    .fullscreen-toggle svg {
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+    .fullscreen-toggle .icon-exit { opacity: 0; transform: scale(0.9); }
+    .fullscreen-toggle.is-fullscreen .icon-enter { opacity: 0; transform: scale(0.9); }
+    .fullscreen-toggle.is-fullscreen .icon-exit  { opacity: 1; transform: scale(1); }
+
+    /* ── Tabs ── */
+    .tabs {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: 4px;
+      z-index: 9999;
+      pointer-events: all;
+      backdrop-filter: blur(12px);
+    }
+
+    .tab-btn {
+      font-family: "Kohinoor Bangla", sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.45);
+      background: transparent;
+      border: none;
+      border-radius: 100px;
+      padding: 7px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      z-index: 1;
+    }
+    .tab-btn.active { color: #1C1F2E; background: transparent; }
+
+    .tab-pill {
+      position: absolute;
+      top: 4px;
+      height: calc(100% - 8px);
+      background: #fff;
+      border-radius: 100px;
+      pointer-events: none;
+      transition: left 300ms cubic-bezier(0.4, 0, 0.2, 1), width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Backgrounds — fill viewport, no content -->
+  <div class="env-bg active" id="bg-valley"></div>
+  <div class="env-bg" id="bg-salt"></div>
+  <div class="env-bg" id="bg-aurora"></div>
+
+  <!-- World coordinate space — fixed pixels, no resizing -->
+  <div class="world-coords">
+
+    <!-- ENV 2: Salt Flat -->
+    <div class="env-layer" id="env-salt">
+      <img class="water-layer" src="Salt Lake/Water.svg" alt="" />
+      <div id="rippleLayer" style="position:absolute;inset:0;overflow:visible;"></div>
+    </div>
+
+    <!-- ENV 2: Aurora -->
+    <div class="env-layer" id="env-aurora">
+      <canvas id="aurora-canvas"></canvas>
+      <div id="stars" style="position:absolute;inset:0;pointer-events:none;"></div>
+      <img class="islands-layer" src="Auroras/Islands.svg" alt="" />
+      <div id="shootingStars" style="position:absolute;inset:0;overflow:hidden;"></div>
+    </div>
+
+    <!-- ENV 1: Valley of Thoughts -->
+    <div class="env-layer active" id="env-valley">
+      <!-- Left totem -->
+      <img class="totem" src="Valley of thoughts/Totem.svg" alt=""
+           style="left:445px; top:491px; width:95px;" />
+      <!-- Top-right totem -->
+      <img class="totem" src="Valley of thoughts/Totem.svg" alt=""
+           style="left:1313px; top:288px; width:95px;" />
+      <!-- Bottom-right totem -->
+      <img class="totem" src="Valley of thoughts/Totem.svg" alt=""
+           style="left:1161px; top:652px; width:95px;" />
+      <!-- Birds container -->
+      <div id="birds-valley" style="position:absolute;inset:0;overflow:visible;pointer-events:none;"></div>
+    </div>
+
+    <!-- Avatar — always at (960,540) = viewport center -->
+    <div class="avatar-stack">
+      <img class="avatar-reflection" src="Salt Lake/avatar reflection.svg" alt="" style="display:none;" />
+      <svg class="avatar-aqua" width="60" height="19" viewBox="0 0 60 19" fill="none" style="display:none;">
+        <path class="aqua-ring aqua-ring-1" d="M30 5.5C34.3896 5.5 38.347 5.94493 41.1924 6.65625C42.6188 7.01286 43.738 7.42961 44.4883 7.87305C45.272 8.3363 45.5 8.73363 45.5 9C45.5 9.26637 45.272 9.6637 44.4883 10.127C43.738 10.5704 42.6188 10.9871 41.1924 11.3438C38.347 12.0551 34.3896 12.5 30 12.5C25.6104 12.5 21.653 12.0551 18.8076 11.3438C17.3812 10.9871 16.262 10.5704 15.5117 10.127C14.728 9.6637 14.5 9.26637 14.5 9C14.5 8.73363 14.728 8.3363 15.5117 7.87305C16.262 7.42961 17.3812 7.01286 18.8076 6.65625C21.653 5.94493 25.6104 5.5 30 5.5Z" stroke="#AFCDD6"/>
+        <path class="aqua-ring aqua-ring-2" d="M30 2.25C36.3335 2.25 42.0578 3.03135 46.1904 4.28906C48.2583 4.91842 49.9141 5.66344 51.0469 6.47852C52.1853 7.29775 52.75 8.15315 52.75 9C52.75 9.84685 52.1853 10.7022 51.0469 11.5215C49.9141 12.3366 48.2583 13.0816 46.1904 13.7109C42.0578 14.9686 36.3335 15.75 30 15.75C23.6665 15.75 17.9422 14.9686 13.8096 13.7109C11.7417 13.0816 10.0859 12.3366 8.95312 11.5215C7.81473 10.7022 7.25 9.84685 7.25 9C7.25 8.15315 7.81473 7.29775 8.95312 6.47852C10.0859 5.66344 11.7417 4.91842 13.8096 4.28906C17.9422 3.03135 23.6665 2.25 30 2.25Z" stroke="#AFCDD6" stroke-width="0.5"/>
+        <path class="aqua-ring aqua-ring-3" d="M30 0.0996094C38.2768 0.0996094 45.7659 1.16269 51.1826 2.87793C53.8913 3.73567 56.0765 4.75478 57.582 5.88184C59.0894 7.01037 59.9004 8.23435 59.9004 9.5C59.9004 10.7656 59.0894 11.9896 57.582 13.1182C56.0765 14.2452 53.8913 15.2643 51.1826 16.1221C45.7659 17.8373 38.2768 18.9004 30 18.9004C21.7232 18.9004 14.2341 17.8373 8.81738 16.1221C6.10873 15.2643 3.92354 14.2452 2.41797 13.1182C0.910616 11.9896 0.0996094 10.7656 0.0996094 9.5C0.0996094 8.23435 0.910616 7.01037 2.41797 5.88184C3.92354 4.75478 6.10873 3.73567 8.81738 2.87793C14.2341 1.16269 21.7232 0.0996094 30 0.0996094Z" stroke="#AFCDD6" stroke-width="0.2"/>
+      </svg>
+      <img class="avatar-img" src="Salt Lake/Avatar.svg" alt="" />
+    </div>
+
+  </div>
+
+  <!-- Fullscreen button -->
+  <button class="fullscreen-toggle" id="fullscreenToggle" aria-label="Enter fullscreen">
+    <svg class="icon-enter" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path d="M4 4L10 10M20 4L14 10M20 20L14 14M4 20L10 14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </svg>
+    <svg class="icon-exit" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 4L9 9M20 4L15 9M20 20L15 15M4 20L9 15" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path d="M9 9V6M9 9H6M15 9V6M15 9H18M15 15V18M15 15H18M9 15V18M9 15H6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </svg>
+  </button>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab-pill"></div>
+    <button class="tab-btn active" data-env="0">Valley of Thoughts</button>
+    <button class="tab-btn" data-env="1">Salt Flat of Reflection</button>
+    <button class="tab-btn" data-env="2">Auroras of Emotion</button>
+  </div>
+
+  <script>
+    /* ── Fullscreen ── */
+    const fullscreenToggle = document.getElementById('fullscreenToggle');
+    let isFakeFs = false;
+
+    fullscreenToggle.addEventListener('click', async () => {
+      // Native fullscreen (desktop / Android Chrome)
+      if (document.fullscreenEnabled) {
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+          return;
+        } catch {}
+      }
+      // Fallback: ask parent page to expand the iframe (iOS Safari)
+      isFakeFs = !isFakeFs;
+      window.parent.postMessage({ type: 'proto-fullscreen', active: isFakeFs }, '*');
+      fullscreenToggle.classList.toggle('is-fullscreen', isFakeFs);
+      fullscreenToggle.setAttribute('aria-label', isFakeFs ? 'Exit fullscreen' : 'Enter fullscreen');
+    });
+    document.addEventListener('fullscreenchange', () => {
+      const isFs = Boolean(document.fullscreenElement);
+      fullscreenToggle.classList.toggle('is-fullscreen', isFs);
+      fullscreenToggle.setAttribute('aria-label', isFs ? 'Exit fullscreen' : 'Enter fullscreen');
+    });
+
+    /* ── Aurora renderer ── */
+    const auroraCanvas = document.getElementById('aurora-canvas');
+    const ctx = auroraCanvas.getContext('2d');
+
+    function resizeAurora() {
+      auroraCanvas.width  = window.innerWidth;
+      auroraCanvas.height = window.innerHeight * 0.5;
+    }
+    resizeAurora();
+    window.addEventListener('resize', resizeAurora);
+
+    // Each band: baseY, amplitude, speed, thickness, color, phase offset
+    const bands = [
+      { baseY: 0.38, amp: 0.12, spd: 0.00018, thick: 0.22, color: [63, 140, 80],  phase: 0      },
+      { baseY: 0.22, amp: 0.09, spd: 0.00013, thick: 0.16, color: [50, 160, 100], phase: 1.8    },
+      { baseY: 0.10, amp: 0.07, spd: 0.00021, thick: 0.12, color: [90, 180, 70],  phase: 3.5    },
+    ];
+
+    function drawAurora(ts) {
+      const W = auroraCanvas.width;
+      const H = auroraCanvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      bands.forEach(b => {
+        const points = 6;
+        const xs = Array.from({length: points + 1}, (_, i) => (i / points) * W);
+
+        // Top edge of ribbon — wavy
+        const topY = xs.map((x, i) => {
+          const t = ts * b.spd + b.phase + i * 0.9;
+          return (b.baseY + Math.sin(t) * b.amp + Math.sin(t * 1.7 + 1) * b.amp * 0.4) * H;
+        });
+
+        // Bottom edge — wavy but offset, creates ribbon thickness
+        const botY = topY.map((y, i) => {
+          const t = ts * b.spd * 0.8 + b.phase + i * 0.9 + 2;
+          return y + (b.thick + Math.sin(t) * 0.04) * H;
+        });
+
+        // Build path with bezier curves through points
+        const path = new Path2D();
+        path.moveTo(xs[0], topY[0]);
+        for (let i = 0; i < points; i++) {
+          const cpx = (xs[i] + xs[i+1]) / 2;
+          path.quadraticCurveTo(xs[i], topY[i], cpx, (topY[i] + topY[i+1]) / 2);
+        }
+        path.lineTo(xs[points], topY[points]);
+        path.lineTo(xs[points], botY[points]);
+        for (let i = points; i > 0; i--) {
+          const cpx = (xs[i] + xs[i-1]) / 2;
+          path.quadraticCurveTo(xs[i], botY[i], cpx, (botY[i] + botY[i-1]) / 2);
+        }
+        path.lineTo(xs[0], botY[0]);
+        path.closePath();
+
+        // Gradient fill — fade top and bottom edges
+        const midY = (topY[Math.floor(points/2)] + botY[Math.floor(points/2)]) / 2;
+        const grad = ctx.createLinearGradient(0, topY[0], 0, botY[0] + b.thick * H);
+        const [r, g, bl] = b.color;
+        grad.addColorStop(0,   `rgba(${r},${g},${bl},0)`);
+        grad.addColorStop(0.3, `rgba(${r},${g},${bl},0.32)`);
+        grad.addColorStop(0.7, `rgba(${r},${g},${bl},0.32)`);
+        grad.addColorStop(1,   `rgba(${r},${g},${bl},0)`);
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.filter = 'blur(18px)';
+        ctx.fillStyle = grad;
+        ctx.fill(path);
+        ctx.restore();
+      });
+
+      requestAnimationFrame(drawAurora);
+    }
+    requestAnimationFrame(drawAurora);
+
+    let currentEnv = 0;
+    const envCount = 3;
+    let transitioning = false;
+
+    /* ── Auroras: entry ── */
+    function playAuroraEntry() {
+      const islands = document.querySelector('.islands-layer');
+      const stars   = document.getElementById('stars');
+      const canvas  = document.getElementById('aurora-canvas');
+
+      // Reset
+      islands.style.animation = 'none';
+      islands.style.opacity   = '0';
+      stars.style.opacity     = '0';
+      canvas.style.opacity    = '0';
+      void islands.offsetWidth;
+
+      // 1. Islands rise in
+      setTimeout(() => {
+        islands.style.animation = 'islands-enter 2.5s ease-out forwards';
+      }, 400);
+
+      // 2. Stars fade in after islands settle
+      setTimeout(() => {
+        stars.style.transition = 'opacity 1.5s ease-out';
+        stars.style.opacity    = '1';
+      }, 400 + 2500);
+
+      // 3. Aurora fades in last
+      setTimeout(() => {
+        canvas.style.transition = 'opacity 2s ease-out';
+        canvas.style.opacity    = '1';
+      }, 400 + 2500 + 800);
+    }
+
+    /* ── Auroras: exit ── */
+    function playAuroraExit(callback) {
+      const islands = document.querySelector('.islands-layer');
+      const stars   = document.getElementById('stars');
+      const canvas  = document.getElementById('aurora-canvas');
+
+      // 1. Aurora + stars fade out simultaneously
+      canvas.style.transition = 'opacity 0.6s ease-in';
+      canvas.style.opacity    = '0';
+      stars.style.transition  = 'opacity 0.6s ease-in';
+      stars.style.opacity     = '0';
+
+      // 2. Islands sink and fade out
+      setTimeout(() => {
+        islands.style.opacity   = '1';
+        islands.style.transform = 'translateY(0)';
+        islands.style.animation = 'none';
+        void islands.offsetWidth;
+        islands.style.transition = 'opacity 1s ease-in, transform 1s ease-in';
+        islands.style.opacity    = '0';
+        islands.style.transform  = 'translateY(14px)';
+      }, 600);
+
+      // Switch env after islands are gone
+      setTimeout(callback, 600 + 1000);
+    }
+
+    /* ── Salt Flat: exit ── */
+    function playLakeExit(callback) {
+      const water      = document.querySelector('.water-layer');
+      const aqua       = document.querySelector('.avatar-aqua');
+      const reflection = document.querySelector('.avatar-reflection');
+
+      // Fade out water, reflection, and aqua together
+      water.style.animation = 'water-exit 1.2s ease-in forwards';
+      reflection.style.transition = 'opacity 0.6s ease-in';
+      reflection.style.opacity = '0';
+      aqua.style.display = 'none';
+
+      // Switch env after water is gone
+      setTimeout(callback, 1200);
+    }
+
+    /* ── Salt Flat: entry ── */
+    function playLakeEntry() {
+      const water      = document.querySelector('.water-layer');
+      const aqua       = document.querySelector('.avatar-aqua');
+      const reflection = document.querySelector('.avatar-reflection');
+
+      // Reset
+      water.style.animation = 'none';
+      water.style.opacity = '0';
+      reflection.style.animation = 'none';
+      reflection.style.display = '';
+      reflection.style.opacity = '0';
+      aqua.style.display = 'none';
+      void water.offsetWidth;
+
+      // Water rises in + reflection fades in — same duration, same start
+      setTimeout(() => {
+        water.style.animation      = 'water-enter 2.8s ease-out forwards';
+        reflection.style.animation = 'reflection-enter 2.8s ease-out forwards';
+      }, 600);
+
+      // Aqua movement + reflection appear after water is fully visible
+      setTimeout(() => {
+        document.querySelector('.avatar-reflection').style.display = '';
+        aqua.style.display = '';
+      }, 600 + 2800);
+    }
+
+    /* ── Valley of Thoughts: entry ── */
+    function playValleyEntry() {
+      const totems = document.querySelectorAll('#env-valley .totem');
+      totems.forEach(t => {
+        t.style.animation = 'none';
+        t.style.opacity = '0';
+        void t.offsetWidth;
+      });
+      totems.forEach((t, i) => {
+        setTimeout(() => {
+          t.style.animation = 'totem-enter 0.9s ease-out forwards';
+        }, 1500 + i * 420);
+      });
+    }
+
+    /* ── Valley of Thoughts: exit ── */
+    function playValleyExit(callback) {
+      const totems = document.querySelectorAll('#env-valley .totem');
+      totems.forEach((t, i) => {
+        setTimeout(() => {
+          t.style.animation = 'totem-exit 0.7s ease-in forwards';
+        }, i * 350);
+      });
+      // After last totem finishes, switch env
+      setTimeout(callback, totems.length * 350 + 400);
+    }
+
+    /* ── Raw env switch (no exit animation) ── */
+    function applyEnv(index) {
+      currentEnv = index;
+      document.getElementById('bg-valley').classList.toggle('active', index === 0);
+      document.getElementById('bg-salt').classList.toggle('active',   index === 1);
+      document.getElementById('bg-aurora').classList.toggle('active', index === 2);
+      document.getElementById('env-valley').classList.toggle('active', index === 0);
+      document.getElementById('env-salt').classList.toggle('active',   index === 1);
+      document.getElementById('env-aurora').classList.toggle('active', index === 2);
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+      positionPill();
+      // Both reflection and aqua are revealed by playLakeEntry timing; hide for all other envs
+      if (index !== 1) {
+        document.querySelector('.avatar-reflection').style.display = 'none';
+        document.querySelector('.avatar-aqua').style.display = 'none';
+      }
+      if (index === 0) playValleyEntry();
+      if (index === 1) playLakeEntry();
+      if (index === 2) playAuroraEntry();
+      transitioning = false;
+    }
+
+    /* ── Transition: runs exit animation then applies new env ── */
+    function showEnv(index) {
+      if (transitioning || index === currentEnv) return;
+      transitioning = true;
+
+      if (currentEnv === 0) {
+        playValleyExit(() => applyEnv(index));
+      } else if (currentEnv === 1) {
+        playLakeExit(() => applyEnv(index));
+      } else if (currentEnv === 2) {
+        playAuroraExit(() => applyEnv(index));
+      } else {
+        applyEnv(index);
+      }
+    }
+
+    /* ── Pill positioning ── */
+    function positionPill() {
+      const activeBtn = document.querySelector('.tab-btn.active');
+      const tabs      = document.querySelector('.tabs');
+      const pill      = document.querySelector('.tab-pill');
+      const tabsRect  = tabs.getBoundingClientRect();
+      const btnRect   = activeBtn.getBoundingClientRect();
+      pill.style.left  = (btnRect.left - tabsRect.left) + 'px';
+      pill.style.width = btnRect.width + 'px';
+    }
+
+    // Initial entry
+    playValleyEntry();
+    requestAnimationFrame(positionPill);
+
+    let autoTimer = setInterval(() => showEnv((currentEnv + 1) % envCount), 30000);
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        clearInterval(autoTimer);
+        showEnv(parseInt(btn.dataset.env));
+        autoTimer = setInterval(() => showEnv((currentEnv + 1) % envCount), 30000);
+      });
+    });
+
+    /* ── Salt Flat: flakes (world-coord positions) ── */
+    const rippleLayer = document.getElementById('rippleLayer');
+
+    function spawnFlake() {
+      const x = 200 + Math.random() * 1520;
+      const startY = -20;
+      const duration = 10000 + Math.random() * 4000;
+      const size = 2 + Math.random() * 1.5;
+      const landY = 380 + Math.random() * 564;
+
+      const coordOriginX = window.innerWidth  / 2 - 960;
+      const coordOriginY = window.innerHeight / 2 - 540;
+
+      const flake = document.createElement('div');
+      flake.style.cssText = `position:fixed;left:${coordOriginX + x}px;top:${coordOriginY + startY}px;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,0.7);pointer-events:none;z-index:5;`;
+      document.body.appendChild(flake);
+
+      const startTime = performance.now();
+      let rippleSpawned = false;
+
+      function tick(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const currentY = startY + (landY - startY) * progress;
+        const drift = Math.sin(elapsed / 1200) * 8;
+        flake.style.left = (coordOriginX + x + drift) + 'px';
+        flake.style.top  = (coordOriginY + currentY) + 'px';
+
+        if (currentY >= landY && !rippleSpawned) {
+          rippleSpawned = true;
+          spawnRipple(x + drift, currentY + size + 4);
+          setTimeout(() => {
+            flake.style.transition = 'opacity 1.2s ease';
+            flake.style.opacity = '0';
+            setTimeout(() => flake.remove(), 1300);
+          }, 4000);
+          return;
+        }
+        if (!rippleSpawned) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function spawnRipple(x, y) {
+      const el = document.createElement('div');
+      el.style.cssText = `position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-50%);pointer-events:none;`;
+      el.innerHTML = `<svg width="60" height="20" viewBox="0 0 60 20" fill="none" style="overflow:visible;">
+        <ellipse cx="30" cy="10" rx="12" ry="5" stroke="#AFCDD6" stroke-width="0.8" style="transform-origin:30px 10px;animation:ripple-out 1.4s ease-out forwards;"/>
+        <ellipse cx="30" cy="10" rx="20" ry="8" stroke="#AFCDD6" stroke-width="0.5" style="transform-origin:30px 10px;animation:ripple-out 1.4s ease-out 0.2s forwards;"/>
+      </svg>`;
+      rippleLayer.appendChild(el);
+      setTimeout(() => el.remove(), 2200);
+    }
+
+    function scheduleFlake() {
+      if (currentEnv === 1) spawnFlake();
+      setTimeout(scheduleFlake, 4000 + Math.random() * 3000);
+    }
+    setTimeout(scheduleFlake, 500);
+    setTimeout(scheduleFlake, 4000);
+
+    /* ── Flying stars ── */
+    function spawnFlyingStar() {
+      const x = 400 + Math.random() * 1400;
+      const y = 20  + Math.random() * 280;
+      const size = 3 + Math.random() * 2;
+      const dur  = 2000 + Math.random() * 2000;
+      const tailLen = 60 + Math.random() * 80;
+      const uid = Math.random().toString(36).slice(2);
+
+      const el = document.createElement('div');
+      el.className = 'flying-star';
+      el.style.cssText = `left:${x}px;top:${y}px;animation:fly-across ${dur}ms ease-in forwards;`;
+      el.innerHTML = `
+        <svg overflow="visible" style="overflow:visible;">
+          <defs>
+            <linearGradient id="tg-${uid}" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="white" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="white" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Diamond at top-right -->
+          <polygon points="${size},0 ${size*2},${size} ${size},${size*2} 0,${size}" fill="white"/>
+          <!-- Tail trailing down-left, grows progressively -->
+          <line x1="${size}" y1="${size*2}" x2="${size - tailLen * 0.6}" y2="${size*2 + tailLen}"
+            stroke="url(#tg-${uid})" stroke-width="1.2"
+            stroke-dasharray="${tailLen * 1.2}"
+            stroke-dashoffset="${tailLen * 1.2}"
+            style="animation: tail-grow ${dur}ms ease-out forwards;"/>
+        </svg>`;
+      starsContainer.appendChild(el);
+      setTimeout(() => el.remove(), dur + 100);
+    }
+
+    function scheduleFlyingStar() {
+      if (currentEnv === 2) spawnFlyingStar();
+      setTimeout(scheduleFlyingStar, 5000 + Math.random() * 8000);
+    }
+    setTimeout(scheduleFlyingStar, 2000);
+
+    /* ── Stars ── */
+    const starsContainer = document.getElementById('stars');
+    const sizes = [2, 2, 2, 4, 4, 6];
+    for (let i = 0; i < 80; i++) {
+      const size = sizes[Math.floor(Math.random() * sizes.length)];
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.cssText = `
+        left: ${Math.random() * 1920}px;
+        top: ${20 + Math.random() * 320}px;
+        width: ${size}px;
+        height: ${size}px;
+        animation-duration: ${3 + Math.random() * 5}s;
+        animation-delay: ${Math.random() * 6}s;
+      `;
+      starsContainer.appendChild(star);
+    }
+
+    /* ── Birds (Valley of Thoughts) ── */
+    const birdsContainer = document.getElementById('birds-valley');
+
+    // Solid filled bird silhouette: seagull shape ~28×10px
+    function birdSVG(flapDur, flapDelay) {
+      return `<svg width="28" height="10" viewBox="0 0 28 10" fill="none" xmlns="http://www.w3.org/2000/svg"
+        style="display:block;animation:wing-flap ${flapDur}ms ease-in-out ${flapDelay}ms infinite;transform-origin:14px 5px;">
+        <path d="M14,5 C11,1 5,0 0,3 C3,7 8,6 12,5 L12,7 L14,9 L16,7 L16,5 C20,6 25,7 28,3 C23,0 17,1 14,5Z" fill="white"/>
+      </svg>`;
+    }
+
+    function spawnFlock() {
+      const baseY = 80  + Math.random() * 150;
+      const dur   = 22000 + Math.random() * 10000;
+      const count = 2 + Math.floor(Math.random() * 2);
+
+      for (let i = 0; i < count; i++) {
+        const dx     = (Math.random() - 0.5) * 80;
+        const dy     = (Math.random() - 0.5) * 60;
+        const midY   = (Math.random() - 0.5) * 110; // arc peak at 50%
+        const endY   = (Math.random() - 0.5) * 60;  // where it ends up
+        const scale  = 0.55 + Math.random() * 0.85;
+        const rotate = (Math.random() - 0.5) * 25;
+        const flapDur = 700 + Math.random() * 600;
+        const flapDel = i * 160 + Math.random() * 200;
+        const delay  = i * 350 + Math.random() * 400;
+        const uid    = Math.random().toString(36).slice(2);
+
+        // Inject a unique curved keyframe per bird
+        const ks = document.createElement('style');
+        ks.textContent = `@keyframes bc-${uid} {
+          0%   { transform: translate(0px, 0px);            opacity: 0; }
+          5%   { opacity: 1; }
+          50%  { transform: translate(-1100px, ${midY}px); }
+          90%  { opacity: 1; }
+          100% { transform: translate(-2200px, ${endY}px); opacity: 0; }
+        }`;
+        document.head.appendChild(ks);
+
+        // Wrapper carries the curved flight animation
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = `position:absolute;left:${1980+dx}px;top:${baseY+dy}px;animation:bc-${uid} ${dur}ms ${delay}ms ease-in-out forwards;pointer-events:none;`;
+
+        // Inner handles scale + rotation so transform doesn't conflict
+        const inner = document.createElement('div');
+        inner.style.cssText = `transform:scale(${scale.toFixed(2)}) rotate(${rotate.toFixed(1)}deg);transform-origin:center;`;
+        inner.innerHTML = birdSVG(flapDur.toFixed(0), flapDel.toFixed(0));
+
+        wrapper.appendChild(inner);
+        birdsContainer.appendChild(wrapper);
+        setTimeout(() => { wrapper.remove(); ks.remove(); }, dur + delay + 300);
+      }
+    }
+
+    function scheduleFlock() {
+      if (currentEnv === 0) spawnFlock();
+      setTimeout(scheduleFlock, 10000 + Math.random() * 14000);
+    }
+    setTimeout(scheduleFlock, 1500);
+
+  </script>
+
+</body>
+</html>

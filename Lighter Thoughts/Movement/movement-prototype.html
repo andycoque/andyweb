@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avatar Movement Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="scene" id="scene" aria-label="Movement demo">
+        <div class="world" id="world">
+          <img
+            class="totem"
+            src="./assets/Totem.svg"
+            alt=""
+            data-world-x="260"
+            data-world-y="-180"
+          />
+          <img
+            class="totem"
+            src="./assets/Totem.svg"
+            alt=""
+            data-world-x="-430"
+            data-world-y="250"
+          />
+          <img
+            class="totem"
+            src="./assets/Totem.svg"
+            alt=""
+            data-world-x="520"
+            data-world-y="280"
+          />
+          <img
+            class="totem"
+            src="./assets/Totem.svg"
+            alt=""
+            data-world-x="-250"
+            data-world-y="-340"
+          />
+          <div class="focus-mask" id="focusMask" aria-hidden="true"></div>
+        </div>
+
+        <div class="avatar-anchor" id="avatarAnchor">
+          <div class="direction-indicator" id="pointerShell" aria-hidden="true">
+            <svg class="floor-ring" viewBox="0 0 70.5 25.5" aria-hidden="true">
+              <defs>
+                <linearGradient id="floorRingGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+                  <stop offset="0%" stop-color="#D8D8D8" stop-opacity="0" />
+                  <stop offset="20%" stop-color="#D8D8D8" stop-opacity="0" />
+                  <stop offset="72%" stop-color="#D8D8D8" stop-opacity="0.7" />
+                  <stop offset="100%" stop-color="#D8D8D8" stop-opacity="0.7" />
+                </linearGradient>
+              </defs>
+              <ellipse
+                class="floor-ring-base"
+                cx="35.25"
+                cy="12.75"
+                rx="34.875"
+                ry="12.375"
+              />
+              <ellipse
+                class="floor-ring-active"
+                id="floorRingActive"
+                cx="35.25"
+                cy="12.75"
+                rx="34.875"
+                ry="12.375"
+              />
+            </svg>
+            <div class="direction-arrow" id="directionArrow"></div>
+          </div>
+          <img class="avatar" src="./assets/Avatar.svg" alt="Avatar" />
+        </div>
+        <div class="touch-hint" id="touchHint" aria-hidden="true"></div>
+      </section>
+
+      <p class="bottom-copy">Hold anywhere, avatar follows</p>
+      <button class="fullscreen-toggle" id="fullscreenToggle" aria-label="Enter fullscreen">
+        <svg class="icon-enter" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+          />
+          <path
+            d="M4 4L10 10M20 4L14 10M20 20L14 14M4 20L10 14"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+          />
+        </svg>
+        <svg class="icon-exit" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M4 4L9 9M20 4L15 9M20 20L15 15M4 20L9 15"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+          />
+          <path
+            d="M9 9V6M9 9H6M15 9V6M15 9H18M15 15V18M15 15H18M9 15V18M9 15H6"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+          />
+        </svg>
+      </button>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

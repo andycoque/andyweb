@@ -1,0 +1,337 @@
+:root {
+  --bg-top: #2e2e31;
+  --bg-bottom: #090909;
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.58);
+  --ring: rgba(255, 255, 255, 0.28);
+  --ring-strong: rgba(255, 255, 255, 0.72);
+  --panel: rgba(255, 255, 255, 0.04);
+  --pointer-rgb: 216, 216, 216;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Kohinoor Bangla", sans-serif;
+  font-weight: 300;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--bg-top) 0%, #171719 42%, var(--bg-bottom) 100%);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.app {
+  min-height: 100vh;
+  position: relative;
+}
+
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 28%);
+  pointer-events: none;
+}
+
+.world {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.totem {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 92px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.12));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.avatar-anchor {
+  --ground-y: calc(50% + 14px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 128px;
+  height: 128px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.focus-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 540px 300px at var(--focus-x, 50%) var(--focus-y, 50%),
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0) 10%,
+      rgba(6, 6, 7, 0.12) 24%,
+      rgba(6, 6, 7, 0.32) 40%,
+      rgba(6, 6, 7, 0.56) 58%,
+      rgba(6, 6, 7, 0.78) 76%,
+      rgba(6, 6, 7, 0.92) 100%
+    );
+  mix-blend-mode: multiply;
+}
+
+.world.is-in-front {
+  z-index: 3;
+}
+
+.avatar-anchor.is-behind {
+  z-index: 2;
+}
+
+.avatar {
+  position: absolute;
+  left: 50%;
+  top: var(--ground-y);
+  width: 23.625px;
+  opacity: 0.9;
+  transform: translate(-50%, -100%);
+  user-select: none;
+  -webkit-user-drag: none;
+  z-index: 2;
+  transform-origin: 50% 100%;
+  transition: transform 180ms ease;
+}
+
+.direction-indicator {
+  position: absolute;
+  left: 50%;
+  top: var(--ground-y);
+  width: 99px;
+  height: 58.5px;
+  transform: translate(-50%, -50%) scale(0.96);
+  opacity: 0;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+  z-index: 1;
+}
+
+.direction-indicator.is-active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.floor-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70.5px;
+  height: 25.5px;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+  transition: opacity 220ms ease;
+}
+
+.floor-ring-base,
+.floor-ring-active {
+  fill: none;
+  stroke-width: 1;
+}
+
+.floor-ring-base {
+  stroke: rgba(var(--pointer-rgb), 0.18);
+  transition: opacity 220ms ease;
+}
+
+.floor-ring-active {
+  stroke: url(#floorRingGradient);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(216, 216, 216, 0.12));
+  transition: opacity 220ms ease;
+}
+
+.direction-arrow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  background: rgba(var(--pointer-rgb), 0.9);
+  clip-path: polygon(0 50%, 100% 0, 82% 50%, 100% 100%);
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease,
+    filter 220ms ease;
+  opacity: 0;
+}
+
+.direction-indicator.is-active .floor-ring-active {
+  opacity: 1;
+}
+
+.direction-indicator.is-active .floor-ring-base {
+  opacity: 0;
+}
+
+.direction-indicator.is-active .direction-arrow {
+  opacity: 1;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.24));
+}
+
+.avatar.is-moving {
+  animation: avatar-bob 0.6s ease-in-out infinite;
+}
+
+@keyframes avatar-bob {
+  0% {
+    transform: translate(-50%, -100%) scaleY(1);
+  }
+
+  25% {
+    transform: translate(-50%, -101.2%) scaleY(0.992);
+  }
+
+  50% {
+    transform: translate(-50%, -97.8%) scaleY(1.015);
+  }
+
+  75% {
+    transform: translate(-50%, -100.9%) scaleY(0.994);
+  }
+
+  100% {
+    transform: translate(-50%, -100%) scaleY(1);
+  }
+}
+
+.touch-hint {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  margin-left: -42px;
+  margin-top: -42px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  transform: scale(0.82);
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+  pointer-events: none;
+}
+
+.touch-hint.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.bottom-copy {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0 20px;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.65rem;
+  font-weight: 300;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.fullscreen-toggle {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.68);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+    0 8px 24px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  z-index: 5;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.fullscreen-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+.fullscreen-toggle:active {
+  transform: translateY(0);
+}
+
+.fullscreen-toggle svg {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.fullscreen-toggle .icon-exit {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.fullscreen-toggle.is-fullscreen .icon-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.fullscreen-toggle.is-fullscreen .icon-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 720px) {
+  .bottom-copy {
+    bottom: 24px;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+  }
+
+  .fullscreen-toggle {
+    right: 24px;
+    bottom: 24px;
+  }
+}

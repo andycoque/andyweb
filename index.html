@@ -438,7 +438,7 @@ body {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 12px 16px 8px;
-  border-top: 1px solid #F0F0F0;
+  border-top: none;
 }
 .project-row {
   display: flex;
@@ -954,7 +954,7 @@ body.custom-cursor * { cursor: none !important; }
   position: fixed;
   width: 7px;
   height: 7px;
-  background: var(--ink);
+  background: #fff;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
@@ -962,6 +962,7 @@ body.custom-cursor * { cursor: none !important; }
   opacity: 0;
   transition: opacity 150ms;
   display: none;
+  mix-blend-mode: difference;
 }
 #dot-cursor.visible { opacity: 1; }
 
@@ -1422,26 +1423,61 @@ body.custom-cursor * { cursor: none !important; }
   background: transparent;
   border: none;
   border-radius: 100px;
-  padding: 8px 16px;
+  padding: 10px 20px;
   cursor: pointer;
   transition: background 200ms ease, color 200ms ease;
 }
+@media (min-width: 600px) {
+  .proj-tab-btn {
+    flex-direction: row;
+    gap: 8px;
+    padding: 14px 28px;
+  }
+}
 .proj-tab-btn.active {
-  background: white;
+  background: transparent;
   color: var(--ink);
   font-weight: 700;
 }
+.proj-tab-pill {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  background: white;
+  border-radius: 100px;
+  pointer-events: none;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  will-change: transform, width;
+}
+.proj-tabs {
+  position: relative;
+}
+.proj-tab-btn {
+  position: relative;
+  z-index: 1;
+}
 .proj-tab-time {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 8px;
   font-weight: 400;
   letter-spacing: 0.06em;
   color: var(--ink-mid);
+  border: 1px solid currentColor;
+  border-radius: 100px;
+  padding: 2px 7px;
+  opacity: 0.5;
+}
+@keyframes proj-panel-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 .proj-tab-panel { display: none; }
 .proj-tab-panel.active {
   display: flex;
   flex-direction: column;
+  animation: proj-panel-in 240ms ease;
   gap: 40px;
 }
 @media (min-width: 768px) {
@@ -1713,6 +1749,89 @@ body.custom-cursor * { cursor: none !important; }
 #page-project-payments .proj-meta-text { color: #fff; }
 #page-project-payments .proj-hero-subtitle { color: #fff; }
 
+/* ── Dark nav (Lighter Thoughts) ── */
+body.dark-nav .nav-inner {
+  background: rgba(0,0,0,0.96);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.4);
+}
+body.dark-nav #nav-brand { color: rgba(255,255,255,0.85); }
+body.dark-nav .nav-btn { color: rgba(255,255,255,0.45); }
+body.dark-nav .nav-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.07); }
+body.dark-nav .nav-btn.active { color: #fff; background: rgba(255,255,255,0.08); }
+body.dark-nav .nav-cta { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+body.dark-nav .nav-cta:hover { background: rgba(255,255,255,0.16); }
+body.dark-nav .work-projects-label { color: rgba(255,255,255,0.28); }
+body.dark-nav .project-row { border-color: rgba(255,255,255,0.06); }
+body.dark-nav .project-row:hover { background: rgba(255,255,255,0.04); }
+body.dark-nav .project-row-title { color: rgba(255,255,255,0.82); }
+body.dark-nav .project-row-desc { color: rgba(255,255,255,0.38); }
+body.dark-nav .project-row-arrow { color: rgba(255,255,255,0.28); }
+body.dark-nav #nav-proj-title { color: rgba(255,255,255,0.82); }
+body.dark-nav #nav-scroll-top { color: rgba(255,255,255,0.38); }
+
+/* ── Lighter Thoughts project page — full dark mode ── */
+#page-project-patterns { background: #1C1C1E; }
+#page-project-patterns .proj-hero-title { color: #fff; }
+#page-project-patterns .proj-hero-gradient { background: linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(6,7,16,0.98) 100%); }
+#page-project-patterns .proj-meta-text { color: rgba(255,255,255,0.65); }
+#page-project-patterns .proj-hero-subtitle { color: rgba(255,255,255,0.7); }
+
+/* Body text */
+#page-project-patterns .proj-body { background: #1C1C1E; }
+#page-project-patterns .proj-serif p { color: rgba(255,255,255,0.72); }
+#page-project-patterns .proj-intro p { color: rgba(255,255,255,0.72); }
+#page-project-patterns .proj-section-title { color: #fff; }
+#page-project-patterns .proj-short-challenge { color: rgba(255,255,255,0.5); }
+#page-project-patterns .proj-sub-heading { color: rgba(255,255,255,0.38); }
+#page-project-patterns .proj-short-stage-label { color: rgba(255,255,255,0.3); }
+
+/* Accomplishments box */
+#page-project-patterns .proj-short-accomplishments { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+#page-project-patterns .proj-short-accomplishments-title { color: rgba(255,255,255,0.38); }
+#page-project-patterns .proj-short-accomplishments li { color: rgba(255,255,255,0.72); }
+#page-project-patterns .proj-short-accomplishments li::before { color: rgba(255,255,255,0.25); }
+
+/* Tabs */
+#page-project-patterns .proj-tabs { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+#page-project-patterns .proj-tab-btn { color: rgba(255,255,255,0.35); }
+#page-project-patterns .proj-tab-btn.active { background: transparent; color: #fff; }
+#page-project-patterns .proj-tab-pill { background: rgba(255,255,255,0.12); }
+#page-project-patterns .proj-tab-time { color: rgba(255,255,255,0.45); opacity: 1; }
+
+/* Images */
+#page-project-patterns .proj-img { border-radius: 12px; }
+
+/* Contact / footer */
+#page-project-patterns .contact-section { background: #1C1C1E; }
+#page-project-patterns .contact-label { color: rgba(255,255,255,0.3); }
+#page-project-patterns .contact-heading { color: #fff; }
+#page-project-patterns .contact-sub { color: rgba(255,255,255,0.45); }
+#page-project-patterns .btn-white { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.12); }
+#page-project-patterns .btn-white:hover { background: rgba(255,255,255,0.12); }
+#page-project-patterns .footer-nav a { color: rgba(255,255,255,0.45); }
+#page-project-patterns .footer-nav-label { color: rgba(255,255,255,0.22); }
+#page-project-patterns .footer-divider { border-color: rgba(255,255,255,0.08); }
+#page-project-patterns .footer-brand { color: rgba(255,255,255,0.6); }
+#page-project-patterns .footer-meta { color: rgba(255,255,255,0.22); }
+
+/* Hero floating thoughts */
+.lt-hero-light {
+  position: absolute;
+  pointer-events: none;
+  animation: lt-hero-float var(--ltdur, 7s) ease-in-out infinite var(--ltdelay, 0s);
+  z-index: 0;
+}
+@keyframes lt-hero-float {
+  0%, 100% { transform: translate(0,0); }
+  33% { transform: translate(var(--ltx1,8px), var(--lty1,-14px)); }
+  66% { transform: translate(var(--ltx2,-6px), var(--lty2,-8px)); }
+}
+@keyframes lt-hero-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
 /* ── Context-aware nav project title ── */
 #proj-title-wrap { transition: grid-template-rows 320ms var(--ease-enter); }
 .nav-inner.proj-title-open #proj-title-wrap { grid-template-rows: 1fr; }
@@ -1870,6 +1989,19 @@ body.custom-cursor * { cursor: none !important; }
 }
 .project-coming-soon { font-family: var(--sans); font-size: 16px; color: var(--ink-mid); text-align: center; line-height: 1.6; letter-spacing: -0.32px; }
 
+/* Fake fullscreen for iOS (overrides scale/size/radius) */
+iframe.iframe-fake-fs {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
 </style>
 <script>window.history.scrollRestoration = 'manual';</script>
 </head>
@@ -1929,16 +2061,14 @@ body.custom-cursor * { cursor: none !important; }
             </div>
             <span class="project-row-arrow">→</span>
           </a>
-          <!-- 3RD PROJECT — hidden until ready
           <a class="project-row" onclick="openProject('patterns');closeWorkOverlay();return false;" href="#">
-            <div class="project-thumb" style="background:#F0F0F0;"></div>
+            <div class="project-thumb" style="background:#080A1A;background-image:url('Lighter Thoughts/Thumbnail.png');background-size:cover;background-position:center;"></div>
             <div class="project-info">
-              <div class="project-row-title">Exploring Patterns for New Ideas Discovery</div>
-              <div class="project-row-desc">Interface experiments for exploring new topics.</div>
+              <div class="project-row-title">Lighter Thoughts</div>
+              <div class="project-row-desc">Adventure-based interaction patterns for mental health community.</div>
             </div>
             <span class="project-row-arrow">→</span>
           </a>
-          -->
         </div>
       </div>
       <!-- Drawer: expands downward when Let's Talk is tapped -->
@@ -2030,18 +2160,15 @@ body.custom-cursor * { cursor: none !important; }
               <a href="#" class="btn-primary" onclick="openProject('payments');return false;">Full story ↗</a>
             </div>
           </div>
-          <!-- 3RD PROJECT CARD — hidden until ready
           <div class="work-card-item">
-            <div class="card-image" style="background:#F0F0F0;"></div>
-            <div class="card-date">2020 & 2026</div>
-            <div class="card-title">Exploring UI Patterns for New Ideas Discovery</div>
-            <div class="card-desc">A design exploration of how new interface patterns help people approach unfamiliar topics.</div>
+            <div class="card-image" style="background:#080A1A;background-image:url('Lighter Thoughts/Card.png');background-size:cover;background-position:center;"></div>
+            <div class="card-date">2021</div>
+            <div class="card-title">Lighter Thoughts</div>
+            <div class="card-desc">An avatar-based community world exploring interaction patterns for mental health.</div>
             <div class="card-buttons">
-              <a href="#" class="btn-secondary" onclick="return false;">Case video ▶</a>
               <a href="#" class="btn-primary" onclick="openProject('patterns');return false;">Full story ↗</a>
             </div>
           </div>
-          -->
         </div>
       </div>
     </section>
@@ -2074,6 +2201,7 @@ body.custom-cursor * { cursor: none !important; }
         <span class="footer-nav-label">Work</span>
         <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
         <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -2161,6 +2289,7 @@ body.custom-cursor * { cursor: none !important; }
         <span class="footer-nav-label">Work</span>
         <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
         <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -2193,6 +2322,7 @@ body.custom-cursor * { cursor: none !important; }
         <span class="footer-nav-label">Work</span>
         <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
         <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -2630,6 +2760,7 @@ body.custom-cursor * { cursor: none !important; }
         <span class="footer-nav-label">Work</span>
         <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
         <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -3214,6 +3345,7 @@ body.custom-cursor * { cursor: none !important; }
         <span class="footer-nav-label">Work</span>
         <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
         <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -3224,6 +3356,364 @@ body.custom-cursor * { cursor: none !important; }
     </section>
 
   </div><!-- /page-project-payments -->
+
+  <!-- ═══════════════════════════════════════════════
+       PROJECT PAGE: LIGHTER THOUGHTS
+  ══════════════════════════════════════════════════ -->
+  <div id="page-project-patterns" class="page">
+
+    <!-- Hero — dark gradient, no image yet -->
+    <section class="proj-hero" style="background:#1C1C1E;">
+      <img class="proj-hero-bg" src="Lighter Thoughts/Hero-card.png" alt="Lighter Thoughts" />
+      <!-- Decorative floating thoughts -->
+      <div class="lt-hero-light" style="top:18%;left:10%;--ltdur:9s;--ltdelay:-2s;--ltx1:12px;--lty1:-18px;--ltx2:-8px;--lty2:-10px;opacity:0.75;"><img src="Lighter Thoughts/C-Thought.svg" style="width:96px;display:block;animation:lt-hero-spin 18s linear infinite;"></div>
+      <div class="lt-hero-light" style="top:17%;left:40%;--ltdur:6s;--ltdelay:-1s;--ltx1:-10px;--lty1:-16px;--ltx2:8px;--lty2:-8px;opacity:0.6;"><img src="Lighter Thoughts/S-thought.svg" style="width:22px;display:block;animation:lt-hero-spin 12s linear infinite reverse;"></div>
+      <div class="lt-hero-light" style="top:12%;left:72%;--ltdur:11s;--ltdelay:-4s;--ltx1:8px;--lty1:-22px;--ltx2:-10px;--lty2:-12px;opacity:0.5;"><img src="Lighter Thoughts/C-Thought.svg" style="width:38px;display:block;animation:lt-hero-spin 22s linear infinite;"></div>
+      <div class="lt-hero-light" style="top:54%;left:28%;--ltdur:8s;--ltdelay:-3s;--ltx1:-8px;--lty1:-12px;--ltx2:10px;--lty2:-8px;opacity:0.65;"><img src="Lighter Thoughts/S-thought.svg" style="width:68px;display:block;animation:lt-hero-spin 15s linear infinite reverse;"></div>
+      <div class="proj-hero-gradient"></div>
+      <div class="proj-hero-content">
+        <h1 class="proj-hero-title">
+          <span class="line"><span class="line-inner">Lighter</span></span>
+          <span class="line"><span class="line-inner">Thoughts</span></span>
+        </h1>
+        <div class="proj-hero-meta">
+          <span class="proj-meta-text">Bogotá · 2021</span>
+        </div>
+        <p class="proj-hero-subtitle">Exploring how adventure-based interaction patterns can make sharing thoughts feel like discovery</p>
+      </div>
+    </section>
+
+    <!-- Image strip -->
+    <div class="proj-image-strip">
+      <img src="Lighter Thoughts/LT carrousel 1.png" alt="" />
+      <img src="Lighter Thoughts/LT carrousel 2.png" alt="" />
+      <img src="Lighter Thoughts/LT carrousel 3.png" alt="" />
+    </div>
+
+    <!-- Body -->
+    <div class="proj-body">
+
+      <!-- Tabs -->
+      <div class="proj-tabs">
+        <button class="proj-tab-btn active" data-tab="patterns-short">Long Story Short<span class="proj-tab-time">4 MIN</span></button>
+        <button class="proj-tab-btn" data-tab="patterns-full">The Full Picture<span class="proj-tab-time">15 MIN</span></button>
+      </div>
+
+      <!-- ── TAB: Long Story Short ── -->
+      <div class="proj-tab-panel active" id="patterns-short">
+        <div class="proj-short-body">
+
+          <!-- Intro -->
+          <div class="proj-intro">
+            <p>Mental health conversations online tend to stay in problem mode: support spaces, resource lists, forums for venting. Lighter Thoughts started from a different question: what if sharing something personal felt more like discovery than confession?</p>
+            <p>This was a solo master's thesis project from 2021, designed during the peak of post-pandemic isolation.</p>
+          </div>
+
+          <!-- The two problems -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">The two problems</h2>
+            </div>
+            <div class="proj-serif">
+              <p>Two goals shaped everything. First: explore new interaction patterns that promote an aesthetic and inspirational experience. Second: tackle emotional and intellectual loneliness in mental health by building an interactive community.</p>
+              <p>Most solutions to loneliness in mental health focus on the resource layer: who to call, what to read, where to find help. Lighter Thoughts explored a different layer: what does it feel like to be part of something?</p>
+            </div>
+          </div>
+
+          <!-- Stage 1: The world as interface -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 1</span>
+              <h2 class="proj-section-title">The world as interface</h2>
+              <p class="proj-short-challenge">Most mental health apps organize around forms: questionnaires, logs, journal entries. The model keeps users in observation mode. The question was: what if the interface itself created a sense of being somewhere?</p>
+            </div>
+            <!-- Interactive demo -->
+            <iframe
+              src="Lighter Thoughts/Movement/movement-prototype.html"
+              style="width:100%;height:480px;border:none;border-radius:20px;display:block;margin:32px 0;"
+              title="Avatar movement demo"
+              loading="lazy"
+            ></iframe>
+            <div class="proj-serif">
+              <p>Lighter Thoughts borrowed its interaction model from games and exploration apps. Hold-press to move your avatar through the world. Single tap to approach a totem or another user. Double-tap to enter a space or open a conversation.</p>
+            </div>
+            <div class="proj-media-row" style="display:flex;gap:8px;">
+              <img class="proj-img" src="Lighter Thoughts/Tap to reach.png" alt="Tap to reach" style="flex:1;min-width:0;width:0;" />
+              <img class="proj-img" src="Lighter Thoughts/Double tap to open.png" alt="Double tap to open" style="flex:1;min-width:0;width:0;" />
+            </div>
+            <div class="proj-serif">
+              <p>The mechanics were familiar from mobile gaming, but the destination was new: a community space where information and people were discovered through movement, not menus. The world was the navigation.</p>
+            </div>
+          </div>
+
+          <!-- Stage 2: Thought as light -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 2</span>
+              <h2 class="proj-section-title">Thought as light</h2>
+              <p class="proj-short-challenge">The core emotional moment in the app was sharing a thought with the community. The design question was: how should this moment feel?</p>
+            </div>
+            <div class="proj-serif">
+              <p>When you share a thought, it doesn't post to a feed. It rises. A light lifts from where you stood and joins the world above. The visual metaphor was intentional: sharing something heavy becomes the act of contributing something bright. Dark thoughts become light. The community is literally made of what its people share.</p>
+            </div>
+            <img class="proj-img" src="Lighter Thoughts/Share a thought.png" alt="Share a thought interaction" />
+            <div class="proj-serif">
+              <p>The rising light was the mirroring concept: the opposite of a dark thought. Whatever someone was carrying, the moment it was shared, it became part of something warm. The world above was built from those contributions.</p>
+            </div>
+          </div>
+
+          <!-- Stage 3: Community system -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <span class="proj-short-stage-label">Stage 3</span>
+              <h2 class="proj-section-title">The community system</h2>
+            </div>
+            <div class="proj-serif">
+              <p>Progress was tied to participation, not personal streaks. Completing three community goals unlocked a new skin for your avatar. The world expanded as more people engaged: new landscapes appeared, new totems surfaced with new content.</p>
+            </div>
+            <img class="proj-img" src="Lighter Thoughts/Goals and rewards.png" alt="Goals and rewards" />
+            <div class="proj-serif">
+              <p>Belonging was the mechanic, not just the feeling. Every interaction had weight because it changed something visible in the shared space.</p>
+            </div>
+          </div>
+
+          <!-- Places prototype -->
+          <div style="width:100%;height:480px;border-radius:20px;overflow:hidden;margin:32px 0;">
+            <iframe
+              src="Lighter Thoughts/Places/places.html"
+              style="width:142.86%;height:686px;border:none;display:block;transform:scale(0.7);transform-origin:top left;"
+              title="Lighter Thoughts — Places"
+              loading="lazy"
+            ></iframe>
+          </div>
+
+          <!-- Reflection -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Reflection</h2>
+            </div>
+            <div class="proj-serif">
+              <p>What made this project work was coherence. The problem, the aesthetic, and the interaction model all pointed in the same direction. Nothing was decorative for its own sake.</p>
+              <p>Looking back, two things would make this stronger: the UX writing inside the app, and a first coded version to test the model against real behavior. Both are in progress.</p>
+            </div>
+          </div>
+
+        </div><!-- /proj-short-body -->
+      </div><!-- /patterns-short -->
+
+      <!-- ── TAB: The Full Picture ── -->
+      <div class="proj-tab-panel" id="patterns-full">
+        <div class="proj-short-body">
+
+          <!-- Context -->
+          <div class="proj-intro">
+            <p>Lighter Thoughts is a mobile app concept for mental health community. But describing it that way misses almost everything interesting about it.</p>
+            <p>It's a world. A shared, persistent, isometric space where your avatar lives alongside other people's avatars, where content exists as physical objects you walk toward, where sharing a thought sends a light rising above the landscape, and where the more the community participates, the more the world itself grows.</p>
+            <p>The thesis behind it was written in 2021, in the middle of a period when isolation had become the defining experience for most people. The question was not how to make another mental health app. It was how to make something that felt genuinely different, at the level of the idea, not just the interface.</p>
+          </div>
+
+          <!-- Part 1: The concept -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">The idea: a world built from what people give it</h2>
+            </div>
+            <div class="proj-serif">
+              <p>The core concept of Lighter Thoughts is that a community space should be literally made of its members' contributions. Not metaphorically, but visibly. Every thought shared by every person becomes a light floating above the world. The more people participate, the brighter and more populated the sky above becomes. The world expands as the community engages with it. New territory appears at the edges. The landscape gets richer, more complex, more inhabited.</p>
+              <p>This is the opposite of most digital communities, which are architecturally neutral: the platform looks the same whether 10 people are using it or 10 million. In Lighter Thoughts, the state of the community is the state of the world. You can see at a glance how alive it is.</p>
+              <p>The name comes from this: the idea that sharing something heavy, a thought you've been carrying, a feeling you haven't put into words yet, makes it lighter. And makes the world above a little brighter for everyone else.</p>
+            </div>
+          </div>
+
+          <!-- Part 2: Research -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Two kinds of loneliness</h2>
+            </div>
+            <div class="proj-serif">
+              <p>The research phase mapped what loneliness actually looks like in the context of mental health. The word is broad enough to hide two distinct experiences.</p>
+              <p>Emotional loneliness is the absence of close personal connection, the feeling of not being truly known by another person. Intellectual loneliness is the absence of community around the things you're thinking about, the feeling that your curiosity or questions don't belong anywhere.</p>
+              <p>Most mental health platforms addressed emotional loneliness through peer support, journals, and direct conversation. Intellectual loneliness was almost entirely ignored. And yet for many people, especially younger users, intellectual isolation was as painful as emotional isolation. Not having anyone to explore ideas with was its own kind of being alone.</p>
+              <p>The thesis positioned Lighter Thoughts at the intersection of both. A community where you could find people who felt what you felt and think alongside them at the same time.</p>
+            </div>
+          </div>
+
+          <!-- Part 2: Design principles -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Three principles before any screen</h2>
+            </div>
+            <div class="proj-serif">
+              <p>Before any screen was designed, three principles were defined to keep every decision coherent. They functioned as a filter: if a design choice violated one of these, it was wrong regardless of how it looked.</p>
+            </div>
+            <p class="proj-sub-heading">Discovery over browsing</p>
+            <div class="proj-serif">
+              <p>Users should encounter things by moving toward them, not by searching or filtering. This ruled out every conventional navigation pattern: no menus, no search bars, no category lists. If something existed in the world, you had to find it by being in the world. The constraint forced a spatial logic onto every design decision.</p>
+            </div>
+            <p class="proj-sub-heading">Contribution as presence</p>
+            <div class="proj-serif">
+              <p>Being in the community means leaving something behind. Every interaction should add to the world rather than consume from it. This is the opposite of how most social platforms work, where presence means consumption: scrolling, reading, watching. Here, you were not present unless you contributed something. The world was built from what its members gave it.</p>
+            </div>
+            <p class="proj-sub-heading">Progress as belonging</p>
+            <div class="proj-serif">
+              <p>Progression should come from connection with others, not from personal habit streaks. Most wellness apps use individual achievement metrics: days in a row, goals completed, personal bests. That model reinforces isolation. It makes you feel good about yourself but does nothing for the community around you. In Lighter Thoughts, the community's growth was your growth. You progressed by making the world better for everyone.</p>
+            </div>
+          </div>
+
+          <!-- Part 3: Onboarding -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Onboarding as framing</h2>
+              <p class="proj-short-challenge">The first-time experience had one job above all others: establish that this was a community, not a self-help tool. Every choice in the onboarding flow either reinforced or undermined that distinction.</p>
+            </div>
+            <div class="proj-serif">
+              <p>The decision to ask users to name their community at the very start was deliberate. You were not setting up an account. You were joining something that, in some sense, already belonged to you. That framing changed the relationship with the app before a single feature was encountered.</p>
+              <p>The mental health calibration questions that followed were designed to feel like community setup, not intake forms. The intent was to personalize what surfaced in the world, but the tone had to feel like joining a group rather than being assessed by a system.</p>
+              <p>The rules screen introduced a deliberate friction: to enter the world, you had to understand how it worked first. The rules could not be skipped. This was a calculated bet that two minutes of mandatory orientation would produce users who engaged more meaningfully. A world with rules is more interesting than a world without them, but only if you know what the rules are.</p>
+              <p>Framing the first actions as community goals rather than product tutorials set the expectation clearly from the start. The app was not teaching you how to use it. It was inviting you to participate in something.</p>
+            </div>
+          </div>
+
+          <!-- Part 4: The world -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Why a world, not an app</h2>
+              <p class="proj-short-challenge">The central design decision was the isometric world. Not a feed, not a dashboard, not a set of tabs. A persistent, shared space that existed whether you were in it or not. This choice had consequences for every other decision in the project.</p>
+            </div>
+            <div class="proj-serif">
+              <p>A persistent world changes the psychological relationship with the product. You are not opening an app. You are returning somewhere. Other people are already there. The world has been changing while you were away. That sense of a place that continues without you is fundamentally different from a product that starts fresh on every open.</p>
+              <p>The interaction model was borrowed from mobile games because it was already understood by the target audience. The goal was not to teach a new vocabulary. The goal was to redirect a familiar vocabulary toward a new purpose. Users who had moved characters around in mobile games already knew how to be in this world. What they were discovering was what this particular world contained.</p>
+              <p>Avatar customization was tied to the progression system from the start. The visual representation of your avatar was meant to communicate tenure without requiring any explicit signal of rank. A more elaborate avatar was a quieter way of saying: this person has been here a while. It made belonging visible without turning it into a competition.</p>
+            </div>
+            <iframe
+              src="Lighter Thoughts/Movement/movement-prototype.html"
+              style="width:100%;height:480px;border:none;border-radius:20px;display:block;margin:32px 0;"
+              title="Avatar movement demo"
+              loading="lazy"
+            ></iframe>
+            <div class="proj-media-row" style="display:flex;gap:8px;">
+              <img class="proj-img" src="Lighter Thoughts/Tap to reach.png" alt="Tap to reach" style="flex:1;min-width:0;width:0;" />
+              <img class="proj-img" src="Lighter Thoughts/Double tap to open.png" alt="Double tap to open" style="flex:1;min-width:0;width:0;" />
+            </div>
+          </div>
+
+          <!-- Part 5: Totems -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Content that requires movement</h2>
+              <p class="proj-short-challenge">The totem system was the answer to a problem that most content platforms ignore: if content is instantly accessible from anywhere, users never develop a relationship with where they found it.</p>
+            </div>
+            <div class="proj-serif">
+              <p>Totems placed content inside the world as physical objects. To read an article or listen to something, you had to walk to it. The spatial requirement added friction, but it was the right kind of friction. It created a sense that content had a location, that discovery was something you did rather than something that happened to you.</p>
+              <p>The decision to curate rather than generate content was also deliberate. Totems did not have infinite content feeds. They had a specific depth, and you could see how far through them you had gone. Finite content creates completion. You could actually finish a totem, which is a different relationship with information than scrolling through an endless feed.</p>
+              <p>Different totem types were designed for the full version, each with a different function in the world: informative, discussion-based, event-based. The prototype established the informative type as the foundation. The logic of the others would follow from the same spatial principle.</p>
+            </div>
+          </div>
+
+          <!-- Part 6: Sharing a thought -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">The moment of sharing</h2>
+              <p class="proj-short-challenge">Sharing a thought was the emotional core of the product. More care went into this flow than any other. If this moment felt wrong, nothing else in the app would matter.</p>
+            </div>
+            <div class="proj-serif">
+              <p>The compose screen was stripped of everything that might create pressure. No character count, no formatting options, no suggested topics. The interface had to disappear so the user could think. Any feature that made the screen feel like a publishing tool was a mistake. This was not broadcasting. It was release.</p>
+              <p>The light animation that followed was not cosmetic. It was the thesis made visible. The mirroring concept behind it was: whatever someone carries into the moment of sharing, the act of sharing converts it into something that contributes brightness to a shared world. The animation was the product's clearest statement of what it believed about people and what they give each other.</p>
+              <p>A community that only takes from its members eventually exhausts them. A community that converts contribution into something collectively beautiful gives people a reason to keep giving. The light was that reason, made tangible on the screen.</p>
+            </div>
+            <img class="proj-img" src="Lighter Thoughts/Share a thought.png" alt="Share a thought interaction" />
+          </div>
+
+          <!-- Part 7: Community interaction -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Intentional connection</h2>
+              <p class="proj-short-challenge">The decision to require physical proximity for reading someone else's thought was one of the most deliberate constraints in the project. It was also the most likely to look wrong before you understood why it was there.</p>
+            </div>
+            <div class="proj-serif">
+              <p>Passive scrolling through other people's pain is a well-documented harm. Timeline-based mental health content creates exposure without context, engagement without consent, and a relationship with other people's suffering that is consumption rather than care. Requiring movement to reach someone's thought prevented that dynamic entirely. Every interaction was preceded by a decision.</p>
+              <p>Removing text replies was the same logic applied to response. Replies create social pressure. The obligation to respond meaningfully in words is enough to prevent most people from engaging at all. Constraining reactions to a small set of emotional responses specific to the context made engagement lower-cost without making it meaningless. A reaction that communicated "I'm here" was more honest than a thumbs-up, and required less courage than a reply.</p>
+              <p>The reaction set being constrained was as important as its content. Generic positive signals would have made the app feel like any other social platform. The specific palette communicated that this was a different kind of community, with a different understanding of what support looked like.</p>
+            </div>
+          </div>
+
+          <!-- Part 8: Ayuda -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">When community isn't enough</h2>
+            </div>
+            <div class="proj-serif">
+              <p>Community is valuable. It is not a substitute for professional support, and Lighter Thoughts needed to say that clearly through its design rather than a disclaimer.</p>
+              <p>Placing the support resources section outside the world was that statement. The world was for community. The support section was for when community wasn't sufficient. Keeping them separate was a form of honesty: the app knew what it was and what it wasn't.</p>
+              <p>The four categories within it (local crisis lines, professional directories, wellness tools, information resources) were organized by urgency and intent, not by content type. Someone in crisis needed to reach a phone number without navigating past articles first. Someone curious needed to be able to explore without pressure. The structure respected those different states without making the user declare which one they were in.</p>
+              <p>The section was designed to be understated. It did not try to compete with the world aesthetically. Being obvious and accessible was the only job it had.</p>
+            </div>
+          </div>
+
+          <!-- Part 9: Progression -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Rewarding participation without gamifying it</h2>
+              <p class="proj-short-challenge">Gamification was the easy answer and the wrong one. Points, leaderboards, and streaks create the right behaviors for the wrong reasons. The goal was a progression system that made belonging feel real without turning the community into a competition.</p>
+            </div>
+            <div class="proj-serif">
+              <p>Goals were defined as community contributions rather than personal activities. You progressed by sharing, reacting, discovering, and connecting. The reward was a new skin for your avatar, visible to the entire community. Not a private achievement. A public expression of how much you had given.</p>
+              <p>The territory expansion was the same principle at the world level. As the community engaged, the world grew. New areas appeared. The space became richer and more complex. Users who had been present longer inhabited a world that was visibly different from what a new user saw. Belonging had a visual form, and it accumulated over time without any explicit score being displayed.</p>
+              <p>The progression system was designed to answer a simple question through the product itself: what does it look like when a community is thriving? The answer was a world that kept growing.</p>
+            </div>
+            <img class="proj-img" src="Lighter Thoughts/Goals and rewards.png" alt="Goals and rewards" />
+          </div>
+
+          <!-- Places prototype -->
+          <div style="width:100%;height:480px;border-radius:20px;overflow:hidden;margin:32px 0;">
+            <iframe
+              src="Lighter Thoughts/Places/places.html"
+              style="width:142.86%;height:686px;border:none;display:block;transform:scale(0.7);transform-origin:top left;"
+              title="Lighter Thoughts — Places"
+              loading="lazy"
+            ></iframe>
+          </div>
+
+          <!-- Outcome -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Outcome</h2>
+            </div>
+            <div class="proj-serif">
+              <p>Lighter Thoughts was the best project of the year at ESDi in 2021. The faculty recognized the coherence between the problem, the aesthetic world, and the design system. The three things pointed in the same direction, which is rarer than it sounds.</p>
+              <p>The project lived as an Invision prototype. No user testing was conducted. The interaction model was validated by the faculty panel but never by someone trying to use it without knowing how it worked. That gap is the most important one to close next.</p>
+              <p>Two things would make this substantially stronger. The UX writing: every word in the prototype was a first draft, and the world needs a verbal language as distinct as its visual one. And a coded version, because the movement model, the interaction vocabulary, and the light animation need to be felt, not just seen in a prototype.</p>
+            </div>
+          </div>
+
+        </div><!-- /proj-short-body -->
+      </div><!-- /patterns-full -->
+
+    </div><!-- /proj-body -->
+
+    <!-- Footer -->
+    <section class="contact-section">
+      <div class="contact-label">GET IN TOUCH</div>
+      <h2 class="contact-heading">Let's build<br>something together.</h2>
+      <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
+      <div class="contact-btns">
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+      </div>
+      <nav class="footer-nav">
+        <span class="footer-nav-label">Work</span>
+        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
+        <a onclick="showPage('about')">About</a>
+      </nav>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <span class="footer-brand">Andy.</span>
+        <span class="footer-meta">2026 — BOG — PRODUCT DESIGN</span>
+      </div>
+    </section>
+
+  </div><!-- /page-project-patterns -->
 
 </div><!-- /main -->
 
@@ -3254,9 +3744,12 @@ function showPage(id) {
   document.getElementById('nav-about-btn').classList.toggle('active', id === 'about');
   document.getElementById('nav-work-btn').classList.remove('active');
   const isProject = id.startsWith('project-');
-  const themeColor = isProject ? '#ffffff' : '#FFE3EE';
+  const themeColor = id === 'project-patterns' ? '#1C1C1E' : isProject ? '#ffffff' : '#FFE3EE';
+  document.body.classList.toggle('dark-nav', id === 'project-patterns');
   const topGradient = id === 'project-payments'
     ? 'linear-gradient(to bottom, #D6E4FF 0px, #ffffff 340px)'
+    : id === 'project-patterns'
+    ? '#1C1C1E'
     : 'linear-gradient(to bottom, #FFE3EE 0px, #ffffff 340px)';
   document.body.style.background = isProject ? topGradient : themeColor;
   document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
@@ -3274,6 +3767,11 @@ function showPage(id) {
   if (id === 'about') setTimeout(() => aboutHero.classList.add('revealed'), 80);
   // Clean up reading progress pill on any navigation
   if (window._cleanupReadingProgress) window._cleanupReadingProgress();
+  // Position tab pills after page becomes visible
+  if (isProject) {
+    const pageEl = document.getElementById('page-' + id);
+    requestAnimationFrame(() => { if (pageEl) positionPills(pageEl); });
+  }
   // Hero reveal
   document.querySelectorAll('.proj-hero').forEach(h => h.classList.remove('revealed'));
   _teardownProjNavTitle();
@@ -3320,20 +3818,56 @@ function openProject(key) {
   const p = PROJECTS[key]; if (!p) return;
   if (key === 'bnpl')     { showPage('project-bnpl');     return; }
   if (key === 'payments') { showPage('project-payments'); return; }
+  if (key === 'patterns') { showPage('project-patterns'); return; }
   document.getElementById('project-title').textContent    = p.title;
   document.getElementById('project-meta').textContent     = p.meta;
   document.getElementById('project-category').textContent = p.category;
   showPage('project');
 }
 /* ── Project tab switching ── */
+function movePill(tabsEl, activeBtn) {
+  const pill = tabsEl.querySelector('.proj-tab-pill');
+  if (!pill) return;
+  const tabsRect  = tabsEl.getBoundingClientRect();
+  const btnRect   = activeBtn.getBoundingClientRect();
+  pill.style.width     = btnRect.width + 'px';
+  pill.style.transform = `translateX(${btnRect.left - tabsRect.left - 4}px)`;
+}
+
+function initPills(scope) {
+  (scope || document).querySelectorAll('.proj-tabs').forEach(tabsEl => {
+    if (tabsEl.querySelector('.proj-tab-pill')) return; // already injected
+    const pill = document.createElement('div');
+    pill.className = 'proj-tab-pill';
+    tabsEl.insertBefore(pill, tabsEl.firstChild);
+  });
+}
+
+function positionPills(scope) {
+  (scope || document).querySelectorAll('.proj-tabs').forEach(tabsEl => {
+    const pill = tabsEl.querySelector('.proj-tab-pill');
+    const activeBtn = tabsEl.querySelector('.proj-tab-btn.active');
+    if (pill && activeBtn) {
+      pill.style.transition = 'none';
+      movePill(tabsEl, activeBtn);
+      requestAnimationFrame(() => { pill.style.transition = ''; });
+    }
+  });
+}
+
+// Inject pills on load (position deferred to showPage)
+initPills();
+
 document.querySelectorAll('.proj-tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const tabId = btn.dataset.tab;
+    const tabId    = btn.dataset.tab;
     const container = btn.closest('.proj-body');
+    const tabsEl   = btn.closest('.proj-tabs');
     container.querySelectorAll('.proj-tab-btn').forEach(b => b.classList.remove('active'));
     container.querySelectorAll('.proj-tab-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(tabId).classList.add('active');
+    movePill(tabsEl, btn);
   });
 });
 
@@ -3738,7 +4272,7 @@ function setupCustomCursor() {
     hidePill();
   };
 
-  ['page-project-bnpl','page-project-payments'].forEach(id => {
+  ['page-project-bnpl','page-project-payments','page-project-patterns'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('mouseenter', () => {
@@ -4177,6 +4711,20 @@ window.addEventListener('DOMContentLoaded', () => {
   window.scrollTo({ top: 0, behavior: 'instant' });
   runIntro();
   setupCustomCursor();
+
+  // Hide custom cursor when inside iframes, restore on leave
+  document.querySelectorAll('iframe').forEach(f => {
+    const dot  = document.getElementById('dot-cursor');
+    const pill = document.getElementById('custom-cursor');
+    f.addEventListener('mouseenter', () => {
+      if (dot)  dot.style.opacity  = '0';
+      if (pill) pill.style.opacity = '0';
+    });
+    f.addEventListener('mouseleave', () => {
+      if (dot)  dot.style.opacity  = '';
+      if (pill) pill.style.opacity = '';
+    });
+  });
   setupVideoAutoplay();
   setupImageStrip();
   setupHeroDots();
@@ -4198,5 +4746,18 @@ window.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+<!-- Iframe fake-fullscreen for iOS (native Fullscreen API not supported) -->
+<script>
+window.addEventListener('message', (e) => {
+  if (!e.data || e.data.type !== 'proto-fullscreen') return;
+  const iframes = document.querySelectorAll('iframe');
+  for (const iframe of iframes) {
+    if (iframe.contentWindow === e.source) {
+      iframe.classList.toggle('iframe-fake-fs', e.data.active);
+      break;
+    }
+  }
+});
+</script>
 </body>
 </html>
