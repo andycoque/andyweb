@@ -408,7 +408,7 @@ body {
     overflow-x: visible;
     scroll-snap-type: none;
     padding: 0;
-    margin: 4px max(80px, calc((100% - 1200px) / 2)) 0;
+    margin: 4px max(4vw, calc((100% - 1440px) / 2)) 0;
   }
   .proj-image-strip img {
     flex: 1;
@@ -1356,7 +1356,7 @@ body.custom-cursor * { cursor: none !important; }
     flex-direction: row;
     align-items: flex-start;
     gap: 16px;
-    margin: 4px max(80px, calc((100% - 1200px) / 2)) 0;
+    margin: 4px max(4vw, calc((100% - 1440px) / 2)) 0;
     padding: 14px 24px;
     border-radius: 16px;
   }
@@ -1784,6 +1784,7 @@ body.dark-nav #nav-scroll-top { color: rgba(255,255,255,0.38); }
 #page-project-patterns .proj-short-challenge { color: rgba(255,255,255,0.5); }
 #page-project-patterns .proj-sub-heading { color: rgba(255,255,255,0.38); }
 #page-project-patterns .proj-short-stage-label { color: rgba(255,255,255,0.3); }
+#page-project-patterns .proto-hint { color: #fff; }
 
 /* Accomplishments box */
 #page-project-patterns .proj-short-accomplishments { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
@@ -1915,6 +1916,10 @@ body.dark-nav #nav-scroll-top { color: rgba(255,255,255,0.38); }
 
 /* ── Project pages — desktop responsive ── */
 @media (min-width: 768px) {
+  .iframe-bleed {
+    width: 130%;
+    margin-left: -15%;
+  }
   .proj-body {
     max-width: 740px;
     margin: 0 auto;
@@ -1944,15 +1949,23 @@ body.dark-nav #nav-scroll-top { color: rgba(255,255,255,0.38); }
   }
   .proj-hero {
     padding: 48px;
-    margin: 92px max(80px, calc((100% - 1200px) / 2)) 0;
+    margin: 92px max(4vw, calc((100% - 1440px) / 2)) 0;
     border-radius: 20px;
-    min-height: 75svh;
+    min-height: unset;
+    aspect-ratio: 16/9;
     justify-content: flex-end;
   }
   .proj-hero-content {
     max-width: 960px;
     gap: 32px;
   }
+  .proj-hero-title {
+    font-size: 62px;
+    letter-spacing: -3px;
+    line-height: 0.93;
+  }
+}
+@media (min-width: 1100px) {
   .proj-hero-title {
     font-size: 88px;
     letter-spacing: -4px;
@@ -1988,6 +2001,19 @@ body.dark-nav #nav-scroll-top { color: rgba(255,255,255,0.38); }
   justify-content: center;
 }
 .project-coming-soon { font-family: var(--sans); font-size: 16px; color: var(--ink-mid); text-align: center; line-height: 1.6; letter-spacing: -0.32px; }
+
+/* Interactive prototype hint */
+.proto-hint {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #fff;
+  background: var(--blue);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  align-self: center;
+}
 
 /* Fake fullscreen for iOS (overrides scale/size/radius) */
 iframe.iframe-fake-fs {
@@ -2230,7 +2256,7 @@ iframe.iframe-fake-fs {
           <div class="about-block">
             <div class="about-block-label">About me</div>
             <div class="about-body">
-              <p>I've worked across fintech, payments infrastructure, and digital platforms, helping teams turn product ideas into solutions people can understand and use.</p>
+              <p>I've worked on product teams and in agency environments across fintech, payments, and digital platforms. Helping organizations turn complex ideas into solutions people can understand and use.</p>
               <p>Strategy, systems, and interfaces. Making complex things simple and ambiguous things clear.</p>
             </div>
           </div>
@@ -2248,7 +2274,7 @@ iframe.iframe-fake-fs {
                 <div class="exp-dates">2021 – 2023</div>
               </div>
               <div class="exp-item">
-                <div class="exp-role">UI/UX Design</div>
+                <div class="exp-role">Product Design</div>
                 <div class="exp-company">Zemoga · Digital Agency</div>
                 <div class="exp-dates">2018 – 2021</div>
               </div>
@@ -2340,12 +2366,11 @@ iframe.iframe-fake-fs {
 
     <!-- Hero -->
     <section class="proj-hero">
-      <img class="proj-hero-bg" src="BNLP/hero BNPL.jpeg" alt="BNPL Marketplace" />
+      <img class="proj-hero-bg" src="BNLP/Hero card.jpg" alt="BNPL Marketplace" />
       <div class="proj-hero-gradient"></div>
       <div class="proj-hero-content">
         <h1 class="proj-hero-title">
-          <span class="line"><span class="line-inner">Building a</span></span>
-          <span class="line"><span class="line-inner">BNPL</span></span>
+          <span class="line"><span class="line-inner">Building a BNPL</span></span>
           <span class="line"><span class="line-inner">Marketplace</span></span>
         </h1>
         <div class="proj-hero-meta">
@@ -2508,6 +2533,42 @@ iframe.iframe-fake-fs {
               </div>
             </div>
             <div class="proj-serif"><p>I departed from the project after this phase. The product-based marketplace direction was later implemented by the team.</p></div>
+          </div>
+
+          <!-- Impact -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Impact</h2>
+            </div>
+            <div class="proj-short-metrics">
+              <p class="proj-short-metrics-context">Over two years building the platform</p>
+              <div class="proj-short-metrics-grid">
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">30%</span>
+                  <span class="proj-short-metric-label">of total users logged in within weeks of launch</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">85%</span>
+                  <span class="proj-short-metric-label">on-time payment rate among app users</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">27%</span>
+                  <span class="proj-short-metric-label">more repeat purchases among multi-store users</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">+5%</span>
+                  <span class="proj-short-metric-label">category conversion, up from less than 1%</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">600K</span>
+                  <span class="proj-short-metric-label">active users on the platform</span>
+                </div>
+                <div class="proj-short-metric">
+                  <span class="proj-short-metric-number">+2K</span>
+                  <span class="proj-short-metric-label">partner merchants in our network</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Reflection -->
@@ -2982,10 +3043,10 @@ iframe.iframe-fake-fs {
             </div>
           </div>
 
-          <!-- Outcome -->
+          <!-- Impact -->
           <div class="proj-short-stage">
             <div class="proj-short-stage-header">
-              <h2 class="proj-section-title">Outcome</h2>
+              <h2 class="proj-section-title">Impact</h2>
             </div>
             <div class="proj-short-metrics">
               <p class="proj-short-metrics-context">At peak business transaction volume</p>
@@ -3099,10 +3160,10 @@ iframe.iframe-fake-fs {
             </div>
           </div>
 
-          <!-- Outcome -->
+          <!-- Impact -->
           <div class="proj-short-stage">
             <div class="proj-short-stage-header">
-              <h2 class="proj-section-title">Outcome</h2>
+              <h2 class="proj-section-title">Impact</h2>
             </div>
             <div class="proj-short-metrics">
               <p class="proj-short-metrics-context">At peak business transaction volume</p>
@@ -3307,9 +3368,9 @@ iframe.iframe-fake-fs {
         </div>
       </div>
 
-      <!-- Section: Outcome -->
+      <!-- Section: Impact -->
       <div class="proj-section">
-        <h2 class="proj-section-title">Outcome</h2>
+        <h2 class="proj-section-title">Impact</h2>
         <div class="proj-serif">
           <p>Business transaction volume grew from around 30,000 per month to a peak of 2 million monthly transactions, a 65x increase. At that point, P2P transactions on the same network had reached 40 million per month. Business usage was growing, and the gap with P2P showed how much headroom remained.</p>
           <p>Most of the volume was still coming from a small group of early adopters who had figured out how to use the system well. The broader base of integrated fintechs had barely started. The potential was clearly much larger.</p>
@@ -3428,12 +3489,15 @@ iframe.iframe-fake-fs {
               <p class="proj-short-challenge">Most mental health apps organize around forms: questionnaires, logs, journal entries. The model keeps users in observation mode. The question was: what if the interface itself created a sense of being somewhere?</p>
             </div>
             <!-- Interactive demo -->
-            <iframe
-              src="Lighter Thoughts/Movement/movement-prototype.html"
-              style="width:100%;height:480px;border:none;border-radius:20px;display:block;margin:32px 0;"
-              title="Avatar movement demo"
-              loading="lazy"
-            ></iframe>
+            <div class="iframe-bleed" style="display:flex;flex-direction:column;gap:8px;">
+              <p class="proto-hint">Try it ▼</p>
+              <iframe
+                src="Lighter Thoughts/Movement/movement-prototype.html"
+                style="width:100%;height:624px;border:none;border-radius:20px;display:block;"
+                title="Avatar movement demo"
+                loading="lazy"
+              ></iframe>
+            </div>
             <div class="proj-serif">
               <p>Lighter Thoughts borrowed its interaction model from games and exploration apps. Hold-press to move your avatar through the world. Single tap to approach a totem or another user. Double-tap to enter a space or open a conversation.</p>
             </div>
@@ -3478,13 +3542,26 @@ iframe.iframe-fake-fs {
           </div>
 
           <!-- Places prototype -->
-          <div style="width:100%;height:480px;border-radius:20px;overflow:hidden;margin:32px 0;">
-            <iframe
-              src="Lighter Thoughts/Places/places.html"
-              style="width:142.86%;height:686px;border:none;display:block;transform:scale(0.7);transform-origin:top left;"
-              title="Lighter Thoughts — Places"
-              loading="lazy"
-            ></iframe>
+          <div class="iframe-bleed" style="display:flex;flex-direction:column;gap:8px;">
+            <p class="proto-hint">Try it. Use the tabs to switch environments.</p>
+            <div style="width:100%;height:624px;border-radius:20px;overflow:hidden;">
+              <iframe
+                src="Lighter Thoughts/Places/places.html"
+                style="width:111.11%;height:694px;border:none;display:block;transform:scale(0.9);transform-origin:top left;"
+                title="Lighter Thoughts — Places"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+
+          <!-- Impact -->
+          <div class="proj-short-stage">
+            <div class="proj-short-stage-header">
+              <h2 class="proj-section-title">Impact</h2>
+            </div>
+            <div class="proj-serif">
+              <p>Selected as one of the best projects of the year at ESDi Design, 2021. The faculty recognized the coherence between the problem, the aesthetic, and the interaction model.</p>
+            </div>
           </div>
 
           <!-- Reflection -->
@@ -3493,7 +3570,6 @@ iframe.iframe-fake-fs {
               <h2 class="proj-section-title">Reflection</h2>
             </div>
             <div class="proj-serif">
-              <p>What made this project work was coherence. The problem, the aesthetic, and the interaction model all pointed in the same direction. Nothing was decorative for its own sake.</p>
               <p>Looking back, two things would make this stronger: the UX writing inside the app, and a first coded version to test the model against real behavior. Both are in progress.</p>
             </div>
           </div>
@@ -3584,12 +3660,15 @@ iframe.iframe-fake-fs {
               <p>The interaction model was borrowed from mobile games because it was already understood by the target audience. The goal was not to teach a new vocabulary. The goal was to redirect a familiar vocabulary toward a new purpose. Users who had moved characters around in mobile games already knew how to be in this world. What they were discovering was what this particular world contained.</p>
               <p>Avatar customization was tied to the progression system from the start. The visual representation of your avatar was meant to communicate tenure without requiring any explicit signal of rank. A more elaborate avatar was a quieter way of saying: this person has been here a while. It made belonging visible without turning it into a competition.</p>
             </div>
-            <iframe
-              src="Lighter Thoughts/Movement/movement-prototype.html"
-              style="width:100%;height:480px;border:none;border-radius:20px;display:block;margin:32px 0;"
-              title="Avatar movement demo"
-              loading="lazy"
-            ></iframe>
+            <div class="iframe-bleed" style="display:flex;flex-direction:column;gap:8px;">
+              <p class="proto-hint">Try it ▼</p>
+              <iframe
+                src="Lighter Thoughts/Movement/movement-prototype.html"
+                style="width:100%;height:624px;border:none;border-radius:20px;display:block;"
+                title="Avatar movement demo"
+                loading="lazy"
+              ></iframe>
+            </div>
             <div class="proj-media-row" style="display:flex;gap:8px;">
               <img class="proj-img" src="Lighter Thoughts/Tap to reach.png" alt="Tap to reach" style="flex:1;min-width:0;width:0;" />
               <img class="proj-img" src="Lighter Thoughts/Double tap to open.png" alt="Double tap to open" style="flex:1;min-width:0;width:0;" />
@@ -3664,22 +3743,25 @@ iframe.iframe-fake-fs {
           </div>
 
           <!-- Places prototype -->
-          <div style="width:100%;height:480px;border-radius:20px;overflow:hidden;margin:32px 0;">
-            <iframe
-              src="Lighter Thoughts/Places/places.html"
-              style="width:142.86%;height:686px;border:none;display:block;transform:scale(0.7);transform-origin:top left;"
-              title="Lighter Thoughts — Places"
-              loading="lazy"
-            ></iframe>
+          <div class="iframe-bleed" style="display:flex;flex-direction:column;gap:8px;">
+            <p class="proto-hint">Try it. Use the tabs to switch environments.</p>
+            <div style="width:100%;height:624px;border-radius:20px;overflow:hidden;">
+              <iframe
+                src="Lighter Thoughts/Places/places.html"
+                style="width:111.11%;height:694px;border:none;display:block;transform:scale(0.9);transform-origin:top left;"
+                title="Lighter Thoughts — Places"
+                loading="lazy"
+              ></iframe>
+            </div>
           </div>
 
-          <!-- Outcome -->
+          <!-- Impact -->
           <div class="proj-short-stage">
             <div class="proj-short-stage-header">
-              <h2 class="proj-section-title">Outcome</h2>
+              <h2 class="proj-section-title">Impact</h2>
             </div>
             <div class="proj-serif">
-              <p>Lighter Thoughts was the best project of the year at ESDi in 2021. The faculty recognized the coherence between the problem, the aesthetic world, and the design system. The three things pointed in the same direction, which is rarer than it sounds.</p>
+              <p>Lighter Thoughts was the best project of the year at ESDi Design in 2021. The faculty recognized the coherence between the problem, the aesthetic world, and the design system. The three things pointed in the same direction, which is rarer than it sounds.</p>
               <p>The project lived as an Invision prototype. No user testing was conducted. The interaction model was validated by the faculty panel but never by someone trying to use it without knowing how it worked. That gap is the most important one to close next.</p>
               <p>Two things would make this substantially stronger. The UX writing: every word in the prototype was a first draft, and the world needs a verbal language as distinct as its visual one. And a coded version, because the movement model, the interaction vocabulary, and the light animation need to be felt, not just seen in a prototype.</p>
             </div>
