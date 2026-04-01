@@ -398,7 +398,7 @@ body {
   flex-shrink: 0;
   width: 80vw;
   height: auto;
-  scroll-snap-align: center;
+  scroll-snap-align: start;
   border-radius: 16px;
   display: block;
   object-fit: cover;
@@ -538,22 +538,29 @@ body {
 @media (min-width: 768px) { .br-desk { display: block; } }
 
 /* ════════════════════════════════
-   WORK — vertical-scroll-driven card carousel
+   WORK — 3-column card layout
 ════════════════════════════════ */
-#work-trigger { position: relative; /* height set by JS */ }
+#work-trigger {
+  height: 150vh;
+}
 
+/* ════════════════════════════════
+   WORK — base (mobile snap scroll)
+════════════════════════════════ */
 #work-section {
   position: sticky;
   top: 0;
   height: 100dvh;
   background: var(--canvas);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 .work-sticky-header {
-  padding: 96px 24px 20px;
+  padding: 96px 24px 16px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 }
 .work-section-label {
   font-family: var(--mono);
@@ -573,82 +580,192 @@ body {
 }
 .work-section-title .title-light { font-weight: 400; display: block; }
 
+/* Mobile snap scroll track */
 .work-track-outer {
   flex: 1;
-  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 24px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  display: flex;
+  align-items: center;
+  padding-bottom: 24px;
 }
+.work-track-outer::-webkit-scrollbar { display: none; }
 #work-cards-track {
-  position: absolute;
-  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 12vw 0 24px;
 }
+.work-col-1 { display: contents; }
 .work-card-item {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 88vw;
-  height: min(calc(88vw * 1.45), calc(100dvh - 220px));
+  flex-shrink: 0;
+  width: 76vw;
+  height: calc(100dvh - 220px);
   background: var(--white);
   border-radius: 28px;
   padding: 20px;
   box-shadow: 0 2px 32px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
-  /* Default: off-screen right, tilted */
-  transform: translate(-50%, -50%) translateX(115%) rotate(8deg) scale(0.94);
-  transition: transform 380ms cubic-bezier(0.25, 0, 0.3, 1);
-}
-/* Active card: centered, straight, always on top */
-.work-card-item.active {
-  transform: translate(-50%, -50%) translateX(0) rotate(0deg) scale(1);
-  z-index: 2;
-}
-/* Next card: peeking from right, behind active */
-.work-card-item.peek {
-  transform: translate(-50%, -50%) translateX(88%) rotate(6deg) scale(0.96);
-  z-index: 1;
-}
-/* Previous cards: off-screen left, behind active */
-.work-card-item.prev {
-  transform: translate(-50%, -50%) translateX(-115%) rotate(-4deg) scale(0.94);
-  z-index: 1;
+  scroll-snap-align: start;
 }
 
-/* ── Work section — two-column (tablet+) ── */
+/* ════════════════════════════════
+   WORK — desktop: 3-column grid
+════════════════════════════════ */
 @media (min-width: 768px) {
-  #work-section { flex-direction: row; }
-  .work-sticky-header {
-    width: 45%;
-    flex-shrink: 0;
-    padding: 80px clamp(40px, 4vw, 80px) 80px clamp(80px, 8vw, 160px);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+  #work-section {
+    display: grid;
+    grid-template-columns: repeat(3, 560px);
+    grid-template-rows: 1fr auto;
+    padding: 60px clamp(24px, 4vw, 80px);
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: default;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-direction: unset;
   }
-  .work-section-label { font-size: 11px; margin-bottom: 12px; }
+  #work-section::-webkit-scrollbar { display: none; }
+
+  /* Flatten track wrappers so children become grid items */
+  .work-track-outer { display: contents; }
+  #work-cards-track { display: contents; }
+
+  /* Header → col 1, bottom row */
+  .work-sticky-header {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+    padding: 0 0 40px clamp(24px, 4vw, 80px);
+    flex-shrink: unset;
+  }
   .work-section-title {
-    font-size: clamp(26px, 3.5vw, 52px);
+    font-size: 48px;
     letter-spacing: -1.5px;
     line-height: 1.05;
   }
-  .work-track-outer { flex: 1; }
-  .work-card-item.prev {
-    transform: translate(-50%, -60%) translateX(-100%) rotate(-2deg) scale(0.7);
-    z-index: 3;
+  .work-section-label { font-size: 11px; margin-bottom: 12px; }
+
+  /* Col 1 wrapper → top row, card centered */
+  .work-col-1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1;
+    grid-row: 1;
   }
+
+  /* Reset mobile sizing, restore desktop */
   .work-card-item {
-    --card-w: clamp(280px, 42vw, 760px);
-    width: var(--card-w);
-    height: min(calc(var(--card-w) * 1.45), calc(100dvh - 140px));
+    position: static;
+    top: unset;
+    left: unset;
+    width: 88%;
+    height: unset;
+    aspect-ratio: 3 / 4;
+    transform: none;
+    transition: none;
+    margin: 0 auto;
+  }
+  .work-card-item.active,
+  .work-card-item.peek,
+  .work-card-item.prev { transform: none; z-index: unset; }
+
+  /* Cards 2 & 3 span both rows, centered */
+  #work-cards-track > .work-card-item:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
+  #work-cards-track > .work-card-item:nth-child(3) {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
+
+  /* Rotations */
+  .work-col-1 .work-card-item                      { transform: rotate(-2deg) translateY(calc(-5%)); }
+  #work-cards-track > .work-card-item:nth-child(2)  { transform: rotate(4deg)  translateY(8%); }
+  #work-cards-track > .work-card-item:nth-child(3)  { transform: rotate(-1deg) translateY(-3%); }
+}
+
+/* ── Work section entrance animations ── */
+@keyframes workTitleIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes workCard1In {
+  from { opacity: 0; transform: rotate(-2deg) translateY(80px); }
+  to   { opacity: 1; transform: rotate(-2deg) translateY(calc(-5%)); }
+}
+@keyframes workCard2In {
+  from { opacity: 0; transform: rotate(4deg) translateY(80px); }
+  to   { opacity: 1; transform: rotate(4deg) translateY(8%); }
+}
+@keyframes workCard3In {
+  from { opacity: 0; transform: rotate(-1deg) translateY(80px); }
+  to   { opacity: 1; transform: rotate(-1deg) translateY(-3%); }
+}
+
+/* Mobile: hide case video button on first card */
+@media (max-width: 767px) {
+  .work-col-1 .work-card-item .btn-secondary { display: none; }
+  .work-card-item { padding: 16px; }
+}
+
+/* Desktop: hidden until in-view animation fires */
+@media (min-width: 768px) {
+  .work-sticky-header { opacity: 0; }
+  .work-card-item     { opacity: 0; }
+
+  #work-section.in-view .work-sticky-header {
+    animation: workTitleIn 0.55s var(--ease-enter) 0.05s both;
+  }
+  #work-section.in-view .work-col-1 .work-card-item {
+    animation: workCard1In 0.65s var(--ease-enter) 0.2s both;
+  }
+  #work-section.in-view #work-cards-track > .work-card-item:nth-child(2) {
+    animation: workCard2In 0.65s var(--ease-enter) 0.35s both;
+  }
+  #work-section.in-view #work-cards-track > .work-card-item:nth-child(3) {
+    animation: workCard3In 0.65s var(--ease-enter) 0.5s both;
   }
 }
 
-/* ── Work section — desktop spacing ── */
-@media (min-width: 1100px) {
-  .work-sticky-header {
-    width: 40%;
-    padding: 80px clamp(40px, 4vw, 80px) 80px clamp(80px, 8vw, 160px);
-  }
+/* Work section buttons always show pointer */
+#work-section .btn-primary,
+#work-section .btn-secondary { cursor: pointer !important; }
+
+/* ── Work custom cursor ── */
+.work-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 4px;
+  border-radius: 999px;
+  line-height: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 180ms var(--ease-std), transform 80ms linear;
+  white-space: nowrap;
+  user-select: none;
 }
+.work-cursor.visible { opacity: 1; }
+.work-cursor.visible.dragging { opacity: 0.4; }
+@media (hover: none) { .work-cursor { display: none; } }
 
 /* ════════════════════════════════
    PHILOSOPHY — sticky blue section
@@ -2167,14 +2284,16 @@ iframe.iframe-fake-fs {
       </div>
       <div class="work-track-outer">
         <div id="work-cards-track">
-          <div class="work-card-item">
-            <div class="card-image" style="background:#FFE8F0;background-image:url('BNLP/hero BNPL.jpeg');background-size:cover;background-position:center;"></div>
-            <div class="card-date">2021 – 2023</div>
-            <div class="card-title">Building a BNPL Marketplace</div>
-            <div class="card-desc">How a checkout financing tool evolved into a consumer-facing commerce platform.</div>
-            <div class="card-buttons">
-              <a href="#" class="btn-secondary" onclick="openLightbox('BNLP/Case Video.mp4');return false;">Case video ▶</a>
-              <a href="#" class="btn-primary" onclick="openProject('bnpl');return false;">Full story ↗</a>
+          <div class="work-col-1">
+            <div class="work-card-item">
+              <div class="card-image" style="background:#FFE8F0;background-image:url('BNLP/hero BNPL.jpeg');background-size:cover;background-position:center;"></div>
+              <div class="card-date">2021 – 2023</div>
+              <div class="card-title">Building a BNPL Marketplace</div>
+              <div class="card-desc">How a checkout financing tool evolved into a consumer-facing commerce platform.</div>
+              <div class="card-buttons">
+                <a href="#" class="btn-secondary" onclick="openLightbox('BNLP/Case Video.mp4');return false;">Case video ▶</a>
+                <a href="#" class="btn-primary" onclick="openProject('bnpl');return false;">Full story ↗</a>
+              </div>
             </div>
           </div>
           <div class="work-card-item">
@@ -4106,96 +4225,94 @@ function runIntro() {
 ════════════════════════════════ */
 function setupCarousel() {
   const trigger = document.getElementById('work-trigger');
-  const cards   = document.querySelectorAll('.work-card-item');
-  const CARDS   = cards.length;
-  const CARD_VH    = 80;        // scroll budget per card (vh)
-  const SNAP_AT    = 0.15;      // fraction of first card's budget where snap fires
-  const LAST_EXTRA = 80;        // extra vh to keep last card on screen longer
+  const section = document.getElementById('work-section');
+  const isDesktop = () => window.innerWidth >= 768;
 
-  trigger.style.height = (CARDS * CARD_VH + LAST_EXTRA) + 'vh';
-
-  let activeIdx      = -1;
-  let card0Snapped   = false;
-
-  function setCard(idx) {
-    if (idx === activeIdx) return;
-    activeIdx = idx;
-    cards.forEach((card, i) => {
-      card.classList.remove('active', 'peek', 'prev');
-      if (i === idx)          card.classList.add('active');
-      else if (i === idx + 1) card.classList.add('peek');
-      else if (i < idx)       card.classList.add('prev');
+  // ── Entrance animation (both breakpoints) ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        section.classList.add('in-view');
+        observer.disconnect();
+      }
     });
+  }, { threshold: 0.05 });
+  observer.observe(trigger);
+
+  // ── MOBILE: CSS scroll snap handles everything ──
+  function setupMobileCarousel() {
+    trigger.style.height = '150vh';
   }
 
-  function onScroll() {
-    const VH       = window.innerHeight;
-    const scrolled = window.scrollY - trigger.offsetTop;
-    const cardH    = CARD_VH / 100 * VH;
-    const PRE_START = -0.25 * VH;
-    const snapPoint = cardH * SNAP_AT;
+  // ── DESKTOP: horizontal scroll + custom cursor ──
+  function setupDesktopScroll() {
+    trigger.style.height = '150vh';
 
-    // Fully out of view — reset silently so entry animates fresh next time
-    if (scrolled < PRE_START) {
-      if (card0Snapped || activeIdx >= 0) {
-        card0Snapped = false;
-        activeIdx    = -1;
-        cards.forEach(c => {
-          c.classList.remove('active', 'peek', 'prev');
-          c.style.transition = '';
-          c.style.zIndex     = '';
-          c.style.transform  = '';
-        });
-      }
-      return;
-    }
+    let isDragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
 
-    const cardIdx = scrolled < 0 ? 0 : Math.floor(scrolled / cardH);
+    section.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      isDragging = true;
+      startX = e.clientX;
+      startScrollLeft = section.scrollLeft;
+      section.setPointerCapture(e.pointerId);
+      cursor.classList.add('dragging');
+    });
 
-    // ── First card: scroll-linked entry then snap ──
-    if (cardIdx === 0) {
-      const t = Math.min((scrolled - PRE_START) / (snapPoint - PRE_START), 1);
+    section.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      section.scrollLeft = startScrollLeft - (e.clientX - startX);
+    });
 
-      if (!card0Snapped && t < 1) {
-        // Track scroll directly — no CSS transition
-        const tx  = 115 * (1 - t);
-        const rot = 8   * (1 - t);
-        const sc  = 0.94 + 0.06 * t;
-        cards[0].style.transition = 'none';
-        cards[0].style.zIndex     = '2';
-        cards[0].style.transform  = `translate(-50%,-50%) translateX(${tx}%) rotate(${rot}deg) scale(${sc})`;
-        if (cards[1]) cards[1].classList.add('peek');
+    const stopDrag = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      cursor.classList.remove('dragging');
+      updateCursor();
+    };
+    section.addEventListener('pointerup', stopDrag);
+    section.addEventListener('pointercancel', stopDrag);
 
-      } else if (!card0Snapped) {
-        // Snap fires on the way down
-        card0Snapped = true;
-        cards[0].style.transition = '';
-        cards[0].style.zIndex     = '';
-        cards[0].style.transform  = '';
-        setCard(0);
+    section.addEventListener('click', (e) => {
+      if (Math.abs(section.scrollLeft - startScrollLeft) > 4) e.stopPropagation();
+    }, true);
 
-      } else {
-        // Scrolled back up to card 0 — keep it active
-        cards[0].style.transition = '';
-        cards[0].style.zIndex     = '';
-        cards[0].style.transform  = '';
-        setCard(0);
-      }
+    const cursor = document.createElement('div');
+    cursor.className = 'work-cursor';
+    cursor.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 6L23 12L17 18" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 18L1 12L7 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 12H17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    document.body.appendChild(cursor);
 
-    } else {
-      // Cards 1+ snap instantly
-      if (!card0Snapped) {
-        card0Snapped = true;
-        cards[0].style.transition = '';
-        cards[0].style.zIndex     = '';
-        cards[0].style.transform  = '';
-      }
-      setCard(Math.min(CARDS - 1, cardIdx));
-    }
+    const isOverflowing = () => section.scrollWidth > section.clientWidth;
+    let mouseX = -1, mouseY = -1;
+
+    const updateCursor = () => {
+      if (mouseX < 0) return;
+      const rect = section.getBoundingClientRect();
+      const over = mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom;
+      const overButton = document.elementFromPoint(mouseX, mouseY)?.closest('.btn-primary, .btn-secondary');
+      const show = over && isOverflowing() && !overButton;
+      cursor.classList.toggle('visible', show);
+      section.style.cursor = show ? 'none' : '';
+    };
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+      updateCursor();
+    });
+
+    window.addEventListener('scroll', updateCursor, { passive: true });
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  if (isDesktop()) {
+    setupDesktopScroll();
+  } else {
+    setupMobileCarousel();
+  }
 }
 
 /* ════════════════════════════════
