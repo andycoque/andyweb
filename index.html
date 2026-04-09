@@ -1274,11 +1274,12 @@ body.custom-cursor * { cursor: none !important; }
   gap: 12px;
 }
 .how-ai-note-title {
-  font-family: var(--sans);
-  font-size: clamp(17px, 1.6vw, 20px);
-  font-weight: 600;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
   color: white;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   line-height: 1.2;
 }
 .how-ai-note-icon {
@@ -2562,11 +2563,11 @@ iframe.iframe-fake-fs {
           <!-- How I Work block -->
           <div class="how-block">
             <div class="how-label">DESIGN AS PRODUCT PRACTICE</div>
-            <div class="how-intro">From business goals to product experiences.<br>AI raises the speed and the bar.</div>
+            <div class="how-intro">Turning business goals into real product experiences.<br>AI speeds it up. Judgment makes it work.</div>
             <div class="how-steps">
               <div class="how-step" data-ai="AI cuts the time between raw data and clear insight. I use it to process research, find patterns across sources, and stress-test problem statements before committing to a direction.">
                 <div class="how-step-title">1 Understand</div>
-                <div class="how-step-body">Define the problem and its scope. Business goals and user needs first, solutions second.</div>
+                <div class="how-step-body">Messy inputs become clear problem definitions. Business goals and user behavior first, solutions later.</div>
                 <div class="how-pills">
                   <span class="how-pill">Business context</span>
                   <span class="how-pill">Research</span>
@@ -2593,7 +2594,7 @@ iframe.iframe-fake-fs {
               </div>
               <div class="how-step" data-ai="AI lets me run more directions in less time. In co-creation sessions, everyone can prototype in real time. It helps trim the options down to the ones worth committing to.">
                 <div class="how-step-title">2 Shape</div>
-                <div class="how-step-body">Ideas get explored, validated with collaborators, and tested before becoming decisions.</div>
+                <div class="how-step-body">Directions get explored fast, validated against real constraints, narrowed to what's worth building.</div>
                 <div class="how-pills">
                   <span class="how-pill">UX decisions</span>
                   <span class="how-pill">Co-creation</span>
@@ -2619,7 +2620,7 @@ iframe.iframe-fake-fs {
               </div>
               <div class="how-step" data-ai="AI lets me write front-end code directly from design decisions, which means faster iteration and experiences that actually match the intent.">
                 <div class="how-step-title">3 Deliver</div>
-                <div class="how-step-body">The deliverable is a working experience, not a file to hand off and hope for the best.</div>
+                <div class="how-step-body">Working experiences ship, not handoffs, so what gets built matches the intent.</div>
                 <div class="how-pills">
                   <span class="how-pill">Interactive prototypes</span>
                   <span class="how-pill">Vibe coding</span>
@@ -2648,7 +2649,7 @@ iframe.iframe-fake-fs {
               <div class="how-ai-note-label">
                 <p class="how-ai-note-title">Honest take about AI and product design</p>
               </div>
-              <p class="how-ai-text">AI allows designers to finally have full ownership of the experience, including all the details and micro-interactions that only surface when you actually ship. It also compresses the process: stages that used to take weeks can now run in hours, so you can explore more paths, iterate faster, and make better decisions without skipping steps.</p>
+              <p class="how-ai-text">AI gives designers real ownership of the final experience, not just the design. What used to take weeks can now happen in hours, without skipping thinking.</p>
             </div>
           </div>
         </div>
@@ -4459,17 +4460,17 @@ function runIntro() {
 
   // ── 1. Fade in text ──
   setTimeout(() => {
-    greeting.style.transition  = `opacity 600ms ${EASE_ENTER}`;
-    introName.style.transition = `opacity 600ms ${EASE_ENTER}`;
+    greeting.style.transition  = `opacity 500ms ${EASE_ENTER}`;
+    introName.style.transition = `opacity 500ms ${EASE_ENTER}`;
     greeting.style.opacity  = '1';
     introName.style.opacity = '1';
-  }, 200);
+  }, 100);
 
   // ── 2. Fade out "Hi, I'm" ──
   setTimeout(() => {
     greeting.style.transition = `opacity 400ms ${EASE_EXIT}`;
     greeting.style.opacity    = '0';
-  }, 1400);
+  }, 1600);
 
   // ── 3. "Andy." flies to nav brand position ──
   setTimeout(() => {
@@ -4486,9 +4487,9 @@ function runIntro() {
     introName.style.transformOrigin = 'left top';
     introName.style.transform       = `translate(${dx}px, ${dy}px) scale(${sc})`;
 
-    // Blue bg fades out during flight
+    // Blue bg fades to pink (hero color) during flight — no transparent flash
     loader.style.transition      = `background-color 480ms ${EASE_EXIT}`;
-    loader.style.backgroundColor = 'transparent';
+    loader.style.backgroundColor = '#FFE3EE';
 
   }, 1800);
 
