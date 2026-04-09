@@ -620,7 +620,7 @@ body {
 @media (min-width: 768px) {
   #work-section {
     display: grid;
-    grid-template-columns: repeat(3, 560px);
+    grid-template-columns: repeat(3, minmax(560px, 1fr));
     grid-template-rows: 1fr auto;
     padding: 60px clamp(24px, 4vw, 80px);
     gap: 0;
@@ -667,6 +667,7 @@ body {
     top: unset;
     left: unset;
     width: 88%;
+    max-width: 490px;
     height: unset;
     aspect-ratio: 3 / 4;
     transform: none;
@@ -772,14 +773,19 @@ body {
 ════════════════════════════════ */
 #phil-trigger {
   position: relative;
-  min-height: 150vh;
+  min-height: 300vh;
 }
 #phil-sticky {
   position: sticky;
   top: 0;
-  min-height: 100vh;
   background: var(--canvas);
   transition: background 700ms var(--ease-enter);
+}
+@media (min-width: 768px) {
+  #phil-sticky {
+    height: 100dvh;
+    overflow: hidden;
+  }
 }
 #phil-sticky.blue { background: var(--blue); }
 .card-image {
@@ -890,7 +896,7 @@ body {
 .phil-label {
   font-family: var(--mono);
   font-size: 12px;
-  color: rgba(255,255,255,0.5);
+  color: white;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 28px;
@@ -928,6 +934,11 @@ body {
     min-height: 100svh;
     padding: 96px 0 80px;
     align-items: stretch;
+  }
+  .how-block {
+    grid-column: 1 / -1;
+    padding-left: clamp(80px, 8vw, 160px);
+    padding-right: clamp(80px, 8vw, 160px);
   }
   .phil-col:first-child {
     padding-left: clamp(80px, 8vw, 160px);
@@ -1087,6 +1098,231 @@ body.custom-cursor * { cursor: none !important; }
 .cursor-none { cursor: none; }
 
 /* ════════════════════════════════
+   HOW I WORK (inside phil section)
+════════════════════════════════ */
+.how-block {
+  margin-bottom: clamp(48px, 7vw, 96px);
+}
+.how-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: white;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.how-intro {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(40px, 5vw, 56px);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: white;
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+.how-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: start;
+  margin-left: calc(-1 * clamp(24px, 5vw, 80px));
+  margin-right: calc(-1 * clamp(24px, 5vw, 80px));
+}
+@media (min-width: 768px) {
+  .how-steps {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+.how-step {
+  border: 1px solid white;
+  padding: 24px;
+  overflow: hidden;
+}
+.how-step-header {
+  display: block;
+}
+.how-step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.how-step-title {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(22px, 2.2vw, 28px);
+  letter-spacing: -0.03em;
+  color: white;
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.how-step-body {
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 400;
+  color: white;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  max-width: 100%;
+}
+.how-arrow { display: none; }
+.how-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.how-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: white;
+  background: rgba(255,255,255,0.12);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-radius: 100px;
+  padding: 4px 10px;
+}
+.how-ai-reveal {
+  margin-top: 16px;
+  border-radius: 12px;
+  position: relative;
+}
+.how-ai-svg-border {
+  display: none;
+}
+.how-ai-inner {
+  background: var(--ink);
+  border-radius: 11px;
+  padding: 16px;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.how-ai-box-title {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  color: white;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: margin-bottom 500ms var(--ease-enter);
+}
+.how-step.ai-open .how-ai-box-title {
+  margin-bottom: 10px;
+}
+.how-ai-spark {
+  flex-shrink: 0;
+}
+.how-step.ai-open .how-ai-spark {
+  animation: spin-icon 2s linear infinite;
+}
+.how-step.ai-done .how-ai-spark {
+  animation: none;
+}
+@keyframes spin-icon {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.how-ai-body {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.65);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 500ms var(--ease-enter);
+}
+.how-step.ai-open .how-ai-body {
+  max-height: 240px;
+}
+.how-ai-spark {
+  flex-shrink: 0;
+  display: block;
+}
+.how-ai-cursor {
+  display: inline-block;
+  animation: blink 0.7s step-end infinite;
+}
+.how-step.ai-done .how-ai-cursor { display: none; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.how-ai-note {
+  margin-top: clamp(32px, 5vw, 56px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2vw, 24px);
+}
+@media (min-width: 768px) {
+  .how-ai-note {
+    border-top: 1px solid white;
+    padding-top: clamp(24px, 3vw, 40px);
+    grid-template-columns: 1fr 2fr;
+  }
+}
+.how-ai-note-label {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.how-ai-note-title {
+  font-family: var(--sans);
+  font-size: clamp(17px, 1.6vw, 20px);
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.how-ai-note-icon {
+  flex-shrink: 0;
+}
+.how-ai-text {
+  font-family: var(--sans);
+  font-size: clamp(15px, 1.4vw, 17px);
+  color: white;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  max-width: 100%;
+}
+.how-cta {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  letter-spacing: -0.3px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 200ms var(--ease-std);
+  width: fit-content;
+}
+.how-cta:hover { opacity: 1; }
+@media (min-width: 768px) {
+  .how-steps {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    align-items: start;
+  }
+  .how-step {
+    margin-left: -1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .how-step:nth-child(1) { min-height: 360px; }
+  .how-step:nth-child(2) { min-height: 504px; }
+  .how-step:nth-child(3) { min-height: 648px; }
+}
+
+/* ════════════════════════════════
    CONTACT / FOOTER
 ════════════════════════════════ */
 .contact-section {
@@ -1118,7 +1354,7 @@ body.custom-cursor * { cursor: none !important; }
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 400;
-  color: rgba(255,255,255,0.6);
+  color: white;
   letter-spacing: -0.32px;
   line-height: 1.5;
   margin-bottom: 24px;
@@ -1147,7 +1383,7 @@ body.custom-cursor * { cursor: none !important; }
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 400;
-  color: rgba(255,255,255,0.75);
+  color: white;
   text-decoration: none;
   letter-spacing: -0.32px;
   cursor: pointer;
@@ -1898,7 +2134,7 @@ body.dark-nav #nav-scroll-top { color: rgba(255,255,255,0.38); }
 #page-project-patterns .proj-serif p { color: rgba(255,255,255,0.72); }
 #page-project-patterns .proj-intro p { color: rgba(255,255,255,0.72); }
 #page-project-patterns .proj-section-title { color: #fff; }
-#page-project-patterns .proj-short-challenge { color: rgba(255,255,255,0.5); }
+#page-project-patterns .proj-short-challenge { color: white; }
 #page-project-patterns .proj-sub-heading { color: rgba(255,255,255,0.38); }
 #page-project-patterns .proj-short-stage-label { color: rgba(255,255,255,0.3); }
 #page-project-patterns .proto-hint { color: #fff; }
@@ -1929,7 +2165,7 @@ body.dark-nav #nav-scroll-top { color: rgba(255,255,255,0.38); }
 #page-project-patterns .footer-nav a { color: rgba(255,255,255,0.45); }
 #page-project-patterns .footer-nav-label { color: rgba(255,255,255,0.22); }
 #page-project-patterns .footer-divider { border-color: rgba(255,255,255,0.08); }
-#page-project-patterns .footer-brand { color: rgba(255,255,255,0.6); }
+#page-project-patterns .footer-brand { color: white; }
 #page-project-patterns .footer-meta { color: rgba(255,255,255,0.22); }
 
 /* Hero floating thoughts */
@@ -2319,16 +2555,101 @@ iframe.iframe-fake-fs {
     </section>
     </div><!-- /work-trigger -->
 
-    <!-- Philosophy sticky section -->
+    <!-- Philosophy + How I Work sticky section -->
     <div id="phil-trigger">
       <div id="phil-sticky">
         <div id="phil-phase">
-          <div class="phil-col">
-            <div class="phil-label">DESIGN AS PRODUCT PRACTICE</div>
-            <div class="phil-para">My work begins by expanding the context around a product challenge, understanding user behavior, business value, and technical ambition.</div>
-          </div>
-          <div class="phil-col">
-            <div class="phil-para">From there, design turns that clarity into products people can understand, value and use.</div>
+          <!-- How I Work block -->
+          <div class="how-block">
+            <div class="how-label">DESIGN AS PRODUCT PRACTICE</div>
+            <div class="how-intro">From business goals to product experiences.<br>AI raises the speed and the bar.</div>
+            <div class="how-steps">
+              <div class="how-step" data-ai="AI cuts the time between raw data and clear insight. I use it to process research, find patterns across sources, and stress-test problem statements before committing to a direction.">
+                <div class="how-step-title">1 Understand</div>
+                <div class="how-step-body">Define the problem and its scope. Business goals and user needs first, solutions second.</div>
+                <div class="how-pills">
+                  <span class="how-pill">Business context</span>
+                  <span class="how-pill">Research</span>
+                  <span class="how-pill">Data analysis</span>
+                  <span class="how-pill">Problem framing</span>
+                </div>
+                <div class="how-ai-reveal">
+                  <svg class="how-ai-svg-border" width="100%" height="100%">
+                    <defs>
+                      <linearGradient id="ai-grad-0" gradientUnits="userSpaceOnUse" x1="50" y1="0" x2="50" y2="100">
+                        <stop offset="0%" stop-color="#FFD700"/>
+                        <stop offset="50%" stop-color="#ffffff"/>
+                        <stop offset="100%" stop-color="#065FED"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="11" fill="none" stroke="url(#ai-grad-0)" stroke-width="1.5"/>
+                  </svg>
+                  <div class="how-ai-inner">
+                    <div class="how-ai-box-title">How I accelerate understanding with AI?<svg class="how-ai-spark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20C12 15.5817 15.5817 12 20 12" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M12 4C12 8.41828 8.41828 12 4 12" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M4 12C8.41828 12 12 15.5817 12 20" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M20 12C15.5817 12 12 8.41828 12 4" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <div class="how-ai-body"><span class="how-ai-typed"></span><span class="how-ai-cursor">|</span></div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="how-step" data-ai="AI lets me run more directions in less time. In co-creation sessions, everyone can prototype in real time. It helps trim the options down to the ones worth committing to.">
+                <div class="how-step-title">2 Shape</div>
+                <div class="how-step-body">Ideas get explored, validated with collaborators, and tested before becoming decisions.</div>
+                <div class="how-pills">
+                  <span class="how-pill">UX decisions</span>
+                  <span class="how-pill">Co-creation</span>
+                  <span class="how-pill">AI-assisted exploration</span>
+                  <span class="how-pill">Prioritization</span>
+                </div>
+                <div class="how-ai-reveal">
+                  <svg class="how-ai-svg-border" width="100%" height="100%">
+                    <defs>
+                      <linearGradient id="ai-grad-1" gradientUnits="userSpaceOnUse" x1="50" y1="0" x2="50" y2="100">
+                        <stop offset="0%" stop-color="#FFD700"/>
+                        <stop offset="50%" stop-color="#ffffff"/>
+                        <stop offset="100%" stop-color="#065FED"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="11" fill="none" stroke="url(#ai-grad-1)" stroke-width="1.5"/>
+                  </svg>
+                  <div class="how-ai-inner">
+                    <div class="how-ai-box-title">How I expand possibilities with AI?<svg class="how-ai-spark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20C12 15.5817 15.5817 12 20 12" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M12 4C12 8.41828 8.41828 12 4 12" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M4 12C8.41828 12 12 15.5817 12 20" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M20 12C15.5817 12 12 8.41828 12 4" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <div class="how-ai-body"><span class="how-ai-typed"></span><span class="how-ai-cursor">|</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="how-step" data-ai="AI lets me write front-end code directly from design decisions, which means faster iteration and experiences that actually match the intent.">
+                <div class="how-step-title">3 Deliver</div>
+                <div class="how-step-body">The deliverable is a working experience, not a file to hand off and hope for the best.</div>
+                <div class="how-pills">
+                  <span class="how-pill">Interactive prototypes</span>
+                  <span class="how-pill">Vibe coding</span>
+                  <span class="how-pill">UX-QA</span>
+                  <span class="how-pill">Visual quality</span>
+                </div>
+                <div class="how-ai-reveal">
+                  <svg class="how-ai-svg-border" width="100%" height="100%">
+                    <defs>
+                      <linearGradient id="ai-grad-2" gradientUnits="userSpaceOnUse" x1="50" y1="0" x2="50" y2="100">
+                        <stop offset="0%" stop-color="#FFD700"/>
+                        <stop offset="50%" stop-color="#ffffff"/>
+                        <stop offset="100%" stop-color="#065FED"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="11" fill="none" stroke="url(#ai-grad-2)" stroke-width="1.5"/>
+                  </svg>
+                  <div class="how-ai-inner">
+                    <div class="how-ai-box-title">How I close the gap with AI?<svg class="how-ai-spark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20C12 15.5817 15.5817 12 20 12" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M12 4C12 8.41828 8.41828 12 4 12" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M4 12C8.41828 12 12 15.5817 12 20" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M20 12C15.5817 12 12 8.41828 12 4" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <div class="how-ai-body"><span class="how-ai-typed"></span><span class="how-ai-cursor">|</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="how-ai-note">
+              <div class="how-ai-note-label">
+                <p class="how-ai-note-title">Honest take about AI and product design</p>
+              </div>
+              <p class="how-ai-text">AI allows designers to finally have full ownership of the experience, including all the details and micro-interactions that only surface when you actually ship. It also compresses the process: stages that used to take weeks can now run in hours, so you can explore more paths, iterate faster, and make better decisions without skipping steps.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -4216,6 +4537,7 @@ function runIntro() {
     document.fonts.ready.then(() => {
       setupCarousel();
       setupPhilosophy();
+      setupHowIWorkHover();
     });
   }, 3980);
 }
@@ -4257,7 +4579,6 @@ function setupCarousel() {
       isDragging = true;
       startX = e.clientX;
       startScrollLeft = section.scrollLeft;
-      section.setPointerCapture(e.pointerId);
       cursor.classList.add('dragging');
     });
 
@@ -4333,7 +4654,6 @@ function setupPhilosophy() {
       } else {
         sticky.classList.remove('blue');
         document.getElementById('phil-phase').style.opacity = '0';
-        paras().forEach(p => p.classList.remove('on'));
         philTriggered = false;
       }
     });
@@ -4347,14 +4667,76 @@ function setupPhilosophy() {
 
     if (progress > 0.05 && !philTriggered) {
       philTriggered = true;
-      paras().forEach((p, i) => {
-        p.style.transitionDelay = (i * 400) + 'ms';
-        p.classList.add('on');
-      });
     }
   }, { passive: true });
 }
 
+
+/* ════════════════════════════════
+   HOW I WORK — AI hover reveal
+════════════════════════════════ */
+function setupHowIWorkHover() {
+  const steps = document.querySelectorAll('.how-step');
+  let currentOpen = null;
+
+  function typeText(step) {
+    const typed = step.querySelector('.how-ai-body .how-ai-typed');
+    const reveal = step.querySelector('.how-ai-reveal');
+    const gradient = reveal.querySelector('linearGradient');
+    const text = step.dataset.ai;
+    typed.textContent = '';
+    step.classList.remove('ai-done');
+    reveal.classList.add('typing');
+
+    // Rotate gradient via rAF
+    let angle = 0;
+    let spinning = true;
+    function spinGradient() {
+      if (!spinning) return;
+      angle = (angle + 1.2) % 360;
+      const rad = angle * Math.PI / 180;
+      const svg = reveal.querySelector('svg');
+      const cx = svg.clientWidth / 2;
+      const cy = svg.clientHeight / 2;
+      const r = Math.max(cx, cy) * 1.2;
+      gradient.setAttribute('x1', cx + r * Math.cos(rad));
+      gradient.setAttribute('y1', cy + r * Math.sin(rad));
+      gradient.setAttribute('x2', cx - r * Math.cos(rad));
+      gradient.setAttribute('y2', cy - r * Math.sin(rad));
+      requestAnimationFrame(spinGradient);
+    }
+    requestAnimationFrame(spinGradient);
+
+    let i = 0;
+    const interval = setInterval(() => {
+      typed.textContent += text[i];
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        step.classList.add('ai-done');
+        reveal.classList.add('typing-done');
+        setTimeout(() => {
+          spinning = false;
+          reveal.classList.remove('typing');
+          reveal.classList.remove('typing-done');
+        }, 900);
+      }
+    }, 12);
+    step._typeInterval = interval;
+  }
+
+  function openStep(step) {
+    if (step.classList.contains('ai-open')) return;
+    step.classList.add('ai-open');
+    typeText(step);
+  }
+
+  steps.forEach(step => {
+    const trigger = step.querySelector('.how-ai-reveal');
+    trigger.addEventListener('mouseenter', () => openStep(step));
+    trigger.addEventListener('click', () => openStep(step));
+  });
+}
 
 /* ════════════════════════════════
    CUSTOM CURSOR
