@@ -2435,7 +2435,7 @@ iframe.iframe-fake-fs {
       <div class="nav-drawer-wrap" id="work-drawer-wrap">
         <div class="nav-drawer">
           <div class="work-projects-label">SELECTED PROJECTS</div>
-          <a class="project-row" onclick="openProject('bnpl');closeWorkOverlay();return false;" href="#">
+          <a class="project-row" onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace',source:'nav'});openProject('bnpl');closeWorkOverlay();return false;" href="#">
             <div class="project-thumb" style="background:#FFE8F0;background-image:url('BNLP/hero BNPL.jpeg');background-size:cover;background-position:top center;"></div>
             <div class="project-info">
               <div class="project-row-title">Building a BNPL Marketplace</div>
@@ -2443,7 +2443,7 @@ iframe.iframe-fake-fs {
             </div>
             <span class="project-row-arrow">→</span>
           </a>
-          <a class="project-row" onclick="openProject('payments');closeWorkOverlay();return false;" href="#">
+          <a class="project-row" onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments',source:'nav'});openProject('payments');closeWorkOverlay();return false;" href="#">
             <div class="project-thumb" style="background:#EAF0FF;background-image:url('Designing Payments/Payments hero HomeThumb.jpg');background-size:cover;background-position:center;"></div>
             <div class="project-info">
               <div class="project-row-title">Designing Payments on Real-Time Rails</div>
@@ -2451,7 +2451,7 @@ iframe.iframe-fake-fs {
             </div>
             <span class="project-row-arrow">→</span>
           </a>
-          <a class="project-row" onclick="openProject('patterns');closeWorkOverlay();return false;" href="#">
+          <a class="project-row" onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts',source:'nav'});openProject('patterns');closeWorkOverlay();return false;" href="#">
             <div class="project-thumb" style="background:#080A1A;background-image:url('Lighter Thoughts/Thumbnail.png');background-size:cover;background-position:center;"></div>
             <div class="project-info">
               <div class="project-row-title">Lighter Thoughts</div>
@@ -2538,8 +2538,8 @@ iframe.iframe-fake-fs {
               <div class="card-title">Building a BNPL Marketplace</div>
               <div class="card-desc">How a checkout financing tool evolved into a consumer-facing commerce platform.</div>
               <div class="card-buttons">
-                <a href="#" class="btn-secondary" onclick="openLightbox('BNLP/Case Video.mp4');return false;">Case video ▶</a>
-                <a href="#" class="btn-primary" onclick="openProject('bnpl');return false;">Full story ↗</a>
+                <a href="#" class="btn-secondary" onclick="if(typeof gtag==='function')gtag('event','case_video_click',{project:'BNPL Marketplace'});openLightbox('BNLP/Case Video.mp4');return false;">Case video ▶</a>
+                <a href="#" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace'});openProject('bnpl');return false;">Full story ↗</a>
               </div>
             </div>
           </div>
@@ -2549,7 +2549,7 @@ iframe.iframe-fake-fs {
             <div class="card-title">Designing Payments on Real-Time Rails</div>
             <div class="card-desc">Exploring and designing business use cases on top of real-time payment infrastructure.</div>
             <div class="card-buttons">
-              <a href="#" class="btn-primary" onclick="openProject('payments');return false;">Full story ↗</a>
+              <a href="#" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments'});openProject('payments');return false;">Full story ↗</a>
             </div>
           </div>
           <div class="work-card-item">
@@ -2558,7 +2558,7 @@ iframe.iframe-fake-fs {
             <div class="card-title">Lighter Thoughts</div>
             <div class="card-desc">An avatar-based community world exploring interaction patterns for mental health.</div>
             <div class="card-buttons">
-              <a href="#" class="btn-primary" onclick="openProject('patterns');return false;">Full story ↗</a>
+              <a href="#" class="btn-primary" onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts'});openProject('patterns');return false;">Full story ↗</a>
             </div>
           </div>
         </div>
@@ -2671,14 +2671,14 @@ iframe.iframe-fake-fs {
       <h2 class="contact-heading">Let's build<br>something together.</h2>
       <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
       <div class="contact-btns">
-        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
-        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'LinkedIn'});">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'WhatsApp'});">WhatsApp ↗</a>
       </div>
       <nav class="footer-nav">
         <span class="footer-nav-label">Work</span>
-        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
-        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
-        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace',source:'footer'});openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments',source:'footer'});openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts',source:'footer'});openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -2759,14 +2759,14 @@ iframe.iframe-fake-fs {
       <h2 class="contact-heading">Let's build<br>something together.</h2>
       <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
       <div class="contact-btns">
-        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
-        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'LinkedIn'});">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'WhatsApp'});">WhatsApp ↗</a>
       </div>
       <nav class="footer-nav">
         <span class="footer-nav-label">Work</span>
-        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
-        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
-        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace',source:'footer'});openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments',source:'footer'});openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts',source:'footer'});openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -2792,14 +2792,14 @@ iframe.iframe-fake-fs {
       <h2 class="contact-heading">Let's build<br>something together.</h2>
       <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
       <div class="contact-btns">
-        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
-        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'LinkedIn'});">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'WhatsApp'});">WhatsApp ↗</a>
       </div>
       <nav class="footer-nav">
         <span class="footer-nav-label">Work</span>
-        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
-        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
-        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace',source:'footer'});openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments',source:'footer'});openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts',source:'footer'});openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -2829,7 +2829,7 @@ iframe.iframe-fake-fs {
         </div>
         <p class="proj-hero-subtitle">How a checkout financing tool evolved into a consumer-facing commerce platform</p>
         <div class="proj-hero-btns">
-          <a href="#" class="proj-btn" onclick="openLightbox('BNLP/Case Video.mp4');return false;">Case Video ▷</a>
+          <a href="#" class="proj-btn" onclick="if(typeof gtag==='function')gtag('event','case_video_click',{project:'BNPL Marketplace',source:'project_page'});openLightbox('BNLP/Case Video.mp4');return false;">Case Video ▷</a>
           <!-- One pager — hidden until ready
           <a href="#" class="proj-btn">One pager ↗</a>
           -->
@@ -3265,14 +3265,14 @@ iframe.iframe-fake-fs {
       <h2 class="contact-heading">Let's build<br>something together.</h2>
       <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
       <div class="contact-btns">
-        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
-        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'LinkedIn'});">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'WhatsApp'});">WhatsApp ↗</a>
       </div>
       <nav class="footer-nav">
         <span class="footer-nav-label">Work</span>
-        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
-        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
-        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace',source:'footer'});openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments',source:'footer'});openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts',source:'footer'});openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -3850,14 +3850,14 @@ iframe.iframe-fake-fs {
       <h2 class="contact-heading">Let's build<br>something together.</h2>
       <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
       <div class="contact-btns">
-        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
-        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'LinkedIn'});">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'WhatsApp'});">WhatsApp ↗</a>
       </div>
       <nav class="footer-nav">
         <span class="footer-nav-label">Work</span>
-        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
-        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
-        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace',source:'footer'});openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments',source:'footer'});openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts',source:'footer'});openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -4229,14 +4229,14 @@ iframe.iframe-fake-fs {
       <h2 class="contact-heading">Let's build<br>something together.</h2>
       <p class="contact-sub">Open to freelance projects and full-time opportunities.</p>
       <div class="contact-btns">
-        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white">LinkedIn ↗</a>
-        <a href="https://wa.me/573125786189" target="_blank" class="btn-white">WhatsApp ↗</a>
+        <a href="https://www.linkedin.com/in/andrescovi/" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'LinkedIn'});">LinkedIn ↗</a>
+        <a href="https://wa.me/573125786189" target="_blank" class="btn-white" onclick="if(typeof gtag==='function')gtag('event','contact_click',{channel:'WhatsApp'});">WhatsApp ↗</a>
       </div>
       <nav class="footer-nav">
         <span class="footer-nav-label">Work</span>
-        <a onclick="openProject('bnpl');return false;">Building a BNPL Marketplace</a>
-        <a onclick="openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
-        <a onclick="openProject('patterns');return false;">Lighter Thoughts</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'BNPL Marketplace',source:'footer'});openProject('bnpl');return false;">Building a BNPL Marketplace</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'RTP Payments',source:'footer'});openProject('payments');return false;">Designing Payments on Real-Time Rails</a>
+        <a onclick="if(typeof gtag==='function')gtag('event','project_click',{project:'Lighter Thoughts',source:'footer'});openProject('patterns');return false;">Lighter Thoughts</a>
         <a onclick="showPage('about')">About</a>
       </nav>
       <hr class="footer-divider">
@@ -4418,6 +4418,9 @@ document.querySelectorAll('.proj-tab-btn').forEach(btn => {
     btn.classList.add('active');
     document.getElementById(tabId).classList.add('active');
     movePill(tabsEl, btn);
+    if (typeof gtag === 'function') {
+      gtag('event', 'tab_click', { tab: btn.textContent.trim() });
+    }
   });
 });
 
