@@ -5344,6 +5344,16 @@ window.addEventListener('DOMContentLoaded', () => {
     if (loader) loader.style.display = 'none';
     document.body.style.overflow = '';
     document.getElementById('home-hero').classList.add('visible');
+    // Show nav immediately
+    const nav = document.getElementById('nav');
+    const navBrand = document.getElementById('nav-brand');
+    const navInner = document.getElementById('nav-inner');
+    nav.classList.add('visible');
+    navBrand.classList.add('visible');
+    ['nav-work-btn', 'nav-about-btn', 'nav-cta-btn'].forEach(id => {
+      document.getElementById(id).classList.add('in');
+    });
+    navInner.style.transition = '';
     showPage(initialPage);
     document.fonts.ready.then(() => {
       setupCarousel();
