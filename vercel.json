@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/about",            "destination": "/index.html" },
+    { "source": "/bnpl",             "destination": "/index.html" },
+    { "source": "/rtp-payments",     "destination": "/index.html" },
+    { "source": "/lighter-thoughts", "destination": "/index.html" }
+  ]
+}

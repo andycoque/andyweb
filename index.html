@@ -4316,18 +4316,20 @@ function showPage(id) {
     if (titleText) _setupProjNavTitle(titleText);
   }
 
-  // Virtual pageview for GA4
-  const pageTitles = {
-    'home':             'Home',
-    'about':            'About',
-    'project-bnpl':     'Project: BNPL Marketplace',
-    'project-payments': 'Project: Payments on Real-Time Rails',
-    'project-patterns': 'Project: Lighter Thoughts',
+  // Update URL + virtual pageview for GA4
+  const pageMap = {
+    'home':             { slug: '/',                title: 'Home' },
+    'about':            { slug: '/about',           title: 'About' },
+    'project-bnpl':     { slug: '/bnpl',            title: 'Project: BNPL Marketplace' },
+    'project-payments': { slug: '/rtp-payments',    title: 'Project: Payments on Real-Time Rails' },
+    'project-patterns': { slug: '/lighter-thoughts',title: 'Project: Lighter Thoughts' },
   };
+  const meta = pageMap[id] || { slug: '/' + id, title: id };
+  history.pushState({ page: id }, meta.title, meta.slug);
   if (typeof gtag === 'function') {
     gtag('event', 'page_view', {
-      page_title:    pageTitles[id] || id,
-      page_location: window.location.origin + '/' + id,
+      page_title:    meta.title,
+      page_location: window.location.origin + meta.slug,
     });
   }
 }
@@ -5314,9 +5316,34 @@ function setupAboutContent() {
   }, { passive: true });
 }
 
+window.addEventListener('popstate', (e) => {
+  const slugToPage = {
+    '/about':            'about',
+    '/bnpl':             'project-bnpl',
+    '/rtp-payments':     'project-payments',
+    '/lighter-thoughts': 'project-patterns',
+  };
+  const page = slugToPage[window.location.pathname] || 'home';
+  showPage(page);
+});
+
 window.addEventListener('DOMContentLoaded', () => {
   window.scrollTo({ top: 0, behavior: 'instant' });
-  runIntro();
+
+  // Handle direct URL access
+  const slugToPage = {
+    '/about':            'about',
+    '/bnpl':             'project-bnpl',
+    '/rtp-payments':     'project-payments',
+    '/lighter-thoughts': 'project-patterns',
+  };
+  const initialPage = slugToPage[window.location.pathname];
+  if (initialPage) {
+    showPage(initialPage);
+  } else {
+    runIntro();
+  }
+
   setupCustomCursor();
 
   // Hide custom cursor when inside iframes, restore on leave
