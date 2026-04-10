@@ -5339,7 +5339,17 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   const initialPage = slugToPage[window.location.pathname];
   if (initialPage) {
+    // Skip intro animation, hide loader immediately
+    const loader = document.getElementById('intro-loader');
+    if (loader) loader.style.display = 'none';
+    document.body.style.overflow = '';
+    document.getElementById('home-hero').classList.add('visible');
     showPage(initialPage);
+    document.fonts.ready.then(() => {
+      setupCarousel();
+      setupPhilosophy();
+      setupHowIWorkHover();
+    });
   } else {
     runIntro();
   }
