@@ -7,6 +7,15 @@
 <title>Andy Corredor — Product Design</title>
 <meta name="description" content="Product Design Leader based in Bogotá, working for the world. Designing across strategy, systems, and interfaces in fintech and digital products.">
 <meta name="robots" content="index, follow">
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QKQ7WCMY1W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QKQ7WCMY1W');
+</script>
 <link rel="canonical" href="https://andyweb-three.vercel.app">
 
 <!-- Open Graph -->
@@ -1287,10 +1296,11 @@ body.custom-cursor * { cursor: none !important; }
 }
 .how-ai-text {
   font-family: var(--sans);
-  font-size: clamp(15px, 1.4vw, 17px);
+  font-size: clamp(22px, 2.2vw, 28px);
   color: white;
   line-height: 1.65;
   letter-spacing: -0.01em;
+  text-align: right;
   max-width: 100%;
 }
 .how-cta {
@@ -2507,7 +2517,7 @@ iframe.iframe-fake-fs {
         <span class="line"><span class="line-inner">and interfaces meet.</span></span>
       </h1>
       <div class="hero-body">
-        <p>I help teams turn complex product ideas<br class="br-desk"> into clear, usable systems.</p>
+        <p>I help teams turn product ideas<br class="br-desk"> into clear, usable systems.</p>
         <p>Connecting business goals, user behavior,<br class="br-desk"> and design execution.</p>
       </div>
     </section>
@@ -4470,7 +4480,7 @@ function runIntro() {
   setTimeout(() => {
     greeting.style.transition = `opacity 400ms ${EASE_EXIT}`;
     greeting.style.opacity    = '0';
-  }, 1600);
+  }, 2200);
 
   // ── 3. "Andy." flies to nav brand position ──
   setTimeout(() => {
@@ -4491,9 +4501,9 @@ function runIntro() {
     loader.style.transition      = `background-color 480ms ${EASE_EXIT}`;
     loader.style.backgroundColor = '#FFE3EE';
 
-  }, 1800);
+  }, 2400);
 
-  // ── 4. Pill appears immediately after flight lands (1800+520+20) ──
+  // ── 4. Pill appears immediately after flight lands (2400+520+20) ──
   setTimeout(() => {
     const brandW = navBrand.offsetWidth + 40; /* 20px each side, symmetric */
     navInner.style.transition  = 'none'; /* suppress border-radius transition during intro */
@@ -4505,19 +4515,19 @@ function runIntro() {
     navBrand.style.transition = 'none';
     nav.classList.add('visible');
     navBrand.classList.add('visible');
-  }, 2380);
+  }, 2980);
 
   // ── 5. Pill expands to full width ──
   setTimeout(() => {
     navInner.style.transition = `width 600ms ${EASE_ENTER}`;
     navInner.style.width      = '100%';
-  }, 2560);
+  }, 3160);
 
   // ── 6. Nav items appear one at a time ──
   [
-    ['nav-work-btn',  2900],
-    ['nav-about-btn', 3060],
-    ['nav-cta-btn',   3220],
+    ['nav-work-btn',  3500],
+    ['nav-about-btn', 3660],
+    ['nav-cta-btn',   3820],
   ].forEach(([id, t]) => {
     setTimeout(() => document.getElementById(id).classList.add('in'), t);
   });
@@ -4528,7 +4538,7 @@ function runIntro() {
     navInner.style.borderRadius = '';
     navInner.style.width        = '';
     navInner.style.overflow     = '';
-  }, 3500);
+  }, 4100);
 
   // ── 8. Remove loader + show hero 400ms after last nav item finishes ──
   setTimeout(() => {
@@ -4540,7 +4550,7 @@ function runIntro() {
       setupPhilosophy();
       setupHowIWorkHover();
     });
-  }, 3980);
+  }, 4580);
 }
 
 /* ════════════════════════════════
