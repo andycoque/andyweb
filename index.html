@@ -4315,6 +4315,21 @@ function showPage(id) {
     const titleText = rawTitle ? rawTitle.textContent.trim().replace(/\s+/g, ' ') : '';
     if (titleText) _setupProjNavTitle(titleText);
   }
+
+  // Virtual pageview for GA4
+  const pageTitles = {
+    'home':             'Home',
+    'about':            'About',
+    'project-bnpl':     'Project: BNPL Marketplace',
+    'project-payments': 'Project: Payments on Real-Time Rails',
+    'project-patterns': 'Project: Lighter Thoughts',
+  };
+  if (typeof gtag === 'function') {
+    gtag('event', 'page_view', {
+      page_title:    pageTitles[id] || id,
+      page_location: window.location.origin + '/' + id,
+    });
+  }
 }
 
 let _projNavScrollFn = null;
