@@ -282,7 +282,7 @@ button#nav-scroll-top:focus-visible,
 #main { opacity: 1; }
 
 /* Hero fades in independently, after nav settles */
-#home-hero { opacity: 0; transition: opacity 500ms var(--ease-enter); }
+#home-hero { opacity: 0; transition: opacity 320ms var(--ease-enter); }
 #home-hero.visible { opacity: 1; }
 
 /* Home hero text reveal */
@@ -291,22 +291,42 @@ button#nav-scroll-top:focus-visible,
   transform: translateY(12px);
   transition: opacity 600ms var(--ease-enter), transform 600ms var(--ease-enter);
 }
-#home-hero.visible .hero-label { opacity: 1; transform: translateY(0); transition-delay: 150ms; }
+#home-hero.visible .hero-label { opacity: 1; transform: translateY(0); transition-delay: 80ms; }
 .hero-heading .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .hero-heading .line-inner {
   display: block;
   transform: translateY(110%);
-  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-#home-hero.visible .hero-heading .line:nth-child(1) .line-inner { transform: translateY(0); transition-delay: 280ms; }
-#home-hero.visible .hero-heading .line:nth-child(2) .line-inner { transform: translateY(0); transition-delay: 390ms; }
-#home-hero.visible .hero-heading .line:nth-child(3) .line-inner { transform: translateY(0); transition-delay: 500ms; }
+#home-hero.visible .hero-heading .line:nth-child(1) .line-inner { transform: translateY(0); transition-delay: 180ms; }
+#home-hero.visible .hero-heading .line:nth-child(2) .line-inner { transform: translateY(0); transition-delay: 260ms; }
+#home-hero.visible .hero-heading .line:nth-child(3) .line-inner { transform: translateY(0); transition-delay: 340ms; }
 .hero-body {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 700ms var(--ease-enter), transform 700ms var(--ease-enter);
 }
-#home-hero.visible .hero-body { opacity: 1; transform: translateY(0); transition-delay: 650ms; }
+#home-hero.visible .hero-body { opacity: 1; transform: translateY(0); transition-delay: 440ms; }
+
+/* Respect motion preferences — kill intro + hero cascade + nav button transitions */
+@media (prefers-reduced-motion: reduce) {
+  #home-hero,
+  .hero-label,
+  .hero-heading .line-inner,
+  .hero-body,
+  .nav-btn,
+  .nav-btn.in,
+  .nav-cta,
+  .nav-cta.in {
+    transition: none;
+    transform: none;
+  }
+  .hero-label,
+  .hero-body,
+  .nav-btn,
+  .nav-cta { opacity: 1; }
+  .hero-heading .line-inner { transform: translateY(0); }
+}
 
 .hero-heading { text-wrap: balance; }
 #home-hero .hero-body p { text-wrap: pretty; }
@@ -367,7 +387,7 @@ button#nav-scroll-top:focus-visible,
   cursor: pointer;
   line-height: 0;
   opacity: 0;
-  transition: opacity 300ms var(--ease-std);
+  transition: opacity 500ms var(--ease-enter);
 }
 #nav-brand svg { display: block; }
 #nav-brand.visible { opacity: 1; }
@@ -391,7 +411,7 @@ button#nav-scroll-top:focus-visible,
 .nav-btn.in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 400ms var(--ease-enter), transform 400ms var(--ease-enter),
+  transition: opacity 300ms var(--ease-enter), transform 300ms var(--ease-enter),
               background 150ms, color 150ms;
 }
 @media (hover: hover) {
@@ -422,7 +442,7 @@ button#nav-scroll-top:focus-visible,
 .nav-cta.in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 400ms var(--ease-enter), transform 400ms var(--ease-enter),
+  transition: opacity 300ms var(--ease-enter), transform 300ms var(--ease-enter),
               background 150ms;
 }
 @media (hover: hover) {

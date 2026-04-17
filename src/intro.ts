@@ -1,35 +1,42 @@
 /**
- * INTRO STORYBOARD (Motion)
+ * INTRO STORYBOARD (Motion) — elegant pass
  *
  *      0ms   lock scroll, schedule sequence
- *     40ms   staggered fade in glyphs (0.97 -> 1)
- *    760ms   fade out "Hi, I'm"
- *    920ms   "Andy." flies to nav + quick loader tint
- *   1320ms   nav visible, pill clip = brand width
- *   1400ms   clip-path expand to full bar
- *   1540ms   Work button .in
- *   1620ms   About .in
- *   1700ms   CTA .in
- *   1840ms   clear pill inline styles
- *   2060ms   fade out loader, hero visible
+ *     20ms   letter-by-letter spring (softer bounce, more stagger)
+ *    580ms   fade out "Hi, I'm" + precompute flight rects
+ *    680ms   "Andy." position flight (ease-in-out-quart, 600ms)
+ *    900ms   "Andy." opacity fades to 0 (crossfade handoff begins)
+ *    960ms   nav pill appears (overlaps with flight tail)
+ *   1020ms   clip-path expands (subtler, 400ms ease-in-out-cubic)
+ *   1140ms   real nav-brand fades in (500ms CSS transition)
+ *   1280ms   hero crossfade begins
+ *   1340ms   Work .in
+ *   1440ms   About .in
+ *   1540ms   CTA .in
+ *   1640ms   clear pill inline styles
+ *   1780ms   loader display:none, cleanup
  */
-import { animate, type AnimationPlaybackControls } from 'motion';
+import { animate, stagger, type AnimationPlaybackControls } from 'motion';
 
 const T = {
-  fadeIn: 40,
-  greetingOut: 760,
-  flight: 920,
-  pillShow: 1320,
-  pillExpand: 1400,
-  navWork: 1540,
-  navAbout: 1620,
-  navCta: 1700,
-  navCleanup: 1840,
-  end: 2060,
+  fadeIn: 20,
+  greetingOut: 580,
+  flight: 680,
+  pillShow: 960,
+  pillExpand: 1020,
+  brandShow: 1140,
+  crossfade: 1280,
+  navWork: 1340,
+  navAbout: 1440,
+  navCta: 1540,
+  navCleanup: 1640,
+  end: 1780,
 } as const;
 
-const springUi = { type: 'spring' as const, duration: 0.26, bounce: 0.1 };
-const springFly = { type: 'spring' as const, duration: 0.4, bounce: 0.1 };
+const springIntro = { type: 'spring' as const, duration: 0.42, bounce: 0.15 };
+const springUi = { type: 'spring' as const, duration: 0.22, bounce: 0.1 };
+// Flight uses a deliberate ease-in-out (not spring) for elegance — on-screen movement per Emil.
+const easeFlight = [0.76, 0, 0.24, 1] as const;
 
 let introGeneration = 0;
 let introFinished = true;
@@ -58,19 +65,33 @@ function clearTimeouts() {
   pendingTimeouts = [];
 }
 
-function staggerGlyphIn(rootEl: HTMLElement, startDelay = 0, step = 0.028) {
-  const paths = Array.from(rootEl.querySelectorAll('svg path'));
+// Treat each SVG path as a "char" (motion-plus splitText style).
+// The Andy. wordmark has one path per letter; Hi, I'm has one path per glyph cluster.
+function staggerGlyphIn(rootEl: HTMLElement, startDelay = 0, step = 0.05) {
+  const paths = Array.from(rootEl.querySelectorAll('svg path')) as SVGElement[];
   if (paths.length === 0) {
-    register(animate(rootEl, { opacity: [0, 1], scale: [0.97, 1] }, { ...springUi, delay: startDelay }));
+    register(
+      animate(rootEl, { opacity: [0, 1], y: [12, 0], scale: [0.85, 1] }, { ...springIntro, delay: startDelay }),
+    );
     return;
   }
-  for (let i = 0; i < paths.length; i++) {
-    const p = paths[i] as SVGElement;
+  for (const p of paths) {
     p.style.opacity = '0';
-    register(
-      animate(p, { opacity: [0, 1], y: [3, 0] }, { ...springUi, delay: startDelay + (i * step) }),
-    );
+    p.style.transformBox = 'fill-box';
+    p.style.transformOrigin = '50% 100%';
+    p.style.willChange = 'transform, opacity';
   }
+  const ctrl = animate(
+    paths,
+    { opacity: [0, 1], y: [14, 0], scale: [0.82, 1] },
+    { ...springIntro, delay: stagger(step, { start: startDelay }) },
+  );
+  ctrl.finished
+    .then(() => {
+      for (const p of paths) p.style.willChange = '';
+    })
+    .catch(() => {});
+  register(ctrl);
 }
 
 export function cancelIntro() {
@@ -201,34 +222,55 @@ export function startIntro() {
     pendingTimeouts.push(id);
   };
 
+  let flightRects: { dx: number; dy: number; sc: number } | null = null;
+
   at(T.fadeIn, () => {
     greeting.style.opacity = '1';
     introName.style.opacity = '1';
-    staggerGlyphIn(greeting, 0, 0.025);
-    staggerGlyphIn(introName, 0.08, 0.03);
-    register(animate(greeting, { scale: [0.97, 1] }, { ...springUi, delay: 0 }));
-    register(animate(introName, { scale: [0.97, 1] }, { ...springUi, delay: 0.08 }));
+    staggerGlyphIn(greeting, 0, 0.06);
+    staggerGlyphIn(introName, 0.1, 0.07);
   });
 
   at(T.greetingOut, () => {
+    // Nav is always in layout (only opacity:0), so rects are valid without toggling .visible.
+    const from = introName.getBoundingClientRect();
+    const to = navBrand.getBoundingClientRect();
+    flightRects = {
+      dx: to.left - from.left,
+      dy: to.top - from.top,
+      sc: to.height / from.height,
+    };
+    introName.style.willChange = 'transform, color';
     register(animate(greeting, { opacity: 0 }, { duration: 0.22, ease: 'easeOut' }));
   });
 
   at(T.flight, () => {
-    const from = introName.getBoundingClientRect();
-    const to = navBrand.getBoundingClientRect();
-    const dx = to.left - from.left;
-    const dy = to.top - from.top;
-    const sc = to.height / from.height;
+    if (!flightRects) return;
+    const { dx, dy, sc } = flightRects;
+    introName.style.transformOrigin = '0% 0%';
+    // Position: ease-in-out-quart for elegant on-screen movement (no spring bounce).
+    const positionCtrl = animate(
+      introName,
+      { x: dx, y: dy, scale: sc },
+      { duration: 0.6, ease: easeFlight as unknown as [number, number, number, number] },
+    );
+    positionCtrl.finished
+      .then(() => {
+        introName.style.willChange = '';
+      })
+      .catch(() => {});
+    register(positionCtrl);
+    // Opacity: white "Andy" fades out during flight tail. Real black logo fades in separately (see T.brandShow).
+    register(
+      animate(introName, { opacity: 0 }, { duration: 0.32, delay: 0.22, ease: 'easeOut' }),
+    );
+    // Loader background: paired with position (same duration + easing).
     register(
       animate(
-        introName,
-        { x: dx, y: dy, scale: sc, color: ['#FFFFFF', '#BFD1F9', '#101010'] },
-        { ...springFly, transformOrigin: '0% 0%', ease: 'easeInOut' },
+        loader,
+        { backgroundColor: ['#065FED', '#FFE3EE'] },
+        { duration: 0.6, ease: easeFlight as unknown as [number, number, number, number] },
       ),
-    );
-    register(
-      animate(loader, { backgroundColor: ['#065FED', '#B8CBFF', '#FFE3EE'] }, { duration: 0.22, ease: 'easeInOut' }),
     );
   });
 
@@ -243,16 +285,31 @@ export function startIntro() {
     navInner.style.borderRadius = '100px';
     navInner.style.clipPath = narrowClip;
     navInner.style.willChange = 'clip-path';
-    navBrand.style.transition = 'none';
     nav.classList.add('visible');
-    navBrand.classList.add('visible');
+    // navBrand visibility is deferred to T.brandShow so the CSS fade-in handoff with andie is clean.
 
     at(T.pillExpand, () => {
       if (gen !== introGeneration) return;
+      // Subtler expansion: longer duration + ease-in-out-cubic for on-screen boundary movement.
       register(
-      animate(navInner, { clipPath: [narrowClip, wideClip] }, { duration: 0.32, ease: 'easeOut' }),
+        animate(
+          navInner,
+          { clipPath: [narrowClip, wideClip] },
+          { duration: 0.4, ease: [0.645, 0.045, 0.355, 1] },
+        ),
       );
     });
+  });
+
+  at(T.brandShow, () => {
+    // Real logo fades in via CSS transition on #nav-brand (500ms).
+    navBrand.classList.add('visible');
+  });
+
+  at(T.crossfade, () => {
+    // Paired crossfade — loader fade-out matches hero fade-in duration + easing.
+    document.getElementById('home-hero')?.classList.add('visible');
+    register(animate(loader, { opacity: [1, 0] }, { duration: 0.32, ease: [0.22, 1, 0.36, 1] }));
   });
 
   at(T.navWork, () => {
@@ -278,26 +335,19 @@ export function startIntro() {
     if (gen !== introGeneration) return;
     introFinished = true;
     clearMotion();
-    register(
-      animate(loader, { opacity: [1, 0] }, { duration: 0.24, ease: 'easeOut' }),
-    );
-    window.setTimeout(() => {
-      if (gen !== introGeneration) return;
-      loader.style.display = 'none';
-      document.body.style.overflow = '';
-      document.getElementById('home-hero')?.classList.add('visible');
-      const win = w();
-      if (typeof win.updateHeadForRoute === 'function' && typeof win.pageSeo === 'function') {
-        win.updateHeadForRoute(win.pageSeo('home'));
-      }
-      requestAnimationFrame(() => {
-        document.fonts.ready.then(() => {
-          if (gen !== introGeneration) return;
-          if (typeof win.setupCarousel === 'function') win.setupCarousel();
-          if (typeof win.setupPhilosophy === 'function') win.setupPhilosophy();
-          if (typeof win.setupHowIWorkHover === 'function') win.setupHowIWorkHover();
-        });
+    loader.style.display = 'none';
+    document.body.style.overflow = '';
+    const win = w();
+    if (typeof win.updateHeadForRoute === 'function' && typeof win.pageSeo === 'function') {
+      win.updateHeadForRoute(win.pageSeo('home'));
+    }
+    requestAnimationFrame(() => {
+      document.fonts.ready.then(() => {
+        if (gen !== introGeneration) return;
+        if (typeof win.setupCarousel === 'function') win.setupCarousel();
+        if (typeof win.setupPhilosophy === 'function') win.setupPhilosophy();
+        if (typeof win.setupHowIWorkHover === 'function') win.setupHowIWorkHover();
       });
-    }, 240);
+    });
   });
 }
