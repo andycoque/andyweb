@@ -1350,10 +1350,6 @@ body.custom-cursor * { cursor: none !important; }
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  transition: margin-bottom 500ms var(--ease-enter);
-}
-.how-step.ai-open .how-ai-box-title {
-  margin-bottom: 10px;
 }
 .how-ai-spark {
   flex-shrink: 0;
@@ -1376,11 +1372,13 @@ body.custom-cursor * { cursor: none !important; }
   letter-spacing: -0.01em;
   color: rgba(255,255,255,0.65);
   max-height: 0;
+  padding-top: 0;
   overflow: hidden;
-  transition: max-height 500ms var(--ease-enter);
+  transition: max-height 500ms var(--ease-enter), padding-top 500ms var(--ease-enter);
 }
 .how-step.ai-open .how-ai-body {
   max-height: 240px;
+  padding-top: 10px;
 }
 .how-ai-spark {
   flex-shrink: 0;
@@ -1788,8 +1786,25 @@ body.custom-cursor * { cursor: none !important; }
 @media (hover: hover) {
   .btn-white:hover { opacity: 0.82; }
 }
+/* Extend tap hit-area with pseudo-elements (no visual change).
+   Only vertical extension to avoid colliding with horizontal siblings. */
+.btn-primary,
+.btn-secondary,
+.btn-white {
+  position: relative;
+}
+.btn-primary::before,
+.btn-secondary::before,
+.btn-white::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0;
+  pointer-events: auto;
+}
+
 .footer-nav { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
 .footer-nav a {
+  position: relative;
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 400;
@@ -1799,6 +1814,12 @@ body.custom-cursor * { cursor: none !important; }
   cursor: pointer;
   white-space: nowrap;
   transition: color 200ms var(--ease-std);
+}
+.footer-nav a::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+  pointer-events: auto;
 }
 @media (hover: hover) {
   .footer-nav a:hover { color: white; }
