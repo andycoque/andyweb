@@ -1,0 +1,17 @@
+{
+  "name": "andyweb",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "build": "npm run optimize:images && vite build && node scripts/copy-to-dist.mjs",
+    "dev": "npm run build && vite preview --outDir dist --port 5173"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5",
+    "vite": "^6.2.0"
+  },
+  "dependencies": {
+    "motion": "^11.18.0"
+  }
+}
