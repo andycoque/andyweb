@@ -21,7 +21,8 @@ for (const name of dirs) {
 }
 
 const files = [
-  'ichiban.jpeg',
+  'ichiban-og.jpg',
+  'ichiban-og.webp',
   'BGT.jpg',
   'Ai Icon.svg',
   'Figma-logo.svg',
