@@ -5226,15 +5226,26 @@ function setupCarousel() {
       section.style.cursor = show ? 'none' : '';
     };
 
+    let cursorTicking = false;
+    const scheduleCursorUpdate = () => {
+      if (cursorTicking) return;
+      cursorTicking = true;
+      requestAnimationFrame(() => {
+        updateCursor();
+        cursorTicking = false;
+      });
+    };
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
+      // Position the cursor immediately (cheap style write, no layout read).
       cursor.style.left = e.clientX + 'px';
       cursor.style.top  = e.clientY + 'px';
-      updateCursor();
+      // Defer the layout-reading visibility check to the next frame.
+      scheduleCursorUpdate();
     });
 
-    window.addEventListener('scroll', updateCursor, { passive: true });
+    window.addEventListener('scroll', scheduleCursorUpdate, { passive: true });
   }
 
   if (isDesktop()) {
@@ -5268,14 +5279,20 @@ function setupPhilosophy() {
   }, { threshold: 0.1 });
   bgObserver.observe(trigger);
 
+  let philTicking = false;
   window.addEventListener('scroll', () => {
-    const rect     = trigger.getBoundingClientRect();
-    if (rect.top > window.innerHeight || rect.bottom < 0) return;
-    const progress = Math.max(0, Math.min(1, -rect.top / (trigger.offsetHeight - window.innerHeight)));
-
-    if (progress > 0.05 && !philTriggered) {
-      philTriggered = true;
-    }
+    if (philTicking) return;
+    philTicking = true;
+    requestAnimationFrame(() => {
+      const rect = trigger.getBoundingClientRect();
+      if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+        const progress = Math.max(0, Math.min(1, -rect.top / (trigger.offsetHeight - window.innerHeight)));
+        if (progress > 0.05 && !philTriggered) {
+          philTriggered = true;
+        }
+      }
+      philTicking = false;
+    });
   }, { passive: true });
 }
 
@@ -5453,9 +5470,19 @@ function setupCustomCursor() {
     showPill();
   }
 
+  let readingTicking = false;
+  const scheduleReadingUpdate = () => {
+    if (readingTicking) return;
+    readingTicking = true;
+    requestAnimationFrame(() => {
+      updateReadingProgress();
+      readingTicking = false;
+    });
+  };
+
   // Expose cleanup so showPage can call it on navigation
   window._cleanupReadingProgress = () => {
-    window.removeEventListener('scroll', updateReadingProgress);
+    window.removeEventListener('scroll', scheduleReadingUpdate);
     pill.classList.remove('has-heart');
     resetPill();
     hidePill();
@@ -5466,7 +5493,7 @@ function setupCustomCursor() {
     if (!el) return;
     el.addEventListener('mouseenter', () => {
       updateReadingProgress();
-      window.addEventListener('scroll', updateReadingProgress);
+      window.addEventListener('scroll', scheduleReadingUpdate);
     });
     el.addEventListener('mouseleave', () => {
       window._cleanupReadingProgress();
